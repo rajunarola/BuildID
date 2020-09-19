@@ -1,0 +1,200 @@
+@media only screen and (min-width: 1430px) {
+	.container {
+		max-width: 1290px;
+	}
+}
+@media only screen and (min-width: 1600px) {
+	.container {
+		max-width: 1365px;
+	}
+}
+
+
+
+@media only screen and (max-width: 1599px) {
+    /***  Login Page  ***/
+    .login-block h2 {
+        font-size: 42px;
+        margin-bottom: 15px;
+    }
+    .login-block h3 {
+        font-size: 26px;
+        margin-bottom: 35px;
+    }
+    .login-block h4 {
+        font-size: 22px;
+    }
+    .login-social {
+        margin-bottom: 30px;
+    }
+    .login-block label {
+        font-size: 21px;
+    }
+    .login-block h1 {
+        font-size: 65px;
+    }
+    .login-block p {
+        font-size: 20px;
+    }
+    /***  Login Page  ***/
+}
+
+@media only screen and (max-width: 1429px) {}
+
+@media only screen and (max-width: 1199px) {
+    /***  Login Page  ***/
+    .login-sec::before {
+        width: 55%;
+        background-position: left top;
+    }
+    .login-block h1 {
+    font-size: 60px;
+}
+.login-block h1 small {
+    font-size: 65%;
+}
+    /***  Login Page  ***/
+}
+
+@media only screen and (max-width: 991px) {
+    /***  Login Page  ***/
+    .login-sec::before {
+        width: 57%;
+        background-position: left top;
+    }
+    .login-block h1 {
+        font-size: 50px;
+    }
+    .login-block p {
+        font-size: 17px;
+    }
+    .login-block h2 {
+        font-size: 36px;
+    }
+    .login-block h3 {
+        font-size: 22px;
+        margin-bottom: 30px;
+    }
+    .login-block h4 {
+        font-size: 19px;
+    }
+    .login-social li {
+        margin-right: 12px;
+    }
+    .login-social a {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    .login-social {
+        margin-bottom: 20px;
+    }
+    .login-block label {
+        font-size: 18px;
+    }
+    .login-block .form-control {
+        height: 45px;
+        border-radius: 6px;
+        font-size: 16px;
+    }
+    .btn-login {
+        font-size: 22px;
+        border-radius: 5px;
+        min-width: 160px;
+        height: 45px;
+    }
+    /***  Login Page  ***/
+}
+
+@media only screen and (max-width: 767px) {
+    .alternate [class*="col-"]:first-child {
+        order: 0;
+    }
+    section {
+        padding-bottom: 40px;
+        padding-top: 40px;
+    }
+
+    /***  Login Page  ***/
+    .login-block .alternate [class*="col-"]:first-child {
+        margin-bottom: 50px;
+    }
+    /***  Login Page  ***/
+}
+
+@media only screen and (max-width: 575px) {}
+
+@media only screen and (max-width: 480px) {
+    /***  Login Page  ***/
+    .login-block h1 {
+        font-size: 42px;
+    }
+    .login-block .alternate [class*="col-"]:first-child {
+        margin-bottom: 30px;
+    }
+    .login-block h2 {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+    .login-block h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    .login-block h4 {
+        font-size: 17px;
+    }
+    .btn-login {
+        font-size: 20px;
+        border-radius: 5px;
+        min-width: 130px;
+    }
+    .login-block p {
+        font-size: 16px;
+    }
+    /***  Login Page  ***/
+}
+@media only screen and (max-width: 450px)
+{
+    .ticket-block
+    {
+        display: block;
+        text-align: center;
+    }
+    .ticket-block .ticket-img
+    {
+        margin: 0 auto;
+    }
+    .ticket-detail h4
+    {
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+    .ticket-detail span
+    {
+        margin-bottom: 7px;
+        display: block;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .index-sec h1
+    {
+        font-size: 20px;
+    }
+    .edit-sec
+    {
+        display: block;
+        margin-right: 15px;
+    }
+    .edit-sec h2
+    {
+        margin-bottom: 5px;
+    }
+    .pro-details h4,.pro-details span
+    {
+        font-size: 14px;
+    }
+    .pro-images figure
+    {
+        margin-bottom: 5px;
+    }
+}

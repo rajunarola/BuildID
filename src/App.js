@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Switch, Route, BrowserRouter, HashRouter } from "react-router-dom";
+import '../src/assets/css/all.min.css';
+import '../src/assets/css/bootstrap.min.css';
+import '../src/assets/css/bootstrap.min.css.map';
+import '../src/assets/css/jquery.fancybox.min.css';
+import '../src/assets/css/owl.carousel.min.css';
+import '../src/assets/css/styles.css';
+import '../src/assets/css/responsive.css';
+import Login from './Login/Login';
+import Dashboard from './Dashboard/Dashboard';
+import Projects from './Projects/Projects';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+
+    render() {
+        return (
+            <BrowserRouter>
+                <div className="">
+                    <Switch>
+                        <Route path="/(login)?" exact component={Login} />
+                        <Route path="/dashboard" exact component={Dashboard} />
+                        <Route path="/projects" exact component={Projects} />
+                    </Switch>
+                </div>
+            </BrowserRouter>
+        );
+    }
+
 }
-
-export default App;
