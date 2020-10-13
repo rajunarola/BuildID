@@ -11,6 +11,8 @@ import '../src/assets/css/responsive.css';
 import Login from './Login/Login';
 import Dashboard from './Dashboard/Dashboard';
 import Projects from './Projects/Projects';
+import AddNewTickets from './Tickets/AddNewTickets';
+import EditTicket from './Tickets/EditTicket';
 
 export default class App extends React.Component {
 
@@ -22,6 +24,8 @@ export default class App extends React.Component {
                         <Route path="/(login)?" exact component={Login} />
                         <Route path="/dashboard" exact component={Dashboard} />
                         <Route path="/projects" exact component={Projects} />
+                        <Route path="/add-ticket" exact component={AddNewTickets} />
+                        <Route path="/edit-ticket/:id" exact component={EditTicket} />
                     </Switch>
                 </div>
             </BrowserRouter>
