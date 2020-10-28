@@ -3,7 +3,6 @@ import axios from "axios";
 const userId = localStorage.getItem('userID')
 
 export function addNewTicket(data) {
-
     return axios.post(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/SaveTicket`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
@@ -33,8 +32,9 @@ export function getTicketType() {
     });
 }
 
-export function getIssuedBy(string) {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/companies/GetCompanies/${string}`).then(response => {
+
+export function getTicketByID(id) {
+    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/GetTicketById/${id}`).then(response => {
         return response
     }).catch(error => {
         return error

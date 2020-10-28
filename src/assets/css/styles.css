@@ -1052,7 +1052,18 @@ section {
     position: absolute;
     top: 20px;
     right: 16px;
+    color: #ffffff;
+    border: 1px solid #093cb9;
+    padding: 5px 20px;
+    background-color: #093cb9;
+    transition: 0.2s all ease;
+}
+
+.edit-btn:hover {
+    border: 1px solid #093cb9;
+    background-color: #ffffff;
     color: #093cb9;
+    transition: 0.2s all ease;
 }
 
 .li-position {
@@ -1061,4 +1072,131 @@ section {
 
 .ticket-date {
     margin-top: 30px;
+}
+
+.custom-form-g {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.dropdown_d {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.dropdown_d .ant-select {
+    width: 100%;
+}
+
+.custom-form-g i {
+    position: absolute;
+    right: 0;
+    top: 7px;
+}
+
+.custom-form-g .ant-picker {
+    width: 100%;
+}
+
+.custom-form-g .form-control {
+    width: 100%;
+}
+
+.img-upload-btn {
+    position: relative;
+}
+
+.img-upload-btn i.fa-edit {
+    position: absolute;
+    right: 0
+}
+
+.issuedby_input input {
+    width: 100%;
+    height: 35px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0 10px;
+}
+
+/* Add-ticket page css  */
+
+.formlabel {
+    display: block;
+}
+
+.autsuggest-input input {
+    padding: 4px 11px;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 14px;
+    line-height: 1.5715;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    width: 100%;
+    display: block;
+    min-height: 35px;
+}
+
+.autsuggest-input input:hover {
+    border-color: #40a9ff;
+    border-right-width: 1px !important;
+}
+
+.autsuggest-input input:focus {
+    border-color: #40a9ff;
+    border-right-width: 1px !important;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.autsuggest-input .react-autosuggest__suggestions-container.react-autosuggest__suggestions-container--open {
+    position: absolute;
+    background: #fff;
+    z-index: 1;
+    width: calc(100% - 10px);
+    border: 1px solid #d9d9d9;
+    max-height: 250px;
+    overflow: auto;
+}
+
+.autsuggest-input .react-autosuggest__suggestions-container ul {
+    list-style: none;
+    padding: 0px;
+}
+
+.autsuggest-input .react-autosuggest__suggestions-container ul li {
+    border-bottom: 1px solid #cbcbcb;
+    padding: 5px 15px;
+}
+
+.autsuggest-edit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 35px;
+    width: 35px;
+    background: #093cb9;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: 2px !important;
+    border-bottom-right-radius: 2px;
+}
+
+/* .img-upload-btn .img-upload {
+    display: none !important;
+} */
+
+.ant-picker-clear {
+    display: none;
 }
