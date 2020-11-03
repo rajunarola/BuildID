@@ -1200,3 +1200,102 @@ section {
 .ant-picker-clear {
     display: none;
 }
+
+.right-action .edit-btn {
+    position: unset;
+    margin-bottom: 5px;
+}
+
+.right-action .ticket-date {
+    margin: 5px 0 0 0;
+}
+
+.right-action button.btn.btn-danger {
+    padding: 4px 12px;
+    font-size: 14px;
+}
+
+.flex-end {
+    justify-content: flex-end !important;
+}
+
+.check-wrap input {
+    margin-left: 0px;
+}
+
+.check-wrap label {
+    padding-left: 20px;
+}
+
+.ant-picker-dropdown {
+    max-width: 535px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.inner-wrap-card {
+    padding: 15px;
+}
+
+.inner-wrap-card ul.timeline-sec {
+    height: auto;
+    max-height: 580px;
+}
+
+.inner-wrap-card ul.timeline-sec button {
+    margin-right: 5px;
+}
+
+.inner-wrap-card ul.timeline-sec button:last-child {
+    margin-right: 0;
+}
+
+.inner-wrap-card .ant-form-item-label {
+    width: 100%;
+    text-align: left;
+}
+
+.formfieldremove {
+    position: relative;
+    top: 30px;
+    color: red;
+}
+
+ul.ticket-list.overlay-scroll {
+    height: 400px;
+    min-height: 400px;
+    overflow: auto;
+}
+
+.inner-wrap-card .form-check {
+    margin-bottom: 10px;
+}
+
+.inner-wrap-card .ant-btn-submit, .inner-wrap-card .ant-btn-primary {
+    padding: 8px 15px;
+    color: #fff;
+    background: #093cb9;
+    border-color: transparent;
+    height: auto;
+    font-size: 16px;
+}
+
+.inner-wrap-card .ant-btn-submit:hover, .inner-wrap-card .ant-btn-primary:hover {
+    background: #fff;
+    border-color: #093cb9;
+    color: #093cb9;
+}
+
+@media (max-width: 991px) {
+    .com-padding .row .col-lg-4+.col-lg-4 {
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width: 992px) {
+    ul.ticket-list.overlay-scroll {
+        height: 880px;
+        min-height: 500px;
+    }
+}

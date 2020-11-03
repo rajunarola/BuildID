@@ -6,8 +6,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { Modal, Image, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { getUserWorkHistory } from '../Services/Experience';
-
 export default class Projects extends React.Component {
 
     state = {
@@ -21,11 +19,11 @@ export default class Projects extends React.Component {
         changeBackground: false,
         modalShow: false,
         singleTicketDetail: '',
-        workHistory: []
     }
 
     componentDidMount() {
         userWorkHistory().then(response => {
+            console.log('response => ', response);
             const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
             this.setState({ projectArray: response.data.data });
             const firstData = this.state.projectArray[0].projectId;
@@ -48,14 +46,6 @@ export default class Projects extends React.Component {
             });
             this.setState({ ticketArray: response.data.data });
         });
-
-        getUserWorkHistory().then(workRes => {
-            console.log('workRes => ', workRes);
-            this.setState({ workHistory: workRes.data.data })
-        }).catch(err => {
-            console.log('err => ', err);
-
-        })
     }
 
     onModalPopUp = (id) => {
@@ -63,11 +53,9 @@ export default class Projects extends React.Component {
         getTicketDetails(id).then(res => {
             this.setState({ singleTicketDetail: res.data.data });
             console.log('res => ', res.data.data);
-
         }).catch(err => {
             console.log('err => ', err);
-
-        })
+        });
     }
 
     onModalPopUpHide = () => {
@@ -77,10 +65,6 @@ export default class Projects extends React.Component {
 
     editTicket = (id) => {
         this.props.history.push(`/edit-ticket/${id}`)
-    }
-
-    editExperience = (id) => {
-        this.props.history.push(`/edit-experience/${id}`)
     }
 
     render() {
@@ -93,8 +77,7 @@ export default class Projects extends React.Component {
                 <main className="index-main">
                     <section className="index-sec">
                         <h1>{userName}</h1>
-                        <div className="edit-sec">
-                            <h2>Company Name</h2>
+                        <div className="edit-sec flex-end">
                             <Link to="/edit-profile" className="editprofile"><i className="fas fa-cog"></i> Edit Profile</Link>
                         </div>
                         <div className="com-padding">
@@ -156,7 +139,7 @@ export default class Projects extends React.Component {
                                                 <i className="far fa-chevron-up" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
                                             </div>
                                             <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#ticketaccordion">
-                                                <ul className="ticket-list">
+                                                <ul className="ticket-list overlay-scroll">
                                                     {this.state.ticketArray.map((data, index) => (
                                                         <li onClick={() => this.onModalPopUp(data.id)} className="ticket-block li-position" style={this.state.changeBackground ? { 'backgroundColor': "#fcecc3" } : { 'backgroundColor': "white" }}>
                                                             <div className="ticket-img"><img src={data.backPictureUrl ? data.backPictureUrl : ''} alt="" /></div>
@@ -174,30 +157,26 @@ export default class Projects extends React.Component {
                                     </div>
                                 </div>
                                 <div className="col-lg-4">
-                                    <Link className="add-btn btn-blue" to="/add-experience"><i className="fas fa-plus-circle"></i> Add Experience</Link>
-                                    <div className="accordion" id="ticketaccordion">
-                                        <div className="crd-wrap">
-                                            <div className="crd-header" id="ticketOne">
-                                                <h4><img src={require("../assets/images/icon_ticket.png")} alt="" /> Experience</h4>
-                                                <i className="far fa-chevron-up" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
+                                    <div class="accordion" id="qaaccordion">
+                                        <div class="crd-wrap">
+                                            <div class="crd-header" id="ticketOne">
+                                                <h4>Quiz</h4>
+                                                <i class="far fa-chevron-up" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
                                             </div>
-                                            <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#ticketaccordion">
-                                                <ul className="ticket-list">
-                                                    {this.state.workHistory.map((data, index) => (
-                                                        <li className="ticket-block li-position">
-                                                            <div className="ticket-img"></div>
-                                                            <div className="ticket-detail">
-                                                                <h4>{data.companyName}</h4>
-                                                                <h4>{data.roleName}</h4>
-                                                                <h4>{data.companyName}</h4>
-                                                                <span>{data.tradeName}</span>
-                                                            </div>
-                                                            <div className="ticket-date">{moment(data.startDate).format('ll')}</div>
-                                                            <div className="ticket-date">{moment(data.endDate).format('ll')}</div>
-                                                            <button onClick={() => this.editExperience(data.id)} className="edit-btn">Edit</button>
-                                                        </li>
-                                                    ))}
-                                                </ul>
+                                            <div id="collapseOne" class="collapse show" aria-labelledby="ticketOne" data-parent="#qaaccordion">
+                                                <div class="qa-sec"><h4>The question wll go here it should take up a maximum of two lines of copy?</h4>
+                                                    <form>
+                                                        <ul class="ans-sec">
+                                                            <li><input type="radio" name="ansradio" checked="" /><span>An answer will go here</span></li>
+                                                            <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
+                                                            <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
+                                                        </ul>
+                                                        <div class="crd-body">
+                                                            <button type="submit" class="add-btn btn-blue" href="javascript:;">Submit Answer</button>
+                                                            <a class="link-btn" href="javascript:;">Skip Questions</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

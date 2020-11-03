@@ -4,7 +4,6 @@ import { Form, Select, Spin, DatePicker, Button, notification } from 'antd';
 import { saveUserWorkHistory } from '../Services/Experience';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
-const { Option } = Select;
 export default class AddExperience extends Component {
 
     constructor(props) {
@@ -41,21 +40,17 @@ export default class AddExperience extends Component {
         this.lastFetchId2 += 1;
         const fetchId = this.lastFetchId2;
         this.setState({ data2: [], fetching2: true });
-        fetch(`https://bimiscwebapi-test.azurewebsites.net/api/misc/GetTradesV1/${value}`).then(response => response.json())
-            .then(body => {
-                console.log('body => ', body);
-                if (fetchId !== this.lastFetchId2) {
-                    // for fetch callback order
-                    return;
-                }
-                const data2 = body.data.map(user => ({
-                    text: `${user.name}`,
-                    value: user.id,
-                }));
-                this.setState({ data2, fetching: false });
-                console.log('this.state => ', this.state);
-
-            });
+        fetch(`https://bimiscwebapi-test.azurewebsites.net/api/misc/GetTradesV1/${value}`).then(response => response.json()).then(body => {
+            if (fetchId !== this.lastFetchId2) {
+                // for fetch callback order
+                return;
+            }
+            const data2 = body.data.map(user => ({
+                text: `${user.name}`,
+                value: user.id,
+            }));
+            this.setState({ data2, fetching: false });
+        });
     }
 
 
@@ -64,49 +59,41 @@ export default class AddExperience extends Component {
         this.lastFetchId1 += 1;
         const fetchId = this.lastFetchId1;
         this.setState({ data1: [], fetching1: true });
-        fetch(`https://bimiscwebapi-test.azurewebsites.net/api/misc/GetRolesV1/${value}`).then(response => response.json())
-            .then(body => {
-                console.log('body => ', body);
+        fetch(`https://bimiscwebapi-test.azurewebsites.net/api/misc/GetRolesV1/${value}`).then(response => response.json()).then(body => {
+            if (fetchId !== this.lastFetchId1) {
+                // for fetch callback order
+                return;
+            }
+            const data1 = body.data.map(user => ({
+                text: `${user.name}`,
+                value: user.id,
+            }));
+            this.setState({ data1, fetching: false });
+            console.log('this.state => ', this.state);
 
-                if (fetchId !== this.lastFetchId1) {
-                    // for fetch callback order
-                    return;
-                }
-                const data1 = body.data.map(user => ({
-                    text: `${user.name}`,
-                    value: user.id,
-                }));
-                this.setState({ data1, fetching: false });
-                console.log('this.state => ', this.state);
-
-            });
+        });
     }
+
     fetchCompany = value => {
         console.log('fetching user', value);
         this.lastFetchId += 1;
         const fetchId = this.lastFetchId;
         this.setState({ data: [], fetching: true });
-        fetch(`https://bimiscwebapi-test.azurewebsites.net/api/companies/GetCompanies/${value}`).then(response => response.json())
-            .then(body => {
-                console.log('body => ', body);
-
-                if (fetchId !== this.lastFetchId) {
-                    // for fetch callback order
-                    return;
-                }
-                const data = body.data.map(user => ({
-                    text: `${user.name}`,
-                    value: user.id,
-                }));
-                this.setState({ data, fetching: false });
-                console.log('this.state => ', this.state);
-
-            });
+        fetch(`https://bimiscwebapi-test.azurewebsites.net/api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
+            console.log('body => ', body);
+            if (fetchId !== this.lastFetchId) {
+                // for fetch callback order
+                return;
+            }
+            const data = body.data.map(user => ({
+                text: `${user.name}`,
+                value: user.id,
+            }));
+            this.setState({ data, fetching: false });
+        });
     };
 
     handleChange = value => {
-        console.log('value => ', value.value);
-
         this.setState({
             companyId: value.value,
             value,
@@ -114,9 +101,8 @@ export default class AddExperience extends Component {
             fetching: false,
         });
     };
-    handleChangeRole = value1 => {
-        console.log('value1 => ', value1);
 
+    handleChangeRole = value1 => {
         this.setState({
             roleId: value1.value,
             value1,
@@ -124,9 +110,8 @@ export default class AddExperience extends Component {
             fetching1: false,
         });
     };
-    handleChangeTrade = value2 => {
-        console.log('value2 => ', value2.value);
 
+    handleChangeTrade = value2 => {
         this.setState({
             tradeId: value2.value,
             value2,
@@ -137,24 +122,25 @@ export default class AddExperience extends Component {
 
     getCheckBoxValue = (key, e) => {
         if (key === 'CurrentCompany') {
-            this.setState({ CurrentCompany: e })
+            this.setState({ CurrentCompany: e });
         } else if (key === 'IncludeInResume') {
-            this.setState({ IncludeInResume: e })
+            this.setState({ IncludeInResume: e });
         }
     }
 
     datePickerStartDate = (date) => {
-        this.setState({ StartDate: date })
+        this.setState({ StartDate: date });
     }
 
     datePickerEndDate = (date) => {
-        this.setState({ EndDate: date })
+        this.setState({ EndDate: date });
     }
-
 
     render() {
 
         const { fetching, data, value, fetching1, data1, value1, fetching2, data2, value2 } = this.state;
+
+        const { Option } = Select;
 
         const addExperienceTicket = values => {
             const data = {
@@ -173,7 +159,6 @@ export default class AddExperience extends Component {
                 DateModified: moment(new Date()).format()
             }
             saveUserWorkHistory(data).then(res => {
-                console.log('res => ', res);
                 if (res.data.status === true) {
                     notification.open({
                         message: 'Success',
@@ -196,17 +181,17 @@ export default class AddExperience extends Component {
                         companyId: '',
                         roleId: '',
                         tradeId: ''
-                    })
+                    });
                 }
-
             }).catch(err => {
                 console.log('err => ', err);
                 notification.open({
                     message: 'Error',
                     description: 'There was an error while adding new experience!'
                 });
-            })
+            });
         }
+
         return (
             <div>
                 <SideNav />
@@ -235,16 +220,14 @@ export default class AddExperience extends Component {
                                 <div className="form-group">
                                     <label>Start Date</label>
                                     <DatePicker value={moment(this.state.StartDate)} className="w-100 inputstyle" onChange={this.datePickerStartDate} name="StartDate" />
-
                                 </div>
                                 <div className="form-group">
                                     <label>End Date</label>
                                     <DatePicker value={moment(this.state.EndDate)} className="w-100 inputstyle" onChange={this.datePickerEndDate} name="EndDate" />
-
                                 </div>
-                                <div className="form-group">
-                                    <label>Current Company</label>
+                                <div className="form-group check-wrap">
                                     <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany} onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
+                                    <label>Current Company</label>
                                 </div>
                                 <div className="form-group">
                                     <label>Trade</label>
@@ -280,9 +263,9 @@ export default class AddExperience extends Component {
                                         ))}
                                     </Select>
                                 </div>
-                                <div className="form-group">
-                                    <label>Include In Resume</label>
+                                <div className="form-group check-wrap">
                                     <input className="form-check-input" type="checkbox" name="IncludeInResume" checked={this.state.IncludeInResume} onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)} />
+                                    <label>Include In Resume</label>
                                 </div>
                                 <Form.Item>
                                     <Button type="primary" htmlType="submit">Add Experience </Button>
@@ -291,7 +274,7 @@ export default class AddExperience extends Component {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         )
     }
 }

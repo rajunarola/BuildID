@@ -23,7 +23,7 @@ export default function SideNav() {
                 </div>
                 <ul class="main-nav">
                     <li>
-                        <Link href="/dashboard" >
+                        <Link to="/dashboard">
                             <i><img src={require("../assets/images/icon_dashboard.png")} alt="Icon" /></i>
                             <span>Dashboard</span>
                         </Link>

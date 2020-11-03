@@ -17,3 +17,11 @@ export function saveUserWorkHistory(data) {
         return error
     });
 }
+
+export function deleteAnExperience(experienceId) {
+    return axios.post(`https://bimiscwebapi-test.azurewebsites.net/api/users/DeleteUserCompanyHistory`, experienceId).then(response => {
+        return response
+    }).catch(error => {
+        return error
+    });
+}
