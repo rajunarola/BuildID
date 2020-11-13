@@ -1287,6 +1287,17 @@ ul.ticket-list.overlay-scroll {
     color: #093cb9;
 }
 
+.btn {
+    padding: 8px 15px !important;
+    height: inherit !important;
+}
+
+.btn-danger {
+    color: #fff !important;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
 @media (max-width: 991px) {
     .com-padding .row .col-lg-4+.col-lg-4 {
         margin-bottom: 30px;
@@ -1298,4 +1309,12 @@ ul.ticket-list.overlay-scroll {
         height: 880px;
         min-height: 500px;
     }
+}
+
+.dimmer {
+    position: relative;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
 }

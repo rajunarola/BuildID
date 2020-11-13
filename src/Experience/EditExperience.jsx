@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SideNav from '../SideNav/SideNav';
 import { Form, Select, Spin, DatePicker, Button, notification } from 'antd';
-import { getUserWorkHistory, saveUserWorkHistory } from '../Services/Experience';
+import { getUserExperience, getUserWorkHistory, saveUserWorkHistory } from '../Services/Experience';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
 export default class EditExperience extends Component {
@@ -25,7 +25,7 @@ export default class EditExperience extends Component {
         fetching1: false,
         data2: [],
         value2: [],
-        fetching2: '',
+        fetching2: false,
         StartDate: moment(new Date()),
         EndDate: moment(new Date()),
         CurrentCompany: false,
@@ -40,21 +40,21 @@ export default class EditExperience extends Component {
     };
 
     componentDidMount() {
-        getUserWorkHistory().then(res => {
-            console.log('res => ', res, this.props.match.params.id);
-            res.data.data.map(id => {
-                console.log('id => ', id.id);
-                if (id.id === parseInt(this.props.match.params.id)) {
-                    // console.log('true => ',);
-                    this.setState({ value: id.companyName })
-                    this.setState({ companyName: id.companyName, companyId: id.companyId, tradeName: id.tradeName, roleName: id.roleName })
-                    console.log('this.state.editData => ', this.state.companyName);
-
-                }
-            })
-        })
+        console.log('this.props.match.params => ', this.props.match.params);
+        getUserExperience(localStorage.getItem('userID'), this.props.match.params.id).then(res => {
+            console.log('res getUserWorkHistory=> ', res);
+            this.setState({
+                companyName: res.data.data.companyName,
+                companyId: res.data.data.companyId,
+                tradeName: res.data.data.tradeName,
+                roleName: res.data.data.roleName,
+                roleId: res.data.data.roleId,
+                tradeId: res.data.data.tradeId
+            }, () => {
+                console.log('this.state.roleId => ', this.state.roleId);
+            });
+        });
     }
-
 
     fetchTrade = value => {
         console.log('fetching user', value);
@@ -118,7 +118,7 @@ export default class EditExperience extends Component {
             if (data.value === parseInt(value)) {
                 this.setState({
                     companyName: data.text,
-                    companyId: data.value,
+                    companyId: parseInt(data.value),
                     value,
                     data: [],
                     fetching: false,
@@ -135,13 +135,13 @@ export default class EditExperience extends Component {
             if (data.value === value1) {
                 this.setState({
                     roleName: data.text,
-                    roleId: data.value,
+                    roleId: parseInt(data.value),
                     value1,
                     data1: [],
                     fetching1: false,
                 });
                 setTimeout(() => {
-                    console.log('this.state.roleId => ', this.state.roleId);
+                    console.log('this.state.roleId => ', typeof this.state.roleId);
                 }, 1000);
             }
         });
@@ -152,7 +152,7 @@ export default class EditExperience extends Component {
             if (data.value === value2) {
                 this.setState({
                     tradeName: data.text,
-                    tradeId: data.value,
+                    tradeId: parseInt(data.value),
                     value2,
                     data2: [],
                     fetching2: false,
@@ -180,28 +180,47 @@ export default class EditExperience extends Component {
         this.setState({ EndDate: date });
     }
 
+    cancelChanges = () => {
+        getUserWorkHistory().then(res => {
+            res.data.data.map(id => {
+                if (id.id === parseInt(this.props.match.params.id)) {
+                    this.setState({ value: id.companyName })
+                    this.setState({
+                        companyName: id.companyName,
+                        companyId: id.companyId,
+                        tradeName: id.tradeName,
+                        roleName: id.roleName,
+                        roleId: id.roleId,
+                        tradeId: id.tradeId
+                    });
+                }
+            });
+        });
+    }
+
     render() {
 
-        const { fetching, data, value, fetching1, data1, value1, fetching2, data2, value2 } = this.state;
+        const { fetching, data, fetching1, data1, fetching2, data2 } = this.state;
 
         const { Option } = Select;
 
         const updateExperience = values => {
             const data = {
-                Id: this.props.match.params.id,
-                UserId: localStorage.getItem('userID'),
-                StartDate: moment(values.StartDate).format('YYYY-MM-DD'),
-                EndDate: moment(values.EndDate).format('YYYY-MM-DD'),
+                Id: parseInt(this.props.match.params.id),
+                UserId: parseInt(localStorage.getItem('userID')),
+                StartDate: moment(values.StartDate).format(),
+                EndDate: moment(values.EndDate).format(),
                 CompanyId: this.state.companyId,
                 TradeId: this.state.tradeId,
                 RoleId: this.state.roleId,
                 IncludeInResume: this.state.IncludeInResume,
                 CurrentCompany: this.state.CurrentCompany,
-                CreatedBy: localStorage.getItem('userID'),
-                ModifiedBy: localStorage.getItem('userID'),
+                CreatedBy: parseInt(localStorage.getItem('userID')),
+                ModifiedBy: parseInt(localStorage.getItem('userID')),
                 DateCreated: moment(new Date()).format(),
                 DateModified: moment(new Date()).format()
             }
+            console.log('date => ', data);
             saveUserWorkHistory(data).then(res => {
                 if (res.data.status === true) {
                     notification.open({
@@ -269,8 +288,10 @@ export default class EditExperience extends Component {
                                     <DatePicker value={moment(this.state.EndDate)} className="w-100 inputstyle" onChange={this.datePickerEndDate} name="EndDate" />
                                 </div>
                                 <div className="form-group">
-                                    <label>Current Company</label>
-                                    <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany} onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
+                                    <div className="ml-4">
+                                        <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany} onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
+                                        <label>I currently work here</label>
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label>Trade</label>
@@ -305,11 +326,14 @@ export default class EditExperience extends Component {
                                     </Select>
                                 </div>
                                 <div className="form-group">
-                                    <label>Include In Resume</label>
-                                    <input className="form-check-input" type="checkbox" name="IncludeInResume" checked={this.state.IncludeInResume} onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)} />
+                                    <div className="ml-4">
+                                        <input className="form-check-input" type="checkbox" name="IncludeInResume" checked={this.state.IncludeInResume} onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)} />
+                                        <label>Include In Resume</label>
+                                    </div>
                                 </div>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit">Update Experience </Button>
+                                    <Button type="primary" htmlType="submit" className="mr-2">Update Experience </Button>
+                                    <Button type="primary" htmlType="reset" onClick={() => this.cancelChanges()} danger>Cancel</Button>
                                 </Form.Item>
                             </Form>
                         </div>

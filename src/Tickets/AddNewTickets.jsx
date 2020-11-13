@@ -144,7 +144,7 @@ export default class AddNewTickets extends React.Component {
             formData.append('TicketId', this.state.TicketId)
             formData.append('IssuedById', this.state.IssuedById)
             formData.append('IssuedOn', moment(this.state.IssuedOn).format())
-            formData.append('UserId', 17)
+            formData.append('UserId', parseInt(localStorage.getItem('UserID')))
             formData.append('FrontPictureUrl', `https://biappstoragetest.blob.core.windows.net/tickets/48/${this.state.FrontPictureUrl}`)
             formData.append('BackPictureUrl', `https://biappstoragetest.blob.core.windows.net/tickets/48/${this.state.BackPictureUrl}`)
             formData.append('CreatedBy', 0)
