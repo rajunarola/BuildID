@@ -8,6 +8,7 @@ import { deleteAnExperience, getUserWorkHistory } from '../Services/Experience';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
+import { Carousel } from 'react-responsive-carousel';
 
 export default class EditProfile extends Component {
 
@@ -50,61 +51,62 @@ export default class EditProfile extends Component {
 
   componentDidMount() {
     getUserDetails().then(res => {
-      this.setState({
-        UserId: res.data.data.userId,
-        FirstName: res.data.data.firstName,
-        LastName: res.data.data.lastName,
-        Phones: res.data.data.phoneNo,
-        DateCreated: res.data.data.DateCreated,
-        RideShareInterested: res.data.data.rideShareInterested
-      });
+      if (res.status === 200) {
+        this.setState({
+          UserId: res.data.data.userId,
+          FirstName: res.data.data.firstName,
+          LastName: res.data.data.lastName,
+          Phones: res.data.data.phoneNo,
+          DateCreated: res.data.data.DateCreated,
+          RideShareInterested: res.data.data.rideShareInterested
+        });
+      }
     }).catch(err => {
-      console.log('err => ', err); notification.open({
+      notification.open({
         message: 'Error',
         description: 'There was an error while fetching user data!'
       });
     });
+
     getAddress().then(res => {
-      console.log('res => ', res);
-      this.setState({
-        Address1: res.data.data.address1,
-        Address2: res.data.data.address2,
-        City: res.data.data.city,
-        Province: res.data.data.province,
-        Country: res.data.data.country,
-        postalCode: res.data.data.postalCode,
-      })
-      console.log('this.state => ', this.state);
-
+      if (res.status === 200) {
+        this.setState({
+          Address1: res.data.data.address1,
+          Address2: res.data.data.address2,
+          City: res.data.data.city,
+          Province: res.data.data.province,
+          Country: res.data.data.country,
+          postalCode: res.data.data.postalCode,
+        });
+      }
     }).catch(err => {
-      console.log('err => ', err);
-
-    })
+      notification.open({
+        message: 'Error',
+        description: 'There was an error while fetching user data!'
+      });
+    });
 
     getUserWorkHistory().then(response => {
-      console.log('res getUserWorkHistory => ', response);
-      console.log('response => ', response);
-      const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
-      this.setState({ experienceArray: response.data.data });
-      const firstData = this.state.experienceArray[0].projectId;
-      const projectName = this.state.experienceArray[0].projectName;
-      const companyName = this.state.experienceArray[0].companyName;
-      this.setState({ projectName: projectName, projectID: firstData, companyName: companyName });
+      if (response.status === 200) {
+        const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
+        this.setState({ experienceArray: response.data.data });
+        const firstData = this.state.experienceArray[0].projectId;
+        const projectName = this.state.experienceArray[0].projectName;
+        const companyName = this.state.experienceArray[0].companyName;
+        this.setState({ projectName: projectName, projectID: firstData, companyName: companyName });
+      }
+    }).catch(Err => {
+      notification.open({
+        message: 'Error',
+        description: 'There was an error while fetching user work history!'
+      })
     });
   }
 
   handleChange = (event) => {
-    console.log('event => ', event);
-    console.log('event => ', event.target.value);
     this.setState({
       [event.target.name]: event.target.value
     });
-    setTimeout(() => {
-
-      console.log('this.state.phones => ', this.state.Phones);
-      // console.log('[event.target.name] => ', this.setState[event.target.name]);
-    }, 1000);
-
   }
 
   changeHandler = (event) => {
@@ -118,7 +120,7 @@ export default class EditProfile extends Component {
   }
 
   editExperience = (id) => {
-    this.props.history.push(`/edit-experience/${id}`)
+    this.props.history.push(`/edit-experience/${localStorage.getItem('userID')}/${id}`)
   }
 
 
@@ -133,6 +135,18 @@ export default class EditProfile extends Component {
       if (willDelete) {
         deleteAnExperience({ Id: id }).then(res => {
           if (res.data.status === true) {
+            getUserWorkHistory().then(response => {
+              if (response.status === 200) {
+                // console.log('response => ', response);
+                const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
+                this.setState({ experienceArray: response.data.data });
+                const firstData = this.state.experienceArray[0].projectId;
+                const projectName = this.state.experienceArray[0].projectName;
+                const companyName = this.state.experienceArray[0].companyName;
+                this.setState({ projectName: projectName, projectID: firstData, companyName: companyName });
+              }
+            }).catch(Err => {
+            });
             notification.open({
               message: 'Success',
               description: 'Experience data deleted successfully!'
@@ -156,14 +170,9 @@ export default class EditProfile extends Component {
   }
 
   onChange = value => {
-    console.log('this.state.Phones => ', this.state.Phones);
-    console.log('value => ', value);
     var phoneAry = [...this.state.finalPhone];
-    console.log('phoneAry => ', phoneAry);
     phoneAry.push({ "phoneType": value, "phoneNo": this.state.Phones });
-    this.setState({ finalPhone: phoneAry }, () => {
-      console.log('this.state.finalPhone => ', this.state.finalPhone);
-    });
+    this.setState({ finalPhone: phoneAry });
   }
 
   render() {
@@ -256,7 +265,7 @@ export default class EditProfile extends Component {
                                       <>
                                         <label>Phone Type</label>
                                         <Form.Item
-                                          rules={[{ required: true, message: 'Missing sight' }]}>
+                                          rules={[{ required: true, message: 'Missing phone type' }]}>
                                           <Select name="phoneType" placeholder="Select a Phone Type" onChange={(e) => this.onChange(e)}>
                                             <Select.Option value="Mobile">Mobile</Select.Option>
                                             <Select.Option value="Home">Home</Select.Option>
@@ -349,6 +358,21 @@ export default class EditProfile extends Component {
                   <Link to="/add-experience" className="add-btn btn-blue" ><i className="fas fa-plus-circle"></i> Add Experience</Link>
                   <div className="crd-wrap">
                     <div className="inner-wrap-card">
+                      {/* <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
+                        <Carousel autoPlay>
+                          {this.state.pictureList.map((data, index) => (
+                            <img src={data.imageUrl} alt="" />
+                          ))}
+                        </Carousel>
+                      </div>
+                      <div className="pro-details">
+                        <a className="close-proj"><i className="fas fa-times-circle"></i></a>
+                        <div className="wrap">
+                          <h4>{this.state.projectName}</h4>
+                          <span>{this.state.companyName}</span>
+                        </div>
+                        <a className="approve-proj"><i className="fas fa-check-circle"></i></a>
+                      </div> */}
                       <div className="proj-timeline">
                         <h4>My Projects</h4>
                         <ul className="timeline-sec">

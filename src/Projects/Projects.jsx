@@ -23,29 +23,36 @@ export default class Projects extends React.Component {
 
     componentDidMount() {
         userWorkHistory().then(response => {
-            console.log('response => ', response);
-            const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
-            this.setState({ projectArray: response.data.data });
-            const firstData = this.state.projectArray[0].projectId;
-            const projectName = this.state.projectArray[0].projectName;
-            const companyName = this.state.projectArray[0].companyName;
-            this.setState({ projectName: projectName, projectID: firstData, companyName: companyName })
-            userProjects(firstData).then(response => {
-                const pictureList = response.data.data.pictureList;
-                this.setState({ pictureList: pictureList });
-            });
+            console.log('response => ',response);
+            
+            if (response.status === 200) {
+                console.log('response => ', response);
+                const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
+                this.setState({ projectArray: response.data.data });
+                const firstData = this.state.projectArray[0].projectId;
+                const projectName = this.state.projectArray[0].projectName;
+                const companyName = this.state.projectArray[0].companyName;
+                this.setState({ projectName: projectName, projectID: firstData, companyName: companyName })
+                userProjects(firstData).then(response => {
+                    const pictureList = response.data.data.pictureList;
+                    this.setState({ pictureList: pictureList });
+                });
+            }
         });
 
         getTicketsByUserId().then(response => {
-            response.data.data.map((data, index) => {
-                if (moment(data.expiry).format('MM-DD-YYYY') < moment(new Date()).format('MM-DD-YYYY')) {
-                    this.setState({ changeBackground: true });
-                } else {
-                    this.setState({ changeBackground: false });
-                }
-            });
-            this.setState({ ticketArray: response.data.data });
+            if (response.status === 200) {
+                response.data.data.map((data, index) => {
+                    if (moment(data.expiry).format('MM-DD-YYYY') < moment(new Date()).format('MM-DD-YYYY')) {
+                        this.setState({ changeBackground: true });
+                    } else {
+                        this.setState({ changeBackground: false });
+                    }
+                });
+                this.setState({ ticketArray: response.data.data });
+            }
         });
+
     }
 
     onModalPopUp = (id) => {

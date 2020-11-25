@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SideNav from '../SideNav/SideNav';
 import { Form, Select, Spin, DatePicker, Button, notification } from 'antd';
-import { getUserWorkHistory, saveUserWorkHistory } from '../Services/Experience';
+import { saveUserWorkHistory, editAnExperience } from '../Services/Experience';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
 export default class EditExperience extends Component {
@@ -40,19 +40,24 @@ export default class EditExperience extends Component {
     };
 
     componentDidMount() {
-        getUserWorkHistory().then(res => {
-            console.log('res => ', res, this.props.match.params.id);
-            res.data.data.map(id => {
-                console.log('id => ', id.id);
-                if (id.id === parseInt(this.props.match.params.id)) {
-                    // console.log('true => ',);
-                    this.setState({ value: id.companyName })
-                    this.setState({ companyName: id.companyName, companyId: id.companyId, tradeName: id.tradeName, roleName: id.roleName })
-                    console.log('this.state.editData => ', this.state.companyName);
-
-                }
-            })
-        })
+        editAnExperience(parseInt(this.props.match.params.experienceId)).then(res => {
+            if (res.status === 200) {
+                this.setState({
+                    value: res.data.data.companyName,
+                    companyName: res.data.data.companyName,
+                    companyId: res.data.data.companyId,
+                    tradeName: res.data.data.tradeName,
+                    roleName: res.data.data.roleName,
+                    roleId: res.data.data.roleId,
+                    tradeId: res.data.data.tradeId
+                });
+            }
+        }).catch(err => {
+            notification.open({
+                message: 'Error',
+                description: 'There was an error while fetching Experience Details!'
+            });
+        });
     }
 
 
@@ -76,7 +81,6 @@ export default class EditExperience extends Component {
 
 
     fetchRole = value => {
-        console.log('fetching user', value);
         this.lastFetchId1 += 1;
         const fetchId = this.lastFetchId1;
         this.setState({ data1: [], fetching1: true });
@@ -90,17 +94,15 @@ export default class EditExperience extends Component {
                 value: user.id,
             }));
             this.setState({ data1: data1, fetching: false });
-            console.log('this.state => ', this.state);
+            // console.log('this.state => ', this.state);
         });
     }
 
     fetchCompany = value => {
-        console.log('fetching user', value);
         this.lastFetchId += 1;
         const fetchId = this.lastFetchId;
         this.setState({ data: [], fetching: true });
         fetch(`https://bimiscwebapi-test.azurewebsites.net/api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
-            console.log('body => ', body);
             if (fetchId !== this.lastFetchId) {
                 // for fetch callback order
                 return;
@@ -124,7 +126,7 @@ export default class EditExperience extends Component {
                     fetching: false,
                 });
                 setTimeout(() => {
-                    console.log('this.state.companyId => ', this.state.companyId);
+                    // console.log('this.state.companyId => ', this.state.companyId);
                 }, 1000);
             }
         });
@@ -141,7 +143,7 @@ export default class EditExperience extends Component {
                     fetching1: false,
                 });
                 setTimeout(() => {
-                    console.log('this.state.roleId => ', this.state.roleId);
+                    // console.log('this.state.roleId => ', this.state.roleId);
                 }, 1000);
             }
         });
@@ -158,7 +160,7 @@ export default class EditExperience extends Component {
                     fetching2: false,
                 });
                 setTimeout(() => {
-                    console.log('this.state.tradeId => ', this.state.tradeId);
+                    // console.log('this.state.tradeId => ', this.state.tradeId);
                 }, 1000);
             }
         });
@@ -189,7 +191,7 @@ export default class EditExperience extends Component {
         const updateExperience = values => {
             const data = {
                 Id: this.props.match.params.id,
-                UserId: localStorage.getItem('userID'),
+                UserId: parseInt(localStorage.getItem('userID')),
                 StartDate: moment(values.StartDate).format('YYYY-MM-DD'),
                 EndDate: moment(values.EndDate).format('YYYY-MM-DD'),
                 CompanyId: this.state.companyId,
@@ -197,8 +199,8 @@ export default class EditExperience extends Component {
                 RoleId: this.state.roleId,
                 IncludeInResume: this.state.IncludeInResume,
                 CurrentCompany: this.state.CurrentCompany,
-                CreatedBy: localStorage.getItem('userID'),
-                ModifiedBy: localStorage.getItem('userID'),
+                CreatedBy: parseInt(localStorage.getItem('userID')),
+                ModifiedBy: parseInt(localStorage.getItem('userID')),
                 DateCreated: moment(new Date()).format(),
                 DateModified: moment(new Date()).format()
             }
@@ -206,7 +208,7 @@ export default class EditExperience extends Component {
                 if (res.data.status === true) {
                     notification.open({
                         message: 'Success',
-                        description: 'Experience updated added!'
+                        description: 'Experience updated successfully!'
                     });
                     this.setState({
                         data: [],
@@ -228,10 +230,9 @@ export default class EditExperience extends Component {
                     });
                 }
             }).catch(err => {
-                console.log('err => ', err);
                 notification.open({
                     message: 'Error',
-                    description: 'There was an error while updating new experience!'
+                    description: 'There was an error while updating the experience!'
                 });
             });
         }
@@ -269,8 +270,10 @@ export default class EditExperience extends Component {
                                     <DatePicker value={moment(this.state.EndDate)} className="w-100 inputstyle" onChange={this.datePickerEndDate} name="EndDate" />
                                 </div>
                                 <div className="form-group">
-                                    <label>Current Company</label>
-                                    <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany} onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
+                                    <label className="ml-4 mt-1">
+                                        <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany} onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
+                                    Current Company
+                                    </label>
                                 </div>
                                 <div className="form-group">
                                     <label>Trade</label>
@@ -305,8 +308,10 @@ export default class EditExperience extends Component {
                                     </Select>
                                 </div>
                                 <div className="form-group">
-                                    <label>Include In Resume</label>
-                                    <input className="form-check-input" type="checkbox" name="IncludeInResume" checked={this.state.IncludeInResume} onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)} />
+                                    <label className="ml-4 mt-1">
+                                        <input className="form-check-input" type="checkbox" name="IncludeInResume" checked={this.state.IncludeInResume} onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)} />
+                                    Include In Resume
+                                    </label>
                                 </div>
                                 <Form.Item>
                                     <Button type="primary" htmlType="submit">Update Experience </Button>

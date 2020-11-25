@@ -34,7 +34,7 @@ export default class App extends React.Component {
                         <Route path="/address" exact component={ShowAddress} />
                         <Route path="/edit-address" exact component={EditAddress} />
                         <Route path="/add-experience" exact component={AddExperience} />
-                        <Route path="/edit-experience/:id" exact component={EditExperience} />
+                        <Route path="/edit-experience/:userId/:experienceId" exact component={EditExperience} />
                         <Route path="/edit-ticket/:id" exact component={EditTicketFinal} />
                     </Switch>
                 </div>
