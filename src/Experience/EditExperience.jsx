@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SideNav from '../SideNav/SideNav';
 import { Form, Select, Spin, DatePicker, Button, notification } from 'antd';
-import { saveUserWorkHistory, editAnExperience } from '../Services/Experience';
+import { saveUserWorkHistory, editAnExperience, getUserWorkHistory } from '../Services/Experience';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
 export default class EditExperience extends Component {
@@ -40,7 +40,13 @@ export default class EditExperience extends Component {
     };
 
     componentDidMount() {
-        editAnExperience(parseInt(this.props.match.params.experienceId)).then(res => {
+        editAnExperience(localStorage.getItem('userID'), this.props.match.params.experienceId).then(res => {
+            if (res.data.data === null) {
+                notification.open({
+                    message: 'Error',
+                    description: 'No Data for this experience'
+                });
+            }
             if (res.status === 200) {
                 this.setState({
                     value: res.data.data.companyName,
@@ -52,7 +58,7 @@ export default class EditExperience extends Component {
                     tradeId: res.data.data.tradeId
                 });
             }
-        }).catch(err => {
+        }).catch(err => {   
             notification.open({
                 message: 'Error',
                 description: 'There was an error while fetching Experience Details!'
@@ -61,7 +67,6 @@ export default class EditExperience extends Component {
     }
 
     fetchTrade = value => {
-        console.log('fetching user', value);
         this.lastFetchId2 += 1;
         const fetchId = this.lastFetchId2;
         this.setState({ data2: [], fetching2: true });
@@ -93,7 +98,6 @@ export default class EditExperience extends Component {
                 value: user.id,
             }));
             this.setState({ data1: data1, fetching: false });
-            // console.log('this.state => ', this.state);
         });
     }
 
@@ -221,7 +225,6 @@ export default class EditExperience extends Component {
                 DateCreated: moment(new Date()).format(),
                 DateModified: moment(new Date()).format()
             }
-            console.log('date => ', data);
             saveUserWorkHistory(data).then(res => {
                 if (res.data.status === true) {
                     notification.open({

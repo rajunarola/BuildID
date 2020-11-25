@@ -8,8 +8,6 @@ import { deleteAnExperience, getUserWorkHistory } from '../Services/Experience';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
-import { Carousel } from 'react-responsive-carousel';
-
 export default class EditProfile extends Component {
 
   state = {
@@ -119,10 +117,9 @@ export default class EditProfile extends Component {
     this.setState({ RideShareInterested: e })
   }
 
-  editExperience = (id) => {
-    this.props.history.push(`/edit-experience/${localStorage.getItem('userID')}/${id}`)
+  editExperience = (userid, id) => {
+    this.props.history.push(`/edit-experience/${userid}/${id}`)
   }
-
 
   deleteExperience = (id) => {
     swal({
@@ -137,7 +134,6 @@ export default class EditProfile extends Component {
           if (res.data.status === true) {
             getUserWorkHistory().then(response => {
               if (response.status === 200) {
-                // console.log('response => ', response);
                 const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
                 this.setState({ experienceArray: response.data.data });
                 const firstData = this.state.experienceArray[0].projectId;
@@ -186,7 +182,6 @@ export default class EditProfile extends Component {
         Country: res.data.data.country,
         postalCode: res.data.data.postalCode,
       });
-      console.log('this.state => ', this.state);
     }).catch(err => {
       console.log('err => ', err);
     });
@@ -390,21 +385,6 @@ export default class EditProfile extends Component {
                   <Link to="/add-experience" className="add-btn btn-blue" ><i className="fas fa-plus-circle"></i> Add Experience</Link>
                   <div className="crd-wrap">
                     <div className="inner-wrap-card">
-                      {/* <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
-                        <Carousel autoPlay>
-                          {this.state.pictureList.map((data, index) => (
-                            <img src={data.imageUrl} alt="" />
-                          ))}
-                        </Carousel>
-                      </div>
-                      <div className="pro-details">
-                        <a className="close-proj"><i className="fas fa-times-circle"></i></a>
-                        <div className="wrap">
-                          <h4>{this.state.projectName}</h4>
-                          <span>{this.state.companyName}</span>
-                        </div>
-                        <a className="approve-proj"><i className="fas fa-check-circle"></i></a>
-                      </div> */}
                       <div className="proj-timeline">
                         <h4>My Experiences</h4>
                         <ul className="timeline-sec">
