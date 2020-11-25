@@ -33,3 +33,10 @@ export function editAnExperience(experienceId) {
         return error
     });
 }
+export function getUserExperience1(userId) {
+    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/users/GetUserCompanyHistory/${userId}`).then(response => {
+        return response
+    }).catch(error => {
+        return error
+    });
+}

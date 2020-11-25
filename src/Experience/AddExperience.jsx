@@ -95,7 +95,7 @@ export default class AddExperience extends Component {
 
     handleChange = value => {
         this.setState({
-            companyId: value.value,
+            companyId: parseInt(value.value),
             value,
             data: [],
             fetching: false,
@@ -104,7 +104,7 @@ export default class AddExperience extends Component {
 
     handleChangeRole = value1 => {
         this.setState({
-            roleId: value1.value,
+            roleId: parseInt(value1.value),
             value1,
             data1: [],
             fetching1: false,
@@ -113,7 +113,7 @@ export default class AddExperience extends Component {
 
     handleChangeTrade = value2 => {
         this.setState({
-            tradeId: value2.value,
+            tradeId: parseInt(value2.value),
             value2,
             data2: [],
             fetching2: false,
@@ -145,7 +145,7 @@ export default class AddExperience extends Component {
         const addExperienceTicket = values => {
             const data = {
                 Id: 0,
-                UserId: localStorage.getItem('userID'),
+                UserId: parseInt(localStorage.getItem('userID')),
                 StartDate: moment(values.StartDate).format('YYYY-MM-DD'),
                 EndDate: moment(values.EndDate).format('YYYY-MM-DD'),
                 CompanyId: this.state.companyId,
@@ -153,8 +153,8 @@ export default class AddExperience extends Component {
                 RoleId: this.state.roleId,
                 IncludeInResume: this.state.IncludeInResume,
                 CurrentCompany: this.state.CurrentCompany,
-                CreatedBy: localStorage.getItem('userID'),
-                ModifiedBy: localStorage.getItem('userID'),
+                CreatedBy: parseInt(localStorage.getItem('userID')),
+                ModifiedBy: parseInt(localStorage.getItem('userID')),
                 DateCreated: moment(new Date()).format(),
                 DateModified: moment(new Date()).format()
             }
@@ -227,7 +227,7 @@ export default class AddExperience extends Component {
                                 </div>
                                 <div className="form-group check-wrap">
                                     <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany} onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
-                                    <label>Current Company</label>
+                                    <label>I currently work here</label>
                                 </div>
                                 <div className="form-group">
                                     <label>Trade</label>

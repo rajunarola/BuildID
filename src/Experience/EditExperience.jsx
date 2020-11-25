@@ -25,7 +25,7 @@ export default class EditExperience extends Component {
         fetching1: false,
         data2: [],
         value2: [],
-        fetching2: '',
+        fetching2: false,
         StartDate: moment(new Date()),
         EndDate: moment(new Date()),
         CurrentCompany: false,
@@ -59,7 +59,6 @@ export default class EditExperience extends Component {
             });
         });
     }
-
 
     fetchTrade = value => {
         console.log('fetching user', value);
@@ -120,7 +119,7 @@ export default class EditExperience extends Component {
             if (data.value === parseInt(value)) {
                 this.setState({
                     companyName: data.text,
-                    companyId: data.value,
+                    companyId: parseInt(data.value),
                     value,
                     data: [],
                     fetching: false,
@@ -137,7 +136,7 @@ export default class EditExperience extends Component {
             if (data.value === value1) {
                 this.setState({
                     roleName: data.text,
-                    roleId: data.value,
+                    roleId: parseInt(data.value),
                     value1,
                     data1: [],
                     fetching1: false,
@@ -154,7 +153,7 @@ export default class EditExperience extends Component {
             if (data.value === value2) {
                 this.setState({
                     tradeName: data.text,
-                    tradeId: data.value,
+                    tradeId: parseInt(data.value),
                     value2,
                     data2: [],
                     fetching2: false,
@@ -182,9 +181,27 @@ export default class EditExperience extends Component {
         this.setState({ EndDate: date });
     }
 
+    cancelChanges = () => {
+        getUserWorkHistory().then(res => {
+            res.data.data.map(id => {
+                if (id.id === parseInt(this.props.match.params.id)) {
+                    this.setState({ value: id.companyName })
+                    this.setState({
+                        companyName: id.companyName,
+                        companyId: id.companyId,
+                        tradeName: id.tradeName,
+                        roleName: id.roleName,
+                        roleId: id.roleId,
+                        tradeId: id.tradeId
+                    });
+                }
+            });
+        });
+    }
+
     render() {
 
-        const { fetching, data, value, fetching1, data1, value1, fetching2, data2, value2 } = this.state;
+        const { fetching, data, fetching1, data1, fetching2, data2 } = this.state;
 
         const { Option } = Select;
 
@@ -204,6 +221,7 @@ export default class EditExperience extends Component {
                 DateCreated: moment(new Date()).format(),
                 DateModified: moment(new Date()).format()
             }
+            console.log('date => ', data);
             saveUserWorkHistory(data).then(res => {
                 if (res.data.status === true) {
                     notification.open({
@@ -314,7 +332,8 @@ export default class EditExperience extends Component {
                                     </label>
                                 </div>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit">Update Experience </Button>
+                                    <Button type="primary" htmlType="submit" className="mr-2">Update Experience </Button>
+                                    <Button type="primary" htmlType="reset" onClick={() => this.cancelChanges()} danger>Cancel</Button>
                                 </Form.Item>
                             </Form>
                         </div>

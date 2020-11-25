@@ -175,6 +175,38 @@ export default class EditProfile extends Component {
     this.setState({ finalPhone: phoneAry });
   }
 
+  cancelAddress = () => {
+    getAddress().then(res => {
+      console.log('res => ', res);
+      this.setState({
+        Address1: res.data.data.address1,
+        Address2: res.data.data.address2,
+        City: res.data.data.city,
+        Province: res.data.data.province,
+        Country: res.data.data.country,
+        postalCode: res.data.data.postalCode,
+      });
+      console.log('this.state => ', this.state);
+    }).catch(err => {
+      console.log('err => ', err);
+    });
+  }
+
+  cancelUserDetails = () => {
+    getUserDetails().then(res => {
+      this.setState({
+        UserId: res.data.data.userId,
+        FirstName: res.data.data.firstName,
+        LastName: res.data.data.lastName,
+        Phones: res.data.data.phoneNo,
+        DateCreated: res.data.data.DateCreated,
+        RideShareInterested: res.data.data.rideShareInterested
+      });
+    }).catch(err => {
+      console.log('err => ', err);
+    });
+  }
+
   render() {
 
     const updateUserProfile = () => {
@@ -285,9 +317,7 @@ export default class EditProfile extends Component {
                                 </Space>
                               ))}
                               <Form.Item>
-                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                  Add Phone Number
-                                  </Button>
+                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>Add Phone Number</Button>
                               </Form.Item>
                             </>
                           )}
@@ -297,7 +327,8 @@ export default class EditProfile extends Component {
                           <label className="form-check-label">Interested in ride share to site</label>
                         </div>
                         <Form.Item>
-                          <Button type="primary" htmlType="submit" className="btn btn-blue">Update User Data</Button>
+                          <Button type="primary" htmlType="submit" className="btn btn-blue mt-2 mr-2">Update User Data</Button>
+                          <Button className="btn btn-danger mt-2" onClick={() => this.cancelUserDetails()}>Cancel Changes</Button>
                         </Form.Item>
                       </Form>
                       <div>
@@ -347,7 +378,8 @@ export default class EditProfile extends Component {
                           </Form.Item>
                         </div>
                         <Form.Item>
-                          <Button type="submit" className="btn btn-blue login-submit mt-5" onClick={updateAddress}>Update Address</Button>
+                          <Button type="submit" className="btn btn-blue login-submit mt-2 mr-2" onClick={updateAddress}>Update Address</Button>
+                          <Button type="reset" className="btn btn-danger mt-2" onClick={() => this.cancelAddress()}>Cancel Changes</Button>
                         </Form.Item>
                       </Form>
                     </div>
@@ -374,7 +406,7 @@ export default class EditProfile extends Component {
                         <a className="approve-proj"><i className="fas fa-check-circle"></i></a>
                       </div> */}
                       <div className="proj-timeline">
-                        <h4>My Projects</h4>
+                        <h4>My Experiences</h4>
                         <ul className="timeline-sec">
                           {this.state.experienceArray.map((data, index) => (
                             <li>
@@ -385,7 +417,7 @@ export default class EditProfile extends Component {
                                 <span>{data.tradeName}</span>
                                 <span>{data.roleName}</span>
                                 <h5>{data.companyName}</h5>
-                                <button onClick={() => this.editExperience(data.id)} className="btn btn-blue">Edit</button>
+                                <button onClick={() => this.editExperience(localStorage.getItem('userID'), data.id)} className="btn btn-blue">Edit</button>
                                 <button onClick={() => this.deleteExperience(data.id)} className="btn btn-danger">Delete</button>
                               </div>
                             </li>
