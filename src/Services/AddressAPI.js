@@ -11,7 +11,12 @@ export function getAddress() {
 }
 
 export function saveUserAddress(data) {
-    return axios.post(`https://bimiscwebapi-test.azurewebsites.net/api/users/SaveUserAddress`, data).then(response => {
+    return axios.post(`https://bimiscwebapi-test.azurewebsites.net/api/users/SaveUserAddress`, data, {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    }).then(response => {
         return response
     }).catch(error => {
         return error

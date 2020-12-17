@@ -18,6 +18,7 @@ import ShowAddress from './Address/ShowAddress';
 import EditAddress from './Address/EditAddress';
 import AddExperience from './Experience/AddExperience';
 import EditExperience from './Experience/EditExperience';
+import AddAddress from './Address/AddAddress';
 
 export default class App extends React.Component {
 
@@ -36,6 +37,7 @@ export default class App extends React.Component {
                         <Route path="/add-experience" exact component={AddExperience} />
                         <Route path="/edit-experience/:userId/:experienceId" exact component={EditExperience} />
                         <Route path="/edit-ticket/:id" exact component={EditTicketFinal} />
+                        <Route path="/add-address" exact component={AddAddress} />
                     </Switch>
                 </div>
             </BrowserRouter>

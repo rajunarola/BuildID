@@ -105,9 +105,9 @@ export default class AddNewTickets extends React.Component {
 
     fileChangedHandler = (event, value) => {
         if (value === 'front_picture') {
-            this.setState({ FrontPictureUrl: event.target.files[0].name })
+            this.setState({ FrontPictureUrl: event.target.files })
         } else if (value === 'back_picture') {
-            this.setState({ BackPictureUrl: event.target.files[0].name })
+            this.setState({ BackPictureUrl: event.target.files })
         }
     }
 
@@ -137,21 +137,21 @@ export default class AddNewTickets extends React.Component {
         };
 
         const sendNewTicket = () => {
-            const formData = new FormData()
+            const formData = new FormData();
             formData.append('Id', this.state.Id)
             formData.append('TicketTypeId', this.state.TicketTypeId)
             formData.append('Expiry', moment(this.state.Expiry).format())
             formData.append('TicketId', this.state.TicketId)
             formData.append('IssuedById', this.state.IssuedById)
             formData.append('IssuedOn', moment(this.state.IssuedOn).format())
-            formData.append('UserId', parseInt(localStorage.getItem('UserID')))
-            formData.append('FrontPictureUrl', `https://biappstoragetest.blob.core.windows.net/tickets/48/${this.state.FrontPictureUrl}`)
-            formData.append('BackPictureUrl', `https://biappstoragetest.blob.core.windows.net/tickets/48/${this.state.BackPictureUrl}`)
+            formData.append('UserId', parseInt(localStorage.getItem('userID')))
+            formData.append('FrontPictureUrl', this.state.FrontPictureUrl ? this.state.FrontPictureUrl[0] : "")
+            formData.append('BackPictureUrl', this.state.BackPictureUrl ? this.state.BackPictureUrl[0] : "")
             formData.append('CreatedBy', 0)
             formData.append('DateCreated', moment(new Date()).format())
             formData.append('ModifiedBy', 0)
             formData.append('DateModified', moment(new Date()).format())
-            formData.append('PublicTicket', this.state.PublicTicket)
+            formData.append('PublicTicket', this.state.PublicTicket ? this.state.PublicTicket : false)
             addNewTicket(formData).then(res => {
                 if (res.data.status === true) {
                     this.setState({
@@ -201,11 +201,9 @@ export default class AddNewTickets extends React.Component {
                                     <div className="dropdown dd-type">
                                         <label className="form-label formlabel">Type</label>
                                         <Select value={this.state.TicketTypeId} className="form-ant-control w-100 inputstyle" onChange={(e) => this.handleChange(e)} placeholder="Please select a ticket type">
-                                            {
-                                                this.state.ticketType.map(ticketDetails => (
-                                                    <Select.Option value={ticketDetails.id}>{ticketDetails.name}</Select.Option>
-                                                ))
-                                            }
+                                            {this.state.ticketType.map(ticketDetails => (
+                                                <Select.Option value={ticketDetails.id}>{ticketDetails.name}</Select.Option>
+                                            ))}
                                         </Select>
                                     </div>
                                 </div>
@@ -219,13 +217,7 @@ export default class AddNewTickets extends React.Component {
                                 </div>
                                 <div className="form-group">
                                     <label className="formlabel">Ticket Id</label>
-                                    <Form.Item
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please enter ticket Id!"
-                                            }]}>
+                                    <Form.Item rules={[{ required: true, message: "Please enter ticket Id!" }]}>
                                         <Input value={this.state.TicketId} className="w-100 inputstyle" name="TicketId" onChange={(e) => this.changeHandler(e)} />
                                     </Form.Item>
                                 </div>

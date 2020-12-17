@@ -4,7 +4,7 @@ import SideNav from '../SideNav/SideNav'
 import { Form, Select, Button, notification, Input, Space } from 'antd';
 import moment from 'moment';
 import { getAddress, saveUserAddress } from '../Services/AddressAPI';
-import { deleteAnExperience, getUserWorkHistory } from '../Services/Experience';
+import { deleteAnExperience, getUserExperienceHistory } from '../Services/Experience';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
@@ -49,12 +49,13 @@ export default class EditProfile extends Component {
 
   componentDidMount() {
     getUserDetails().then(res => {
+      console.log('res getUserDetails=> ', res.data.data.phones);
       if (res.status === 200) {
         this.setState({
           UserId: res.data.data.userId,
           FirstName: res.data.data.firstName,
           LastName: res.data.data.lastName,
-          Phones: res.data.data.phoneNo,
+          Phones: res.data.data.phones,
           DateCreated: res.data.data.DateCreated,
           RideShareInterested: res.data.data.rideShareInterested
         });
@@ -84,7 +85,7 @@ export default class EditProfile extends Component {
       });
     });
 
-    getUserWorkHistory().then(response => {
+    getUserExperienceHistory().then(response => {
       if (response.status === 200) {
         const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
         this.setState({ experienceArray: response.data.data });
@@ -132,7 +133,7 @@ export default class EditProfile extends Component {
       if (willDelete) {
         deleteAnExperience({ Id: id }).then(res => {
           if (res.data.status === true) {
-            getUserWorkHistory().then(response => {
+            getUserExperienceHistory().then(response => {
               if (response.status === 200) {
                 const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
                 this.setState({ experienceArray: response.data.data });
@@ -166,14 +167,21 @@ export default class EditProfile extends Component {
   }
 
   onChange = value => {
+    console.log('value => ', value);
+
     var phoneAry = [...this.state.finalPhone];
-    phoneAry.push({ "phoneType": value, "phoneNo": this.state.Phones });
-    this.setState({ finalPhone: phoneAry });
+    console.log('phoneArt => ', phoneAry);
+
+    phoneAry.push({ "phoneType": value, "phoneNo": this.state.phoneNo });
+    this.setState({ finalPhone: phoneAry }, () => {
+      console.log('this.state.finalPhone => ', this.state.finalPhone);
+
+    });
   }
 
   cancelAddress = () => {
     getAddress().then(res => {
-      console.log('res => ', res);
+      console.log('res getAddress=> ', res);
       this.setState({
         Address1: res.data.data.address1,
         Address2: res.data.data.address2,
@@ -204,14 +212,18 @@ export default class EditProfile extends Component {
 
   render() {
 
-    const updateUserProfile = () => {
+    const updateUserProfile = (values) => {
+      console.log('values => ', values);
       const formData = new FormData()
       formData.append('UserId', this.state.UserId);
       formData.append('FirstName', this.state.FirstName);
       formData.append('LastName', this.state.LastName);
-      formData.append('Phones', JSON.stringify({ Phones: this.state.finalPhone }));
+      formData.append('Phones', JSON.stringify({ Phones: values.sights }));
+      formData.append('DateCreated', moment(new Date()).format());
       formData.append('DateModified', moment(new Date()).format());
-      formData.append('RideShareInterested', this.state.RideShareInterested);
+      formData.append('CreatedBy', this.state.UserId);
+      formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
+      formData.append('RideShareInterested', this.state.RideShareInterested ? this.state.RideShareInterested : false);
       editUserProfile(formData).then(res => {
         if (res.data.status === true) {
           notification.open({
@@ -248,7 +260,6 @@ export default class EditProfile extends Component {
             description: 'Ticket successfully updated!'
           });
         }
-
       }).catch(err => {
         notification.open({
           message: 'Error',
@@ -270,21 +281,29 @@ export default class EditProfile extends Component {
                 <div className="col-lg-4">
                   <div className="crd-wrap">
                     <div className="inner-wrap-card">
-                      <Form onFinish={updateUserProfile}>
+                      <Form onFinish={updateUserProfile} name="forPhone">
                         <Form.Item label="First Name">
                           <Input name="FirstName" value={this.state.FirstName} onChange={(e) => this.handleChange(e)} />
                         </Form.Item>
-
                         <Form.Item label="Last Name">
                           <Input name="LastName" value={this.state.LastName} onChange={(e) => this.handleChange(e)} />
                         </Form.Item>
+                        {this.state.Phones && this.state.Phones.map(phoneNumber => (
+                          <>
+                            <Select defaultValue={phoneNumber.phoneType}>
+                              <Select.Option value="Mobile">Mobile</Select.Option>
+                              <Select.Option value="Home">Home</Select.Option>
+                              <Select.Option value="Work">Work</Select.Option>
+                            </Select>
+                            <Input name="phoneNo" value={phoneNumber.phoneNo} onChange={(e) => this.handleChange(e)} />
+                          </>
+                        ))}
                         <Form.List name="sights">
                           {(fields, { add, remove }) => (
                             <>
                               {fields.map((field, i) => (
                                 <Space key={field.key} align="baseline">
-                                  <Form.Item
-                                    noStyle
+                                  <Form.Item noStyle
                                     shouldUpdate={(prevValues, curValues) =>
                                       prevValues.area !== curValues.area || prevValues.sights !== curValues.sights
                                     }>
@@ -292,8 +311,10 @@ export default class EditProfile extends Component {
                                       <>
                                         <label>Phone Type</label>
                                         <Form.Item
+                                          name={[field.name, 'phoneType']}
+                                          fieldKey={[field.fieldKey, 'phoneType']}
                                           rules={[{ required: true, message: 'Missing phone type' }]}>
-                                          <Select name="phoneType" placeholder="Select a Phone Type" onChange={(e) => this.onChange(e)}>
+                                          <Select placeholder="Select a Phone Type" >
                                             <Select.Option value="Mobile">Mobile</Select.Option>
                                             <Select.Option value="Home">Home</Select.Option>
                                             <Select.Option value="Work">Work</Select.Option>
@@ -302,9 +323,10 @@ export default class EditProfile extends Component {
                                       </>
                                     )}
                                   </Form.Item>
-                                  <Form.Item>
-                                    <label>Phone Number</label>
-                                    <Input name='Phones' onChange={(e) => this.onChange(e)} />
+                                  <Form.Item label="Phone Number" name={[field.name, 'phoneNo']}
+                                    fieldKey={[field.fieldKey, 'phoneNo']}>
+                                    {/* <label>Phone Number</label> */}
+                                    <Input placeholder="Enter your Phone Number" />
                                   </Form.Item>
                                   <div className="formfieldremove">
                                     <MinusCircleOutlined onClick={() => remove(field.name)} />
@@ -318,7 +340,7 @@ export default class EditProfile extends Component {
                           )}
                         </Form.List>
                         <div className="form-check">
-                          <input className="form-check-input" type="checkbox" name="RideShareInterested" onChange={(e) => this.getCheckBoxValue(e.target.checked)} />
+                          <input className="form-check-input" type="checkbox" checked={this.state.RideShareInterested === true ? true : false} name="RideShareInterested" onChange={(e) => this.getCheckBoxValue(e.target.checked)} />
                           <label className="form-check-label">Interested in ride share to site</label>
                         </div>
                         <Form.Item>
@@ -332,7 +354,7 @@ export default class EditProfile extends Component {
                   </div>
                 </div>
                 <div className="col-lg-4">
-                  <Link to="/add-experience" className="add-btn btn-blue" ><i className="fas fa-plus-circle"></i> Add Address</Link>
+                  <Link to="/add-address" className="add-btn btn-blue" ><i className="fas fa-plus-circle"></i> Add Address</Link>
                   <div className="crd-wrap">
                     <div className="inner-wrap-card">
                       <Form className="card-body">

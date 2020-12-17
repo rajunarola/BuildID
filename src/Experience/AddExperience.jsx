@@ -196,7 +196,7 @@ export default class AddExperience extends Component {
             <div>
                 <SideNav />
                 <div className="index-main">
-                    <div className="edit-sec mt-80"><h2>User Address</h2></div>
+                    <div className="edit-sec mt-80"><h2>Add Experience</h2></div>
                     <div className="addticketform ml-4">
                         <div className="form-border p-4 w-30 mt-5 crd-wrap">
                             <Form className="card-body" onFinish={addExperienceTicket} >

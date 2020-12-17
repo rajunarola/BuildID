@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const userID = localStorage.getItem('userID');
 
-export function getUserWorkHistory() {
+export function getUserExperienceHistory() {
     return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/users/GetUserCompanyHistory/${userID}`).then(response => {
         return response
     }).catch(error => {
@@ -28,14 +28,6 @@ export function deleteAnExperience(experienceId) {
 
 export function editAnExperience(userid, experienceId) {
     return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/users/GetUserCompanyHistoryItem/${userid}/${experienceId}`).then(response => {
-        return response
-    }).catch(error => {
-        return error
-    });
-}
-
-export function getUserExperience1(userId) {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/users/GetUserCompanyHistory/${userId}`).then(response => {
         return response
     }).catch(error => {
         return error

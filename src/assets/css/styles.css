@@ -1318,3 +1318,17 @@ ul.ticket-list.overlay-scroll {
     align-items: center;
     justify-content: center;
 }
+
+.hello .ant-space-align-baseline {
+    margin-right: 30px;
+}
+
+.ant-space-item {
+    position: relative;
+}
+.formfieldremove {
+    position: absolute;
+    top: -3px;
+    right: 0;
+    color: red;
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SideNav from '../SideNav/SideNav';
 import { Form, Select, Spin, DatePicker, Button, notification } from 'antd';
-import { saveUserWorkHistory, editAnExperience, getUserWorkHistory } from '../Services/Experience';
+import { saveUserWorkHistory, editAnExperience, getUserExperienceHistory } from '../Services/Experience';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
 export default class EditExperience extends Component {
@@ -186,7 +186,7 @@ export default class EditExperience extends Component {
     }
 
     cancelChanges = () => {
-        getUserWorkHistory().then(res => {
+        getUserExperienceHistory().then(res => {
             res.data.data.map(id => {
                 if (id.id === parseInt(this.props.match.params.id)) {
                     this.setState({ value: id.companyName })
