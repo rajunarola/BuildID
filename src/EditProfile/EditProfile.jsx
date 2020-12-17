@@ -10,6 +10,8 @@ import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
 export default class EditProfile extends Component {
 
+  formRef = React.createRef();
+
   state = {
     experienceArray: [],
     UserId: '',
@@ -32,24 +34,16 @@ export default class EditProfile extends Component {
     EndDate: moment(new Date()),
     CurrentCompany: false,
     IncludeInResume: false,
-    companyId: '',
-    roleId: '',
-    tradeId: '',
-    editData: [],
-    companyName: [],
-    companyId: '',
     Address1: '',
     Address2: '',
     City: '',
     Province: '',
     Country: '',
-    postalCode: '',
-    users: [{ phoneType: "", phoneNo: "" }]
+    postalCode: ''
   }
 
   componentDidMount() {
     getUserDetails().then(res => {
-      console.log('res getUserDetails=> ', res.data.data.phones);
       if (res.status === 200) {
         this.setState({
           UserId: res.data.data.userId,
@@ -58,6 +52,14 @@ export default class EditProfile extends Component {
           Phones: res.data.data.phones,
           DateCreated: res.data.data.DateCreated,
           RideShareInterested: res.data.data.rideShareInterested
+        }, () => {
+          console.log('this.state.FirstName => ', this.state.FirstName);
+          if (this.formRef) {
+            this.formRef.current.setFieldsValue({
+              FirstName: res.data.data.firstName,
+              LastName: res.data.data.lastName,
+            });
+          }
         });
       }
     }).catch(err => {
@@ -106,6 +108,22 @@ export default class EditProfile extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+  }
+
+  handleMobileNumbers = (e, i) => {
+    let numbers = [...this.state.Phones];
+    numbers[i].phoneNo = e
+    this.setState({
+      Phones: numbers
+    })
+  }
+
+  handleMobileType = (e, i) => {
+    let numbers = [...this.state.Phones];
+    numbers[i].phoneType = e
+    this.setState({
+      Phones: numbers
+    })
   }
 
   changeHandler = (event) => {
@@ -166,22 +184,8 @@ export default class EditProfile extends Component {
     })
   }
 
-  onChange = value => {
-    console.log('value => ', value);
-
-    var phoneAry = [...this.state.finalPhone];
-    console.log('phoneArt => ', phoneAry);
-
-    phoneAry.push({ "phoneType": value, "phoneNo": this.state.phoneNo });
-    this.setState({ finalPhone: phoneAry }, () => {
-      console.log('this.state.finalPhone => ', this.state.finalPhone);
-
-    });
-  }
-
   cancelAddress = () => {
     getAddress().then(res => {
-      console.log('res getAddress=> ', res);
       this.setState({
         Address1: res.data.data.address1,
         Address2: res.data.data.address2,
@@ -201,7 +205,7 @@ export default class EditProfile extends Component {
         UserId: res.data.data.userId,
         FirstName: res.data.data.firstName,
         LastName: res.data.data.lastName,
-        Phones: res.data.data.phoneNo,
+        Phones: res.data.data.phones,
         DateCreated: res.data.data.DateCreated,
         RideShareInterested: res.data.data.rideShareInterested
       });
@@ -214,17 +218,21 @@ export default class EditProfile extends Component {
 
     const updateUserProfile = (values) => {
       console.log('values => ', values);
+      if (values.sights) {
+        var numbers = [...this.state.Phones, ...values.sights];
+      }
       const formData = new FormData()
       formData.append('UserId', this.state.UserId);
-      formData.append('FirstName', this.state.FirstName);
-      formData.append('LastName', this.state.LastName);
-      formData.append('Phones', JSON.stringify({ Phones: values.sights }));
+      formData.append('FirstName', values.FirstName ? values.FirstName : this.state.FirstName);
+      formData.append('LastName', values.LastName ? values.LastName : this.state.LastName);
+      formData.append('Phones', JSON.stringify({ Phones: this.state.Phones ? this.state.Phones : numbers }));
       formData.append('DateCreated', moment(new Date()).format());
       formData.append('DateModified', moment(new Date()).format());
       formData.append('CreatedBy', this.state.UserId);
       formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
       formData.append('RideShareInterested', this.state.RideShareInterested ? this.state.RideShareInterested : false);
       editUserProfile(formData).then(res => {
+        console.log('calld');
         if (res.data.status === true) {
           notification.open({
             message: 'Success',
@@ -281,21 +289,24 @@ export default class EditProfile extends Component {
                 <div className="col-lg-4">
                   <div className="crd-wrap">
                     <div className="inner-wrap-card">
-                      <Form onFinish={updateUserProfile} name="forPhone">
-                        <Form.Item label="First Name">
-                          <Input name="FirstName" value={this.state.FirstName} onChange={(e) => this.handleChange(e)} />
+                      <Form onFinish={updateUserProfile} ref={this.formRef}>
+                        <Form.Item label="First Name" name="FirstName">
+                          <Input onChange={(e) => this.handleChange(e)} />
                         </Form.Item>
-                        <Form.Item label="Last Name">
-                          <Input name="LastName" value={this.state.LastName} onChange={(e) => this.handleChange(e)} />
+                        <Form.Item label="Last Name" name="LastName">
+                          <Input onChange={(e) => this.handleChange(e)} />
                         </Form.Item>
-                        {this.state.Phones && this.state.Phones.map(phoneNumber => (
+                        <label>Phone Number</label>
+                        {this.state.Phones && this.state.Phones.map((phoneNumber, i) => (
                           <>
-                            <Select defaultValue={phoneNumber.phoneType}>
-                              <Select.Option value="Mobile">Mobile</Select.Option>
-                              <Select.Option value="Home">Home</Select.Option>
-                              <Select.Option value="Work">Work</Select.Option>
-                            </Select>
-                            <Input name="phoneNo" value={phoneNumber.phoneNo} onChange={(e) => this.handleChange(e)} />
+                            <div className="d-flex mb-2">
+                              <Select defaultValue={phoneNumber.phoneType} onChange={(e) => this.handleMobileType(e, i)} >
+                                <Select.Option value="Mobile">Mobile</Select.Option>
+                                <Select.Option value="Home">Home</Select.Option>
+                                <Select.Option value="Work">Work</Select.Option>
+                              </Select>
+                              <Input name="phoneNo" value={phoneNumber.phoneNo} onChange={(e) => this.handleMobileNumbers(e.target.value, i)} />
+                            </div>
                           </>
                         ))}
                         <Form.List name="sights">
