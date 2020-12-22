@@ -214,6 +214,11 @@ export default class EditProfile extends Component {
     });
   }
 
+  spliceItems = (i) => {
+    this.state.Phones.splice(i, 1);
+    this.setState({ Phones: this.state.Phones })
+  }
+
   render() {
 
     const updateUserProfile = (values) => {
@@ -306,6 +311,9 @@ export default class EditProfile extends Component {
                                 <Select.Option value="Work">Work</Select.Option>
                               </Select>
                               <Input name="phoneNo" value={phoneNumber.phoneNo} onChange={(e) => this.handleMobileNumbers(e.target.value, i)} />
+                              <span className="delete-icon">
+                                <i className="fa fa-close" onClick={() => this.spliceItems(i)}></i>
+                              </span>
                             </div>
                           </>
                         ))}

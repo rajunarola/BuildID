@@ -1326,9 +1326,24 @@ ul.ticket-list.overlay-scroll {
 .ant-space-item {
     position: relative;
 }
+
 .formfieldremove {
     position: absolute;
     top: -3px;
     right: 0;
     color: red;
+}
+
+.delete-icon {
+    border: 1px solid #f00;
+    height: 20px;
+    width: 25px;
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    background-color: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
 }

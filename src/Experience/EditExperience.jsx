@@ -16,6 +16,8 @@ export default class EditExperience extends Component {
         this.fetchTrade = debounce(this.fetchTrade, 800);
     }
 
+    formRef = React.createRef()
+
     state = {
         data: [],
         value: [],
@@ -49,16 +51,22 @@ export default class EditExperience extends Component {
             }
             if (res.status === 200) {
                 this.setState({
-                    value: res.data.data.companyName,
-                    companyName: res.data.data.companyName,
+                    CurrentCompany: res.data.data.currentCompany,
+                    IncludeInResume: res.data.data.includeInResume,
                     companyId: res.data.data.companyId,
-                    tradeName: res.data.data.tradeName,
-                    roleName: res.data.data.roleName,
+                    tradeId: res.data.data.tradeId,
                     roleId: res.data.data.roleId,
-                    tradeId: res.data.data.tradeId
+
                 });
+                if (this.formRef) {
+                    this.formRef.current.setFieldsValue({
+                        companyName: { value: res.data.data.companyId, label: res.data.data.companyName, key: res.data.data.companyId },
+                        roleName: { value: res.data.data.roleId, label: res.data.data.roleName, key: res.data.data.roleId },
+                        tradeName: { value: res.data.data.tradeId, label: res.data.data.tradeName, key: res.data.data.tradeId }
+                    });
+                }
             }
-        }).catch(err => {   
+        }).catch(err => {
             notification.open({
                 message: 'Error',
                 description: 'There was an error while fetching Experience Details!'
@@ -119,53 +127,26 @@ export default class EditExperience extends Component {
     };
 
     handleChange = value => {
-        this.state.data.map(data => {
-            if (data.value === parseInt(value)) {
-                this.setState({
-                    companyName: data.text,
-                    companyId: parseInt(data.value),
-                    value,
-                    data: [],
-                    fetching: false,
-                });
-                setTimeout(() => {
-                    // console.log('this.state.companyId => ', this.state.companyId);
-                }, 1000);
-            }
-        });
+        this.setState({ companyId: parseInt(value.value) }, () => {
+            this.formRef.current.setFieldsValue({
+                companyName: { value: value.value, label: value.label, key: value.key },
+            });
+        })
     };
 
     handleChangeRole = value1 => {
-        this.state.data1.map(data => {
-            if (data.value === value1) {
-                this.setState({
-                    roleName: data.text,
-                    roleId: parseInt(data.value),
-                    value1,
-                    data1: [],
-                    fetching1: false,
-                });
-                setTimeout(() => {
-                    // console.log('this.state.roleId => ', this.state.roleId);
-                }, 1000);
-            }
+        this.setState({ roleId: parseInt(value1.value) }, () => {
+            this.formRef.current.setFieldsValue({
+                roleName: { value: value1.value, label: value1.label, key: value1.key },
+            });
         });
     };
 
     handleChangeTrade = value2 => {
-        this.state.data2.map(data => {
-            if (data.value === value2) {
-                this.setState({
-                    tradeName: data.text,
-                    tradeId: parseInt(data.value),
-                    value2,
-                    data2: [],
-                    fetching2: false,
-                });
-                setTimeout(() => {
-                    // console.log('this.state.tradeId => ', this.state.tradeId);
-                }, 1000);
-            }
+        this.setState({ tradeId: parseInt(value2.value) }, () => {
+            this.formRef.current.setFieldsValue({
+                tradeName: { value: value2.value, label: value2.label, key: value2.key },
+            });
         });
     };
 
@@ -188,16 +169,20 @@ export default class EditExperience extends Component {
     cancelChanges = () => {
         getUserExperienceHistory().then(res => {
             res.data.data.map(id => {
-                if (id.id === parseInt(this.props.match.params.id)) {
-                    this.setState({ value: id.companyName })
+                if (id.id === parseInt(this.props.match.params.experienceId)) {
                     this.setState({
-                        companyName: id.companyName,
+                        CurrentCompany: id.currentCompany,
+                        IncludeInResume: id.includeInResume,
                         companyId: id.companyId,
-                        tradeName: id.tradeName,
-                        roleName: id.roleName,
+                        tradeId: id.tradeId,
                         roleId: id.roleId,
-                        tradeId: id.tradeId
-                    });
+                    }, () => {
+                        this.formRef.current.setFieldsValue({
+                            companyName: { value: id.companyId, label: id.companyName, key: id.companyId },
+                            roleName: { value: id.roleId, label: id.roleName, key: id.roleId },
+                            tradeName: { value: id.tradeId, label: id.tradeName, key: id.tradeId }
+                        });
+                    })
                 }
             });
         });
@@ -211,7 +196,7 @@ export default class EditExperience extends Component {
 
         const updateExperience = values => {
             const data = {
-                Id: this.props.match.params.id,
+                Id: parseInt(this.props.match.params.experienceId),
                 UserId: parseInt(localStorage.getItem('userID')),
                 StartDate: moment(values.StartDate).format('YYYY-MM-DD'),
                 EndDate: moment(values.EndDate).format('YYYY-MM-DD'),
@@ -231,24 +216,6 @@ export default class EditExperience extends Component {
                         message: 'Success',
                         description: 'Experience updated successfully!'
                     });
-                    this.setState({
-                        data: [],
-                        value: [],
-                        fetching: false,
-                        data1: [],
-                        value1: [],
-                        fetching1: false,
-                        data2: [],
-                        value2: [],
-                        fetching2: '',
-                        StartDate: moment(new Date()),
-                        EndDate: moment(new Date()),
-                        CurrentCompany: false,
-                        IncludeInResume: false,
-                        companyId: '',
-                        roleId: '',
-                        tradeId: ''
-                    });
                 }
             }).catch(err => {
                 notification.open({
@@ -265,22 +232,24 @@ export default class EditExperience extends Component {
                     <div className="edit-sec mt-80"><h2>Edit Experience</h2></div>
                     <div className="addticketform ml-4">
                         <div className="form-border p-4 w-30 mt-5 crd-wrap">
-                            <Form className="card-body" onFinish={updateExperience}>
+                            <Form className="card-body" onFinish={updateExperience} ref={this.formRef}>
                                 <div className="form-group">
                                     <label>Company</label>
-                                    <Select
-                                        showSearch
-                                        value={this.state.companyName}
-                                        placeholder="Search Companies"
-                                        notFoundContent={fetching ? <Spin size="small" /> : null}
-                                        filterOption={false}
-                                        onSearch={(e) => this.fetchCompany(e)}
-                                        onChange={(e) => this.handleChange(e)}
-                                        style={{ width: '100%' }}>
-                                        {data.map(d => (
-                                            <Select.Option key={d.value}>{d.text}</Select.Option>
-                                        ))}
-                                    </Select>
+                                    <Form.Item name="companyName">
+                                        <Select
+                                            showSearch
+                                            labelInValue
+                                            placeholder="Search Companies"
+                                            notFoundContent={fetching ? <Spin size="small" /> : null}
+                                            filterOption={false}
+                                            onSearch={(e) => this.fetchCompany(e)}
+                                            onChange={(e) => this.handleChange(e)}
+                                            style={{ width: '100%' }}>
+                                            {data.map(d => (
+                                                <Select.Option key={d.value}>{d.text}</Select.Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
                                 </div>
                                 <div className="form-group">
                                     <label>Start Date</label>
@@ -292,41 +261,46 @@ export default class EditExperience extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label className="ml-4 mt-1">
-                                        <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany} onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
-                                    Current Company
+                                        <input className="form-check-input" type="checkbox" name="CurrentCompany" checked={this.state.CurrentCompany}
+                                            onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} />
+                                            Current Company
                                     </label>
                                 </div>
                                 <div className="form-group">
                                     <label>Trade</label>
-                                    <Select
-                                        showSearch
-                                        value={this.state.tradeName}
-                                        placeholder="Search Trades"
-                                        notFoundContent={fetching2 ? <Spin size="small" /> : null}
-                                        filterOption={false}
-                                        onSearch={(e) => this.fetchTrade(e)}
-                                        onChange={(e) => this.handleChangeTrade(e)}
-                                        style={{ width: '100%' }}>
-                                        {data2.map(d => (
-                                            <Option key={d.value}>{d.text}</Option>
-                                        ))}
-                                    </Select>
+                                    <Form.Item name="tradeName">
+                                        <Select
+                                            showSearch
+                                            labelInValue
+                                            placeholder="Search Trades"
+                                            notFoundContent={fetching2 ? <Spin size="small" /> : null}
+                                            filterOption={false}
+                                            onSearch={(e) => this.fetchTrade(e)}
+                                            onChange={(e) => this.handleChangeTrade(e)}
+                                            style={{ width: '100%' }}>
+                                            {data2.map(d => (
+                                                <Option key={d.value}>{d.text}</Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
                                 </div>
                                 <div className="form-group">
                                     <label>Role</label>
-                                    <Select
-                                        showSearch
-                                        value={this.state.roleName}
-                                        placeholder="Search Roles"
-                                        notFoundContent={fetching1 ? <Spin size="small" /> : null}
-                                        filterOption={false}
-                                        onSearch={(e) => this.fetchRole(e)}
-                                        onChange={(e) => this.handleChangeRole(e)}
-                                        style={{ width: '100%' }}>
-                                        {data1.map(d => (
-                                            <Option key={d.value}>{d.text}</Option>
-                                        ))}
-                                    </Select>
+                                    <Form.Item name="roleName">
+                                        <Select
+                                            showSearch
+                                            labelInValue
+                                            placeholder="Search Roles"
+                                            notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                                            filterOption={false}
+                                            onSearch={(e) => this.fetchRole(e)}
+                                            onChange={(e) => this.handleChangeRole(e)}
+                                            style={{ width: '100%' }}>
+                                            {data1.map(d => (
+                                                <Option key={d.value}>{d.text}</Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
                                 </div>
                                 <div className="form-group">
                                     <label className="ml-4 mt-1">
