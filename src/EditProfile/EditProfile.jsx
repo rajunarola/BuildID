@@ -304,7 +304,7 @@ export default class EditProfile extends Component {
                         <label>Phone Number</label>
                         {this.state.Phones && this.state.Phones.map((phoneNumber, i) => (
                           <>
-                            <div className="d-flex mb-2">
+                            <div className="d-flex mb-2 align-items-center">
                               <Select defaultValue={phoneNumber.phoneType} onChange={(e) => this.handleMobileType(e, i)} >
                                 <Select.Option value="Mobile">Mobile</Select.Option>
                                 <Select.Option value="Home">Home</Select.Option>
