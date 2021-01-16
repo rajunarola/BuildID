@@ -3,7 +3,7 @@ import axios from "axios";
 const userID = localStorage.getItem('userID');
 
 export function userLogin(data) {
-    return axios.post(`https://bimiscwebapi-test.azurewebsites.net/api/users/SignIn2`, data).then(response => {
+    return axios.post(process.env.REACT_APP_API_URL + `api/users/SignIn2`, data).then(response => {
         return response
     }).catch(error => {
         return error
@@ -11,7 +11,7 @@ export function userLogin(data) {
 }
 
 export function getUserDetails() {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/users/GetUserInfo/${userID}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserInfo/${userID}`).then(response => {
         return response
     }).catch(error => {
         return error
@@ -19,7 +19,7 @@ export function getUserDetails() {
 }
 
 export function userWorkHistory() {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/users/GetUserWorkHistory/${userID}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserWorkHistory/${userID}`).then(response => {
         return response;
     }).catch(error => {
         return error;
@@ -27,7 +27,7 @@ export function userWorkHistory() {
 }
 
 export function userProjects(id) {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/projects/getproject/${id}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/projects/getproject/${id}`).then(response => {
         return response;
     }).catch(error => {
         return error;
@@ -35,7 +35,7 @@ export function userProjects(id) {
 }
 
 export function getTicketsByUserId() {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/GetTicketsByUserId/${userID}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/tickets/GetTicketsByUserId/${userID}`).then(response => {
         return response;
     }).catch(error => {
         return error;
@@ -43,7 +43,7 @@ export function getTicketsByUserId() {
 }
 
 export function getTicketDetails(id) {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/GetTicketById/${id}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/tickets/GetTicketById/${id}`).then(response => {
         return response;
     }).catch(error => {
         return error;
@@ -51,7 +51,7 @@ export function getTicketDetails(id) {
 }
 
 export function editUserProfile(data) {
-    return axios.post(`https://bimiscwebapi-test.azurewebsites.net/api/users/SavePersonalInfo`, data, {
+    return axios.post(process.env.REACT_APP_API_URL + `api/users/SavePersonalInfo`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             "Accept": "application/json",

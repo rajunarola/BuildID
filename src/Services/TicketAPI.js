@@ -1,9 +1,7 @@
 import axios from "axios";
 
-const userId = localStorage.getItem('userID')
-
 export function addNewTicket(data) {
-    return axios.post(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/SaveTicket`, data, {
+    return axios.post(process.env.REACT_APP_API_URL + `api/tickets/SaveTicket`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             "Accept": "application/json",
@@ -16,25 +14,8 @@ export function addNewTicket(data) {
     });
 }
 
-export function getAllTickets() {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/GetTicketsByUserId/${userId}`).then(response => {
-        return response
-    }).catch(error => {
-        return error
-    });
-}
-
-export function getTicketType() {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/GetTicketTypes`).then(response => {
-        return response
-    }).catch(error => {
-        return error
-    });
-}
-
-
 export function getTicketByID(id) {
-    return axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/tickets/GetTicketById/${id}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/tickets/GetTicketById/${id}`).then(response => {
         return response
     }).catch(error => {
         return error
