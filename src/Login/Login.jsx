@@ -54,10 +54,10 @@ export default class Login extends React.Component {
                                     <h2>BUILD <b>ID</b></h2>
                                     <h3>Hello and welcome Back, login in to your account</h3>
                                     <h4>Login with your social media account</h4>
-                                    <ul class="login-social">
-                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#4268b3' }}><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#1ca1ee' }}><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#d44439' }}><i class="fab fa-google-plus-g"></i></a></li>
+                                    <ul className="login-social">
+                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#4268b3' }}><i className="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#1ca1ee' }}><i className="fab fa-twitter"></i></a></li>
+                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#d44439' }}><i className="fab fa-google-plus-g"></i></a></li>
                                     </ul>
                                     <form onSubmit={(e) => this.userLogin(e)}>
                                         <div className="form-group">
