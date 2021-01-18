@@ -1,331 +1,247 @@
 import React, { Component } from 'react';
-import { getAllTickets, addNewTicket, getTicketType, getIssuedBy, getTicketByID } from '../Services/TicketAPI';
-import Autosuggest from "react-autosuggest";
+import { addNewTicket, getTicketByID } from '../Services/TicketAPI';
 import * as moment from "moment";
-import axios from "axios";
-
-import SideNav from '../SideNav/SideNav';
-import {
-    Form,
-    Input,
-    Select,
-    DatePicker,
-    notification
-} from 'antd';
+import { Form, Input, Select, DatePicker, notification, Spin, Checkbox } from 'antd';
+import debounce from 'lodash/debounce';
+import Loader from '../Loader/Loader';
 export default class EditTicketFinal extends Component {
 
-    state = {
-        Id: '',
-        TicketTypeId: '',
-        Expiry: '',
-        TicketId: '',
-        IssuedBy: '',
-        IssuedById: '',
-        IssuedOn: '',
-        UserId: '',
-        FrontPictureUrl: '',
-        BackPictureUrl: '',
-        CreatedBy: '',
-        DateCreated: '',
-        ModifiedBy: '',
-        DateModified: '',
-        PublicTicket: '',
-        ChangeTicketId: [],
-        value: '',
-        suggestions: [],
-        inputAttributes: false,
-        nameID: []
-    }
+  formRef = React.createRef();
 
-    componentDidMount() {
-        getTicketType().then(res => {
-            this.setState({ ChangeTicketId: res.data.data })
-        }).catch(err => {
-            notification.open({
-                message: 'Error',
-                description: 'There was an error while fetching ticket type!'
+  constructor(props) {
+    super(props);
+    this.lastFetchId = 0;
+    this.lastFetchId1 = 0;
+    this.fetchCompany = debounce(this.fetchCompany, 800);
+    this.fetchTicketType = debounce(this.fetchTicketType, 800);
+  }
+
+  state = {
+    loading: false,
+    FrontPictureUrl: '',
+    BackPictureUrl: '',
+    PublicTicket: false,
+    value: [],
+    data: [],
+    fetching: false,
+    value1: [],
+    data1: [],
+    fetching1: false
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true }, () => {
+      getTicketByID(parseInt(this.props.match.params.id)).then(res => {
+        if (res.status === 200) {
+          this.setState({ loading: false, PublicTicket: res.data.data.publicTicket }, () => {
+            this.formRef.current.setFieldsValue({
+              TicketTypeId: { value: res.data.data.ticketTypeId, label: res.data.data.ticketType, key: res.data.data.ticketTypeId },
+              IssuedOn: moment(moment(res.data.data.issuedOn).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+              Expiry: moment(moment(res.data.data.expiry).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+              TicketId: res.data.data.ticketId,
+              IssuedBy: { value: res.data.data.issuedById, label: res.data.data.issuedBy, key: res.data.data.issuedById },
             });
-        })
-        const paramId = this.props.match.params.id
-        getTicketByID(paramId).then(res => {
-            this.setState({
-                Id: res.data.data.id,
-                TicketTypeId: res.data.data.ticketTypeId,
-                Expiry: res.data.data.expiry,
-                TicketId: res.data.data.ticketId,
-                IssuedBy: res.data.data.issuedBy,
-                IssuedById: res.data.data.issuedById,
-                IssuedOn: res.data.data.issuedOn,
-                UserId: res.data.data.userId ? res.data.data.userId : localStorage.getItem('userID'),
-                FrontPictureUrl: res.data.data.frontPictureUrl,
-                BackPictureUrl: res.data.data.backPictureUrl,
-                CreatedBy: res.data.data.createdBy,
-                DateCreated: res.data.data.dateCreated,
-                ModifiedBy: res.data.data.modifiedBy,
-                DateModified: res.data.data.dateModified,
-                PublicTicket: res.data.data.publicTicket
-            });
-        }).catch(err => {
-            notification.open({
-                message: 'Error',
-                description: 'There was an error while updating ticket!'
-            });
-        })
-    }
-
-    getSuggestions = value => {
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-        return inputLength === 0 ? [] : this.state.suggestions.filter(city =>
-            city.toLowerCase().slice(0, inputLength) === inputValue);
-    };
-
-    getSuggestionValue = suggestion => suggestion;
-
-    renderSuggestion = suggestion => (
-        <div>
-            {suggestion}
-        </div>
-    );
-
-    onChange = (event, { newValue }) => {
-        let finalArry = [];
-        let finalID = [];
-        this.setState({
-            value: newValue
-        }, async () => {
-            try {
-                const resp = await axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/companies/GetCompanies/${this.state.value}`)
-                resp.data.data.map(name => {
-                    finalID.push(name);
-                    finalArry.push(name.name)
-                })
-                this.setState({ suggestions: finalArry, nameID: finalID });
-            } catch (err) {
-                event.preventDefault();
-            }
-        });
-    };
-
-    onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-            suggestions: this.getSuggestions(this.state.value)
-        });
-    };
-
-    onSuggestionsClearRequested = () => {
-        this.setState({
-            suggestions: []
-        });
-    };
-
-    onSuggestionSelected = (event, { suggestion, suggestionValue, index, method }) => {
-        event.preventDefault();
-        this.state.nameID.map(id => {
-            if (suggestion === id.name) {
-                this.setState({ IssuedById: id.id })
-            }
-        })
-    }
-
-    handleChange = (value) => {
-        this.setState({ TicketTypeId: value })
-    }
-
-    datePickerExpiry = (date) => {
-        this.setState({ Expiry: moment(date._d).format('MM-DD-YYYY') })
-    }
-
-    datePickerIssuedOn = (date) => {
-        this.setState({ IssuedOn: moment(date._d).format('MM-DD-YYYY') })
-    }
-
-    changeHandler = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
-
-    onChange = (event, { newValue }) => {
-        let finalArry = [];
-        this.setState({
-            value: newValue
-        }, async () => {
-            try {
-                const resp = await axios.get(`https://bimiscwebapi-test.azurewebsites.net/api/companies/GetCompanies/${this.state.value}`)
-                resp.data.data.map(name => {
-                    finalArry.push(name.name)
-                })
-                this.setState({ suggestions: finalArry });
-            } catch (err) {
-                event.preventDefault();
-            }
-        });
-    };
-
-    getCheckBoxValue = (e) => {
-        this.setState({ PublicTicket: e })
-    }
-
-    frontPictureHandler = (event) => {
-        this.setState({ FrontPictureUrl: event.target.files[0].name })
-    }
-
-    backPictureHandler = (event) => {
-        this.setState({ BackPictureUrl: event.target.files[0].name })
-    }
-
-
-    autosuggest = () => {
-        this.setState({ inputAttributes: true })
-        if (this.state.inputAttributes === true) {
-            this.setState({ inputAttributes: false })
-        } else {
-            this.setState({ inputAttributes: true })
+          });
         }
-    }
-
-    sendNewTicket = () => {
-        const formData = new FormData()
-        formData.append('Id', this.state.Id)
-        formData.append('TicketTypeId', this.state.TicketTypeId ? this.state.TicketTypeId : this.state.ticketData.ticketType)
-        formData.append('Expiry', moment(this.state.Expiry).format())
-        formData.append('TicketId', this.state.TicketId)
-        formData.append('IssuedById', this.state.IssuedById)
-        formData.append('IssuedOn', moment(this.state.IssuedOn).format())
-        formData.append('UserId', this.state.UserId)
-        formData.append('FrontPictureUrl', this.state.FrontPictureUrl)
-        formData.append('BackPictureUrl', this.state.BackPictureUrl)
-        formData.append('CreatedBy', this.state.CreatedBy)
-        formData.append('DateCreated', moment(new Date()).format())
-        formData.append('ModifiedBy', this.state.ModifiedBy)
-        formData.append('DateModified', moment(new Date()).format())
-        formData.append('PublicTicket', this.state.PublicTicket)
-        addNewTicket(formData).then(res => {
-            if (res.data.status === true) {
-                notification.open({
-                    message: 'Success',
-                    description: 'Ticket successfully updated!'
-                });
-            }
-        }).catch(err => {
-            notification.open({
-                message: 'Error',
-                description: 'There was an error while updating ticket!'
-            });
+      }).catch(err => {
+        this.setState({ loading: false });
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while fetching ticket data!'
         });
+      });
+    });
+  }
+
+  fetchCompany = value => {
+    this.lastFetchId += 1;
+    const fetchId = this.lastFetchId;
+    this.setState({ data: [], fetching: true });
+    fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
+      if (fetchId !== this.lastFetchId) {
+        // for fetch callback order
+        return;
+      }
+      const data = body.data.map(user => ({
+        text: `${user.name}`,
+        value: user.id,
+      }));
+      this.setState({ data, fetching: false });
+    });
+  };
+
+  fetchTicketType = () => {
+    this.lastFetchId1 += 1;
+    const fetchId = this.lastFetchId1;
+    this.setState({ data1: [], fetching1: true });
+    fetch(process.env.REACT_APP_API_URL + `api/tickets/GetTicketTypes`).then(response => response.json()).then(body => {
+      if (fetchId !== this.lastFetchId1) {
+        // for fetch callback order
+        return;
+      }
+      const data = body.data.map(user => ({
+        text: `${user.name}`,
+        value: user.id,
+      }));
+      this.setState({ data1: data, fetching1: false });
+    });
+  };
+
+  getCheckBoxValue = (e) => {
+    this.setState({ PublicTicket: e })
+  }
+
+  frontPictureHandler = (event) => {
+    this.setState({ FrontPictureUrl: event.target.files[0].name }, () => {
+      console.log('this.state.FrontPictureUrl => ', this.state.FrontPictureUrl);
+    })
+  }
+
+  backPictureHandler = (event) => {
+    this.setState({ BackPictureUrl: event.target.files[0].name })
+  }
+
+  render() {
+
+    const { fetching, data, value, fetching1, data1, value1 } = this.state;
+    const { Option } = Select;
+
+    const onFinishFailed = () => { };
+
+    const sendNewTicket = values => {
+      const formData = new FormData();
+      formData.append('Id', this.props.match.params.id)
+      formData.append('TicketTypeId', parseInt(values.TicketTypeId.value))
+      formData.append('Expiry', moment(values.Expiry._d).format())
+      formData.append('TicketId', values.TicketId)
+      formData.append('IssuedById', parseInt(values.IssuedBy.value))
+      formData.append('IssuedOn', moment(values.IssuedOn._d).format())
+      formData.append('UserId', parseInt(localStorage.getItem('userID')))
+      formData.append('FrontPictureUrl', this.state.FrontPictureUrl)
+      formData.append('BackPictureUrl', this.state.BackPictureUrl)
+      formData.append('CreatedBy', parseInt(localStorage.getItem('userID')))
+      formData.append('DateCreated', moment(new Date()).format())
+      formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
+      formData.append('DateModified', moment(new Date()).format())
+      formData.append('PublicTicket', this.state.PublicTicket)
+      addNewTicket(formData).then(res => {
+        if (res.data.status === true) {
+          notification.success({
+            message: 'Success',
+            description: 'Ticket successfully updated!'
+          });
+        }
+      }).catch(err => {
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while updating ticket!'
+        });
+      });
     }
 
-    render() {
+    return (
 
-        const { value, suggestions } = this.state;
-
-        const inputProps = {
-            placeholder: "Enter Ticket Type",
-            value,
-            onChange: this.onChange,
-        };
-
-        const onFinishFailed = (errorInfo) => {
-            console.log("Failed:", errorInfo);
-        };
-
-        return (
-            <div>
-                <SideNav />
-                <div className="index-main">
-                    <div className="edit-sec mt-80"><h2>Edit Ticket</h2></div>
-                    <div className="addticketform ml-4">
-                        <div className="form-border p-4 w-30 mt-5 crd-wrap">
-                            <Form name="basic" className="card-body"
-                                initialValues={{ remember: true }}
-                                onFinish={() => this.sendNewTicket()}
-                                onFinishFailed={onFinishFailed}>
-                                <div className="form-group">
-                                    <div className="dropdown dd-type">
-                                        <label className="form-label formlabel">Type</label>
-                                        <Select className="form-ant-control w-100 inputstyle" value={this.state.TicketTypeId} onChange={(e) => this.handleChange(e)} placeholder="Please select a ticket type">
-                                            {
-                                                this.state.ChangeTicketId.map(ticketDetails => (
-                                                    <Select.Option value={ticketDetails.id}>{ticketDetails.name}</Select.Option>
-                                                ))
-                                            }
-                                        </Select>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label className="formlabel">Issued On</label>
-                                    <DatePicker className="w-100 inputstyle" value={moment(moment(this.state.IssuedOn).format('YYYY-MM-DD'), ('YYYY-MM-DD'))} onChange={(event) => this.datePickerIssuedOn(event)} name="IssuedOn" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="formlabel">Expiry</label>
-                                    <DatePicker className="w-100 inputstyle" value={moment(moment(this.state.Expiry).format('YYYY-MM-DD'), ('YYYY-MM-DD'))} onChange={(event) => this.datePickerExpiry(event)} name="Expiry" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="formlabel">Ticket Id</label>
-                                    <Form.Item
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please enter ticket Id!"
-                                            }]}>
-                                        <Input className="w-100 inputstyle" value={this.state.TicketId} name="TicketId" onChange={(e) => this.changeHandler(e)} />
-                                    </Form.Item>
-                                </div>
-                                <div className="form-row">
-                                    <div className="form-group col-lg-12 autsuggest-input">
-                                        <label for="issuedby">Issued By</label>
-                                        <div className="position-relative">
-                                            {this.state.inputAttributes ?
-                                                <Autosuggest
-                                                    suggestions={suggestions}
-                                                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                                                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                                                    getSuggestionValue={this.getSuggestionValue}
-                                                    renderSuggestion={this.renderSuggestion}
-                                                    onSuggestionSelected={this.onSuggestionSelected}
-                                                    inputProps={inputProps}
-                                                />
-                                                : <input type="text" className="form-control pr-5" id="TicketId" aria-describedby="nameHelp" value={this.state.IssuedBy} />}
-                                            <i className="fa fa-edit autsuggest-edit" title="Please click on edit to enter value" onClick={() => this.autosuggest()}></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-row">
-                                    <div className="form-group col-lg-6 img-upload-btn">
-                                        <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture
-                                        {this.state.FrontPictureUrl !== "" ?
-                                                <>
-                                                    <img src={this.state.FrontPictureUrl} alt="ImageFront" className="mt-2 mb-2 d-block" />
-                                                    <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
-                                                </> :
-                                                <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
-                                            }
-                                        </label>
-                                    </div>
-                                    <div className="form-group col-lg-6 img-upload-btn">
-                                        <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture
-                                        {this.state.BackPictureUrl !== '' ?
-                                                <>
-                                                    <img src={this.state.BackPictureUrl} alt="ImageBack" className="mt-2 mb-2 d-block" />
-                                                    <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
-                                                </> :
-                                                <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
-                                            }
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" id="defaultCheck1" name="PublicTicket" onChange={(e) => this.getCheckBoxValue(e.target.checked)} />
-                                    <label className="form-check-label" for="defaultCheck1">Public Ticket</label>
-                                </div>
-                                <button type="submit" className="btn btn-blue login-submit mt-5">Update Ticket</button>
-                            </Form>
-                        </div>
+      <>
+        {this.state.loading ? <Loader /> :
+          <div className="index-main">
+            <div className="edit-sec mt-80"><h2>Edit Ticket</h2></div>
+            <div className="addticketform ml-4">
+              <div className="form-border p-4 w-30 mt-5 crd-wrap">
+                <Form className="card-body" onFinish={sendNewTicket} onFinishFailed={onFinishFailed} ref={this.formRef}>
+                  <div className="form-group">
+                    <div className="dropdown dd-type">
+                      <label className="form-label formlabel">Ticket Type</label>
+                      <Form.Item name="TicketTypeId" rules={[{ required: true, message: 'Please select a ticket type!' }]}>
+                        <Select
+                          key="TicketTypeId"
+                          showSearch
+                          labelInValue
+                          value={value1}
+                          placeholder="Search ticket type"
+                          notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchTicketType(e)}
+                          style={{ width: '100%' }}>
+                          {data1.map(d => (
+                            <Option key={d.value}>{d.text}</Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
                     </div>
-                </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="formlabel">Issued On</label>
+                    <Form.Item name="IssuedOn" rules={[{ required: true, message: "Please enter an issued on date!" }]}>
+                      <DatePicker className="w-100 inputstyle" />
+                    </Form.Item>
+                  </div>
+                  <div className="form-group">
+                    <label className="formlabel">Expiry Date</label>
+                    <Form.Item name="Expiry" rules={[{ required: true, message: "Please enter an expiry date!" }]}>
+                      <DatePicker className="w-100 inputstyle" />
+                    </Form.Item>
+                  </div>
+                  <div className="form-group">
+                    <label className="formlabel">Ticket Name</label>
+                    <Form.Item name="TicketId" rules={[{ required: true, message: "Please enter ticket name!" }]}>
+                      <Input className="w-100 inputstyle" />
+                    </Form.Item>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group col-lg-12">
+                      <label for="issuedby">Issued By</label>
+                      <Form.Item name="IssuedBy" rules={[{ required: true, message: "Please enter your issued type!" }]}>
+                        <Select
+                          key="IssuedBy"
+                          showSearch
+                          labelInValue
+                          value={value}
+                          placeholder="Search issued by"
+                          notFoundContent={fetching ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchCompany(e)}
+                          style={{ width: '100%' }}>
+                          {data.map(d => (
+                            <Option key={d.value}>{d.text}</Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group col-lg-6 img-upload-btn">
+                      <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture
+                        {this.state.FrontPictureUrl !== "" ?
+                          <>
+                            <img src={this.state.FrontPictureUrl} alt="ImageFront" className="mt-2 mb-2 d-block" />
+                            <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
+                          </> :
+                          <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
+                        }
+                      </label>
+                    </div>
+                    <div className="form-group col-lg-6 img-upload-btn">
+                      <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture
+                          {this.state.BackPictureUrl !== '' ?
+                          <>
+                            <img src={this.state.BackPictureUrl} alt="ImageBack" className="mt-2 mb-2 d-block" />
+                            <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
+                          </> :
+                          <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
+                        }
+                      </label>
+                    </div>
+                  </div>
+                  <div className="form-check">
+                    <Checkbox checked={this.state.PublicTicket === true ? true : false} onChange={(e) => this.getCheckBoxValue(e.target.checked)} >Public Ticket</Checkbox>
+                  </div>
+                  <button type="submit" className="btn btn-blue btnManufacturer mt-3">Update Ticket</button>
+                </Form>
+              </div>
             </div>
-        )
-    }
+          </div>
+        }
+      </>
+    )
+  }
 }
