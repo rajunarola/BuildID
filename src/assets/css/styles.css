@@ -1347,3 +1347,58 @@ ul.ticket-list.overlay-scroll {
     align-items: center;
     margin-left: 10px;
 }
+
+.project-address-location .stage-detail {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #cbcbcb;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0px;
+}
+
+.project-address-location .stage-detail:last-child {
+    border-bottom: none;
+}
+
+.project-address-location {
+    padding: 0px 15px;
+}
+
+.k-card-title {
+    background-color: #d6def3;
+    color: #093cb9;
+    padding: 15px 20px;
+}
+
+.k-custom-tag {
+    background-color: #d6def3;
+    color: #093cb9;
+    padding: 8px 20px;
+    display: block;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    border: 1px solid #093cb9;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.manufacture-content {
+    padding: 0px 15px;
+}
+
+.manufacture-form.manufacture-content.pt-3 {
+    padding: 0 20px 20px;
+}
+
+.btn-orange-search {
+    background-color: #093cb9 !important;
+    color: #fff !important;
+}
+
+.btnManufacturer {
+    padding: 5px 15px !important;
+}
