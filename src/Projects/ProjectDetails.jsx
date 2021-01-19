@@ -171,7 +171,7 @@ export default class ProjectDetails extends Component {
             this.formRef1.current.resetFields();
             notification.info({
               message: 'Error',
-              description: 'This data already exists in database!'
+              description: 'Company already exists in this project!'
             });
           }
         }
