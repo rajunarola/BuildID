@@ -146,7 +146,6 @@ export default class Projects extends React.Component {
                           <ul className="ticket-list overlay-scroll">
                             {this.state.ticketArray.map((data, index) => (
                               <li onClick={() => this.onModalPopUp(data.id)} className="ticket-block li-position" style={moment(data.expiry).isBefore(new Date()) ? { 'backgroundColor': "#fcecc3" } : { 'backgroundColor': "white" }}>
-                                {console.log('data.frontPic => ', data.frontPictureUrl, data.backPictureUrl)}
                                 <div className="ticket-img"><img src={data.backPictureUrl && data.backPictureUrl || data.frontPictureUrl && data.frontPictureUrl} alt="" /></div>
                                 <div className="ticket-detail">
                                   <h4>{data.ticketType}</h4>
