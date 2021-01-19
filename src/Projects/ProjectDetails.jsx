@@ -40,8 +40,7 @@ export default class ProjectDetails extends Component {
     saveNewImages: [],
     loading: false,
     addManufacturerData: [],
-    addCompanyData: [],
-    imageLength: 0
+    addCompanyData: []
   }
 
   componentDidMount() {
@@ -78,16 +77,7 @@ export default class ProjectDetails extends Component {
         text: `${user.name}`,
         value: user.id,
       }));
-      this.state.addManufacturerData.map(id => {
-        console.log('id => ', id, data.value);
-        console.log('data => ', data, data.value !== id.manufacturerId);
-        if (data.value !== id.manufacturerId) {
-          this.setState({ data: data, fetching: false });
-
-        } else {
-          console.log('in else');
-        }
-      })
+      this.setState({ data: data, fetching: false });
     });
   };
 
@@ -106,20 +96,24 @@ export default class ProjectDetails extends Component {
       }
       saveNewManufacturerInProject(data).then(res => {
         if (res.data && res.data.status === true) {
-          this.formRef.current.resetFields();
-          notification.success({
-            message: 'Success',
-            description: 'A new manufacturer has been added to the current project!'
-          });
-          getProjectManufacturers(this.props.match.params.id).then(res => {
-            this.setState({ manufacturersData: res.data.data })
-          }).catch(err => { });
+          if (this.state.addManufacturerData.length === index + 1) {
+            this.formRef.current.resetFields();
+            notification.success({
+              message: 'Success',
+              description: 'A new manufacturer has been added to the current project!'
+            });
+            getProjectManufacturers(this.props.match.params.id).then(res => {
+              this.setState({ manufacturersData: res.data.data })
+            }).catch(err => { });
+          }
         } else if (res.response.status === 400) {
-          this.formRef.current.resetFields();
-          notification.info({
-            message: 'Error',
-            description: 'This data already exists in database!'
-          });
+          if (this.state.addManufacturerData.length === index + 1) {
+            this.formRef.current.resetFields();
+            notification.info({
+              message: 'Error',
+              description: 'Manufacturers already exists in this project!'
+            });
+          }
         }
       }).catch(err => {
         notification.error({
@@ -143,6 +137,7 @@ export default class ProjectDetails extends Component {
         text: `${user.name}`,
         value: user.id,
       }));
+      this.setState({ data1: data, fetching1: false });
     });
   };
 
@@ -161,20 +156,24 @@ export default class ProjectDetails extends Component {
       }
       saveNewCompanyInProject(data).then(res => {
         if (res.data && res.data.status === true) {
-          this.formRef1.current.resetFields();
-          notification.success({
-            message: 'Success',
-            description: 'A new company has been added to the current project!'
-          });
-          getProjectCompany(this.props.match.params.id).then(res => {
-            this.setState({ companyData: res.data.data })
-          }).catch(err => { });
+          if (this.state.addCompanyData.length === index + 1) {
+            this.formRef1.current.resetFields();
+            notification.success({
+              message: 'Success',
+              description: 'A new company has been added to the current project!'
+            });
+            getProjectCompany(this.props.match.params.id).then(res => {
+              this.setState({ companyData: res.data.data })
+            }).catch(err => { });
+          }
         } else if (res.response.status === 400) {
-          this.formRef1.current.resetFields();
-          notification.info({
-            message: 'Error',
-            description: 'This data already exists in database!'
-          });
+          if (this.state.addCompanyData.length === index + 1) {
+            this.formRef1.current.resetFields();
+            notification.info({
+              message: 'Error',
+              description: 'This data already exists in database!'
+            });
+          }
         }
       }).catch(err => {
         notification.error({
@@ -194,35 +193,34 @@ export default class ProjectDetails extends Component {
   }
 
   saveImage = (e) => {
-    this.setState({ imageLength: e.target.files.length }, () => {
-      console.log('this.state => ', this.state.imageLength);
-
-      for (let index = 0; index < e.target.files.length; index++) {
-        const element = e.target.files[index];
-        console.log('element,index => ', e.target.files.length, index + 1);
-        this.setState({ loading: true }, () => {
-          const formData = new FormData();
-          formData.append('Id', parseInt(this.props.match.params.id))
-          formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
-          formData.append('Photo', element)
-          saveProjectPicture(formData).then(res => {
-            if (res.data.status === true) {
-              userProjects(this.props.match.params.id).then(Res => {
-                if (Res.data.status === true) {
-                  this.setState({ pictureList: Res.data.data.pictureList, loading: false }, () => {
+    let imageLength = e.target.files;
+    this.setState({ loading: true }, () => {
+      for (let index = 0; index < imageLength.length; index++) {
+        const element = imageLength[index];
+        const formData = new FormData();
+        formData.append('Id', parseInt(this.props.match.params.id))
+        formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
+        formData.append('Photo', element)
+        saveProjectPicture(formData).then(res => {
+          if (res.data.status === true) {
+            userProjects(this.props.match.params.id).then(Res => {
+              if (Res.data.status === true) {
+                this.setState({ pictureList: Res.data.data.pictureList, loading: false }, () => {
+                  console.log(index);
+                  if (index + 1 === imageLength.length) {
                     notification.success({
                       message: 'Success',
                       description: 'An Image has been successfully added to the current project!'
                     });
-                  })
-                }
-              })
-            }
-          }).catch(err => {
-            notification.error({
-              message: 'Error',
-              description: 'There was an error while uploading an image to the current project!'
-            });
+                  }
+                })
+              }
+            })
+          }
+        }).catch(err => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while uploading an image to the current project!'
           });
         });
       }
@@ -248,7 +246,7 @@ export default class ProjectDetails extends Component {
                     <button type="button" className="add-btn btn-blue mb-4">
                       <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
                     </button>
-                    <input type="file" id="file" style={{ 'display': 'none' }} onChange={(e) => this.saveImage(e)} multiple />
+                    <input type="file" id="file" style={{ 'display': 'none' }} onChange={(e) => this.saveImage(e)} multiple={true} />
                     <div className="form-border crd-wrp">
                       <div className="pro-img slider-main mb-2 embed-responsive">
                         <Carousel autoPlay>
@@ -276,7 +274,7 @@ export default class ProjectDetails extends Component {
                   </div>
                   { /* Manufacturer */}
                   <div className="col-lg-4 col-md-6 col-12">
-                    <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add Manufacturer</button>
+                    <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add New Manufacturer</button>
                     <div className="form-border crd-wrp">
                       <div className="proj-timeline">
                         <h4 className="k-card-title">MANUFACTURERS</h4>
@@ -312,7 +310,7 @@ export default class ProjectDetails extends Component {
                   </div>
                   { /* Company */}
                   <div className="col-lg-4 col-md-6 col-12">
-                    <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i> Add Company</button>
+                    <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i> Add New Company</button>
                     <div className="form-border crd-wrp">
                       <div className="proj-timeline">
                         <h4 className="k-card-title">COMPANY</h4>
