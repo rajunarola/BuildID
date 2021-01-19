@@ -32,16 +32,20 @@ export default class Projects extends React.Component {
             });
           });
         } else {
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while fetching data!'
+            });
+          })
+        }
+      }).catch(err => {
+        this.setState({ loading: false }, () => {
           notification.error({
             message: 'Error',
             description: 'There was an error while fetching data!'
           });
-        }
-      }).catch(err => {
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while fetching data!'
-        });
+        })
       });
     });
   }
@@ -93,7 +97,7 @@ export default class Projects extends React.Component {
                         <div id="collapseOne" className="collapse show" aria-labelledby="projectOne" data-parent="#projectaccordion">
                           <div className="crd-body slider-pad">
                             <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
-                              <Carousel autoPlay>
+                              <Carousel autoPlay key="carousel">
                                 {this.state.pictureList && this.state.pictureList.map((data, index) => (
                                   <img src={data.imageUrl} alt="" />
                                 ))}

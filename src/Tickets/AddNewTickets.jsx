@@ -100,19 +100,17 @@ export default class AddNewTickets extends React.Component {
     const sendNewTicket = values => {
       const formData = new FormData();
       formData.append('Id', 0)
-      formData.append('TicketTypeId', parseInt(values.TicketTypeId.value))
-      formData.append('Expiry', moment(values.Expiry._d).format())
+      formData.append('Expiry', moment(values.Expiry._d).format('YYYY-MM-DD'))
       formData.append('TicketId', values.TicketId)
       formData.append('IssuedById', parseInt(values.IssuedBy.value))
-      formData.append('IssuedOn', moment(values.IssuedOn._d).format())
-      formData.append('UserId', parseInt(localStorage.getItem('userID')))
-      formData.append('FrontPictureUrl', this.state.FrontPictureUrl ? this.state.FrontPictureUrl[0] : "")
-      formData.append('BackPictureUrl', this.state.BackPictureUrl ? this.state.BackPictureUrl[0] : "")
-      formData.append('CreatedBy', parseInt(localStorage.getItem('userID')))
-      formData.append('DateCreated', moment(new Date()).format())
+      formData.append('IssuedOn', moment(values.IssuedOn._d).format('YYYY-MM-DD'))
+      formData.append('TicketTypeId', parseInt(values.TicketTypeId.value))
+      formData.append('FrontPictureUrl', "")
+      formData.append('BackPictureUrl', "")
       formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
-      formData.append('DateModified', moment(new Date()).format())
       formData.append('PublicTicket', this.state.PublicTicket)
+      formData.append('ImageFront', this.state.FrontPictureUrl ? this.state.FrontPictureUrl[0] : "")
+      formData.append('ImageBack', this.state.BackPictureUrl ? this.state.BackPictureUrl[0] : "")
       addNewTicket(formData).then(res => {
         if (res.data.status === true) {
           this.formRef.current.resetFields();

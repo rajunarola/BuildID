@@ -4,7 +4,8 @@ import * as moment from "moment";
 import { Form, Input, Select, DatePicker, notification, Spin, Checkbox } from 'antd';
 import debounce from 'lodash/debounce';
 import Loader from '../Loader/Loader';
-export default class EditTicketFinal extends Component {
+import { withRouter } from 'react-router-dom';
+class EditTicketFinal extends Component {
 
   formRef = React.createRef();
 
@@ -26,14 +27,21 @@ export default class EditTicketFinal extends Component {
     fetching: false,
     value1: [],
     data1: [],
-    fetching1: false
+    fetching1: false,
+    getfrontPicture: '',
+    getBackPicture: ''
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
       getTicketByID(parseInt(this.props.match.params.id)).then(res => {
         if (res.status === 200) {
-          this.setState({ loading: false, PublicTicket: res.data.data.publicTicket }, () => {
+          this.setState({
+            loading: false,
+            PublicTicket: res.data.data.publicTicket,
+            getfrontPicture: res.data.data.frontPictureUrl,
+            getBackPicture: res.data.data.backPictureUrl
+          }, () => {
             this.formRef.current.setFieldsValue({
               TicketTypeId: { value: res.data.data.ticketTypeId, label: res.data.data.ticketType, key: res.data.data.ticketTypeId },
               IssuedOn: moment(moment(res.data.data.issuedOn).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
@@ -92,13 +100,15 @@ export default class EditTicketFinal extends Component {
   }
 
   frontPictureHandler = (event) => {
-    this.setState({ FrontPictureUrl: event.target.files[0].name }, () => {
-      console.log('this.state.FrontPictureUrl => ', this.state.FrontPictureUrl);
-    })
+    this.setState({ FrontPictureUrl: event.target.files[0] })
   }
 
   backPictureHandler = (event) => {
-    this.setState({ BackPictureUrl: event.target.files[0].name })
+    this.setState({ BackPictureUrl: event.target.files[0] })
+  }
+
+  cancelChanges() {
+    this.props.history.push('/projects')
   }
 
   render() {
@@ -109,34 +119,56 @@ export default class EditTicketFinal extends Component {
     const onFinishFailed = () => { };
 
     const sendNewTicket = values => {
-      const formData = new FormData();
-      formData.append('Id', this.props.match.params.id)
-      formData.append('TicketTypeId', parseInt(values.TicketTypeId.value))
-      formData.append('Expiry', moment(values.Expiry._d).format())
-      formData.append('TicketId', values.TicketId)
-      formData.append('IssuedById', parseInt(values.IssuedBy.value))
-      formData.append('IssuedOn', moment(values.IssuedOn._d).format())
-      formData.append('UserId', parseInt(localStorage.getItem('userID')))
-      formData.append('FrontPictureUrl', this.state.FrontPictureUrl)
-      formData.append('BackPictureUrl', this.state.BackPictureUrl)
-      formData.append('CreatedBy', parseInt(localStorage.getItem('userID')))
-      formData.append('DateCreated', moment(new Date()).format())
-      formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
-      formData.append('DateModified', moment(new Date()).format())
-      formData.append('PublicTicket', this.state.PublicTicket)
-      addNewTicket(formData).then(res => {
-        if (res.data.status === true) {
-          notification.success({
-            message: 'Success',
-            description: 'Ticket successfully updated!'
-          });
-        }
-      }).catch(err => {
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while updating ticket!'
+      this.setState({ loading: true }, () => {
+        const formData = new FormData();
+        formData.append('Id', this.props.match.params.id)
+        formData.append('TicketTypeId', parseInt(values.TicketTypeId.value))
+        formData.append('Expiry', moment(values.Expiry._d).format())
+        formData.append('TicketId', values.TicketId)
+        formData.append('IssuedById', parseInt(values.IssuedBy.value))
+        formData.append('IssuedOn', moment(values.IssuedOn._d).format())
+        formData.append('FrontPictureUrl', this.state.FrontPictureUrl ? "" : this.state.getfrontPicture)
+        formData.append('BackPictureUrl', this.state.BackPictureUrl ? "" : this.state.getBackPicture)
+        formData.append('CreatedBy', parseInt(localStorage.getItem('userID')))
+        formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
+        formData.append('PublicTicket', this.state.PublicTicket)
+        formData.append('ImageFront', this.state.FrontPictureUrl ? this.state.FrontPictureUrl : this.state.getfrontPicture)
+        formData.append('ImageBack', this.state.BackPictureUrl ? this.state.BackPictureUrl : this.state.getBackPicture)
+        addNewTicket(formData).then(res => {
+          if (res.data.status === true) {
+            notification.success({
+              message: 'Success',
+              description: 'Ticket successfully updated!'
+            });
+            getTicketByID(parseInt(this.props.match.params.id)).then(res => {
+              if (res.status === 200) {
+                this.setState({
+                  loading: false,
+                  PublicTicket: res.data.data.publicTicket,
+                  getfrontPicture: res.data.data.frontPictureUrl,
+                  getBackPicture: res.data.data.backPictureUrl
+                }, () => {
+                  this.formRef.current.setFieldsValue({
+                    TicketTypeId: { value: res.data.data.ticketTypeId, label: res.data.data.ticketType, key: res.data.data.ticketTypeId },
+                    IssuedOn: moment(moment(res.data.data.issuedOn).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+                    Expiry: moment(moment(res.data.data.expiry).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+                    TicketId: res.data.data.ticketId,
+                    IssuedBy: { value: res.data.data.issuedById, label: res.data.data.issuedBy, key: res.data.data.issuedById },
+                  });
+                });
+              }
+            }).catch(err => {
+            });
+          }
+        }).catch(err => {
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while updating ticket!'
+            });
+          })
         });
-      });
+      })
     }
 
     return (
@@ -211,9 +243,9 @@ export default class EditTicketFinal extends Component {
                   <div className="form-row">
                     <div className="form-group col-lg-6 img-upload-btn">
                       <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture
-                        {this.state.FrontPictureUrl !== "" ?
+                        {this.state.getfrontPicture !== "" ?
                           <>
-                            <img src={this.state.FrontPictureUrl} alt="ImageFront" className="mt-2 mb-2 d-block" />
+                            <img src={this.state.getfrontPicture} alt="ImageFront" className="mt-2 mb-2 d-block" />
                             <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
                           </> :
                           <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
@@ -222,9 +254,9 @@ export default class EditTicketFinal extends Component {
                     </div>
                     <div className="form-group col-lg-6 img-upload-btn">
                       <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture
-                          {this.state.BackPictureUrl !== '' ?
+                          {this.state.getBackPicture !== "" ?
                           <>
-                            <img src={this.state.BackPictureUrl} alt="ImageBack" className="mt-2 mb-2 d-block" />
+                            <img src={this.state.getBackPicture} alt="ImageBack" className="mt-2 mb-2 d-block" />
                             <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
                           </> :
                           <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
@@ -235,7 +267,10 @@ export default class EditTicketFinal extends Component {
                   <div className="form-check">
                     <Checkbox checked={this.state.PublicTicket === true ? true : false} onChange={(e) => this.getCheckBoxValue(e.target.checked)} >Public Ticket</Checkbox>
                   </div>
-                  <button type="submit" className="btn btn-blue btnManufacturer mt-3">Update Ticket</button>
+                  <div className="d-flex mt-3">
+                    <button type="submit" className="btn btn-blue btnManufacturer mr-2">Update Ticket</button>
+                    <button type="reset" onClick={() => this.cancelChanges()} className="btn btn-danger btnManufacturer">Cancel</button>
+                  </div>
                 </Form>
               </div>
             </div>
@@ -245,3 +280,5 @@ export default class EditTicketFinal extends Component {
     )
   }
 }
+
+export default withRouter(EditTicketFinal);

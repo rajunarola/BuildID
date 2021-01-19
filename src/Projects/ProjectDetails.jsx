@@ -11,7 +11,7 @@ import {
   saveProjectPicture
 } from '../Services/Project';
 import debounce from 'lodash/debounce';
-import { Select, Form, Spin, notification } from 'antd';
+import { Select, Form, Spin, notification, Button } from 'antd';
 import Loader from '../Loader/Loader';
 
 export default class ProjectDetails extends Component {
@@ -38,7 +38,10 @@ export default class ProjectDetails extends Component {
     data1: [],
     fetching1: false,
     saveNewImages: [],
-    loading: false
+    loading: false,
+    addManufacturerData: [],
+    addCompanyData: [],
+    imageLength: 0
   }
 
   componentDidMount() {
@@ -55,6 +58,8 @@ export default class ProjectDetails extends Component {
           manufacturersData: values[1].data.data,
           companyData: values[2].data.data,
           loading: false
+        }, () => {
+          console.log('this.state.manufacturersData => ', this.state.manufacturersData);
         });
       });
     })
@@ -73,41 +78,57 @@ export default class ProjectDetails extends Component {
         text: `${user.name}`,
         value: user.id,
       }));
-      this.setState({ data: data, fetching: false });
+      this.state.addManufacturerData.map(id => {
+        console.log('id => ', id, data.value);
+        console.log('data => ', data, data.value !== id.manufacturerId);
+        if (data.value !== id.manufacturerId) {
+          this.setState({ data: data, fetching: false });
+
+        } else {
+          console.log('in else');
+        }
+      })
     });
   };
 
   handleChange = value => {
-    const data = {
-      Id: 0,
-      ProjectId: parseInt(this.props.match.params.id),
-      ManufacturerId: parseInt(value.value),
-      ModifiedBy: parseInt(localStorage.getItem('userID'))
-    }
-    saveNewManufacturerInProject(data).then(res => {
-      if (res.data && res.data.status === true) {
-        this.formRef.current.resetFields();
-        notification.success({
-          message: 'Success',
-          description: 'A new manufacturer has been added to the current project!'
-        });
-        getProjectManufacturers(this.props.match.params.id).then(res => {
-          this.setState({ manufacturersData: res.data.data })
-        }).catch(err => { });
-      } else if (res.response.status === 400) {
-        this.formRef.current.resetFields();
-        notification.info({
-          message: 'Error',
-          description: 'This data already exists in database!'
-        });
-      }
-    }).catch(err => {
-      notification.error({
-        message: 'Error',
-        description: 'There was an error while adding a manufacturer to the current project!'
-      });
-    });
+    this.setState({ addManufacturerData: value })
   };
+
+  addfinal = () => {
+    for (let index = 0; index < this.state.addManufacturerData.length; index++) {
+      const element = this.state.addManufacturerData[index];
+      const data = {
+        Id: 0,
+        ProjectId: parseInt(this.props.match.params.id),
+        ManufacturerId: parseInt(element.value),
+        ModifiedBy: parseInt(localStorage.getItem('userID'))
+      }
+      saveNewManufacturerInProject(data).then(res => {
+        if (res.data && res.data.status === true) {
+          this.formRef.current.resetFields();
+          notification.success({
+            message: 'Success',
+            description: 'A new manufacturer has been added to the current project!'
+          });
+          getProjectManufacturers(this.props.match.params.id).then(res => {
+            this.setState({ manufacturersData: res.data.data })
+          }).catch(err => { });
+        } else if (res.response.status === 400) {
+          this.formRef.current.resetFields();
+          notification.info({
+            message: 'Error',
+            description: 'This data already exists in database!'
+          });
+        }
+      }).catch(err => {
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while adding a manufacturer to the current project!'
+        });
+      });
+    }
+  }
 
   fetchCompany = value => {
     this.lastFetchId1 += 1;
@@ -122,44 +143,47 @@ export default class ProjectDetails extends Component {
         text: `${user.name}`,
         value: user.id,
       }));
-      this.setState({ data1: data, fetching1: false });
     });
   };
 
-
   handleCompanyChange = value => {
-    const data = {
-      Id: 0,
-      ProjectId: parseInt(this.props.match.params.id),
-      CompanyId: parseInt(value.value),
-      ModifiedBy: parseInt(localStorage.getItem('userID'))
-    }
-    saveNewCompanyInProject(data).then(res => {
-      console.log('res => ', res);
-
-      if (res.data && res.data.status === true) {
-        this.formRef1.current.resetFields();
-        notification.success({
-          message: 'Success',
-          description: 'A new company has been added to the current project!'
-        });
-        getProjectCompany(this.props.match.params.id).then(res => {
-          this.setState({ companyData: res.data.data })
-        }).catch(err => { });
-      } else if (res.response.status === 400) {
-        this.formRef1.current.resetFields();
-        notification.info({
-          message: 'Error',
-          description: 'This data already exists in database!'
-        });
-      }
-    }).catch(err => {
-      notification.error({
-        message: 'Error',
-        description: 'There was an error while adding a company to the current project!'
-      });
-    })
+    this.setState({ addCompanyData: value })
   };
+
+  addfinalCompany() {
+    for (let index = 0; index < this.state.addCompanyData.length; index++) {
+      const element = this.state.addCompanyData[index];
+      const data = {
+        Id: 0,
+        ProjectId: parseInt(this.props.match.params.id),
+        CompanyId: parseInt(element.value),
+        ModifiedBy: parseInt(localStorage.getItem('userID'))
+      }
+      saveNewCompanyInProject(data).then(res => {
+        if (res.data && res.data.status === true) {
+          this.formRef1.current.resetFields();
+          notification.success({
+            message: 'Success',
+            description: 'A new company has been added to the current project!'
+          });
+          getProjectCompany(this.props.match.params.id).then(res => {
+            this.setState({ companyData: res.data.data })
+          }).catch(err => { });
+        } else if (res.response.status === 400) {
+          this.formRef1.current.resetFields();
+          notification.info({
+            message: 'Error',
+            description: 'This data already exists in database!'
+          });
+        }
+      }).catch(err => {
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while adding a company to the current project!'
+        });
+      })
+    }
+  }
 
   addManufacuterer() {
     this.props.history.push(`/add-manufacturer?redirect=project-details/${this.props.match.params.id}`)
@@ -170,33 +194,39 @@ export default class ProjectDetails extends Component {
   }
 
   saveImage = (e) => {
-    console.log('e => ', e);
-    let array = e.target.files[0];
-    this.setState({ loading: true }, () => {
-      const formData = new FormData();
-      formData.append('Id', parseInt(this.props.match.params.id))
-      formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
-      formData.append('Photo', array)
-      saveProjectPicture(formData).then(res => {
-        if (res.data.status === true) {
-          userProjects(this.props.match.params.id).then(Res => {
-            if (Res.data.status === true) {
-              this.setState({ pictureList: Res.data.data.pictureList, loading: false }, () => {
-                notification.success({
-                  message: 'Success',
-                  description: 'An Image has been successfully added to the current project!'
-                });
+    this.setState({ imageLength: e.target.files.length }, () => {
+      console.log('this.state => ', this.state.imageLength);
+
+      for (let index = 0; index < e.target.files.length; index++) {
+        const element = e.target.files[index];
+        console.log('element,index => ', e.target.files.length, index + 1);
+        this.setState({ loading: true }, () => {
+          const formData = new FormData();
+          formData.append('Id', parseInt(this.props.match.params.id))
+          formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')))
+          formData.append('Photo', element)
+          saveProjectPicture(formData).then(res => {
+            if (res.data.status === true) {
+              userProjects(this.props.match.params.id).then(Res => {
+                if (Res.data.status === true) {
+                  this.setState({ pictureList: Res.data.data.pictureList, loading: false }, () => {
+                    notification.success({
+                      message: 'Success',
+                      description: 'An Image has been successfully added to the current project!'
+                    });
+                  })
+                }
               })
             }
-          })
-        }
-      }).catch(err => {
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while uploading an image to the current project!'
+          }).catch(err => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while uploading an image to the current project!'
+            });
+          });
         });
-      });
-    });
+      }
+    })
   }
 
   render() {
@@ -218,7 +248,7 @@ export default class ProjectDetails extends Component {
                     <button type="button" className="add-btn btn-blue mb-4">
                       <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
                     </button>
-                    <input type="file" id="file" style={{ 'display': 'none' }} onChange={(e) => this.saveImage(e)} />
+                    <input type="file" id="file" style={{ 'display': 'none' }} onChange={(e) => this.saveImage(e)} multiple />
                     <div className="form-border crd-wrp">
                       <div className="pro-img slider-main mb-2 embed-responsive">
                         <Carousel autoPlay>
@@ -260,10 +290,11 @@ export default class ProjectDetails extends Component {
                             <Form.Item name="manufacturerName">
                               <Select
                                 key="manufacturer"
+                                mode="multiple"
                                 showSearch
                                 labelInValue
-                                placeholder="Search and add a new manufacturer"
-                                notFoundContent={fetching ? <Spin size="small" /> : <button className="btn btn-blue btnManufacturer" onClick={() => this.addManufacuterer()}>Add New Manufacturer</button>}
+                                placeholder="Search for a manufacturer"
+                                notFoundContent={fetching ? <Spin size="small" /> : ""}
                                 filterOption={false}
                                 onSearch={(e) => this.fetchManufacturers(e)}
                                 onChange={(e) => this.handleChange(e)}
@@ -274,6 +305,7 @@ export default class ProjectDetails extends Component {
                               </Select>
                             </Form.Item>
                           </Form>
+                          <Button htmlType="button" onClick={() => this.addfinal()}>Add Manufacturer</Button>
                         </div>
                       </div>
                     </div>
@@ -294,10 +326,11 @@ export default class ProjectDetails extends Component {
                             <Form.Item name="companyName">
                               <Select
                                 key="company"
+                                mode="multiple"
                                 showSearch
                                 labelInValue
-                                placeholder="Search and add a new comapany"
-                                notFoundContent={fetching1 ? <Spin size="small" /> : <button className="btn btn-blue btnManufacturer" onClick={() => this.addCompany()}>Add New Company</button>}
+                                placeholder="Search for a comany"
+                                notFoundContent={fetching1 ? <Spin size="small" /> : ""}
                                 filterOption={false}
                                 onSearch={(e) => this.fetchCompany(e)}
                                 onChange={(e) => this.handleCompanyChange(e)}
@@ -307,6 +340,7 @@ export default class ProjectDetails extends Component {
                                 ))}
                               </Select>
                             </Form.Item>
+                            <Button htmlType="button" onClick={() => this.addfinalCompany()}>Add Company</Button>
                           </Form>
                         </div>
                       </div>

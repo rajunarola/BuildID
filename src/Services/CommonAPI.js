@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const userID = localStorage.getItem('userID');
+const userID = parseInt(localStorage.getItem('userID'));
 
 export function userLogin(data) {
     return axios.post(process.env.REACT_APP_API_URL + `api/users/SignIn2`, data).then(response => {
@@ -19,7 +19,7 @@ export function getUserDetails() {
 }
 
 export function userWorkHistory() {
-    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserWorkHistory/${userID}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserWorkHistory/${localStorage.getItem('userID')}`).then(response => {
         return response;
     }).catch(error => {
         return error;
@@ -35,7 +35,7 @@ export function userProjects(id) {
 }
 
 export function getTicketsByUserId() {
-    return axios.get(process.env.REACT_APP_API_URL + `api/tickets/GetTicketsByUserId/${userID}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/tickets/GetTicketsByUserId/${localStorage.getItem('userID')}`).then(response => {
         return response;
     }).catch(error => {
         return error;
