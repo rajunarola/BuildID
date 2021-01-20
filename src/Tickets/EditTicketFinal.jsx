@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { addNewTicket, getTicketByID } from '../Services/TicketAPI';
 import * as moment from "moment";
-import { Form, Input, Select, DatePicker, notification, Spin, Checkbox } from 'antd';
+import { Form, Input, Select, DatePicker, notification, Spin, Checkbox, Image } from 'antd';
 import debounce from 'lodash/debounce';
 import Loader from '../Loader/Loader';
 import { withRouter } from 'react-router-dom';
@@ -102,11 +102,11 @@ class EditTicketFinal extends Component {
   }
 
   frontPictureHandler = (event) => {
-    this.setState({ FrontPictureUrl: event.target.files[0], file: URL.createObjectURL(event.target.files[0]) })
+    this.setState({ FrontPictureUrl: event.target.files[0], getfrontPicture: URL.createObjectURL(event.target.files[0]) })
   }
 
   backPictureHandler = (event) => {
-    this.setState({ BackPictureUrl: event.target.files[0], file2: URL.createObjectURL(event.target.files[0]) })
+    this.setState({ BackPictureUrl: event.target.files[0], getBackPicture: URL.createObjectURL(event.target.files[0]) })
   }
 
   cancelChanges() {
@@ -244,32 +244,38 @@ class EditTicketFinal extends Component {
                   </div>
                   <div className="form-row">
                     <div className="form-group col-lg-6 img-upload-btn">
-                      <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture
-                        {this.state.getfrontPicture !== "" ?
+                      <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture</label>
+                      <Form.Item name="getfrontPicture">
+                        <Image src={this.state.getfrontPicture} />
+                        <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
+                      </Form.Item>
+                      {/* {this.state.getfrontPicture !== "" ?
                           <>
                             <img src={this.state.getfrontPicture} alt="ImageFront" className="mt-2 mb-2 d-block" />
-                            <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
                           </> :
                           <>
                             <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
                             <img src={this.state.file} alt="" />
                           </>
-                        }
-                      </label>
+                        } */}
+
                     </div>
                     <div className="form-group col-lg-6 img-upload-btn">
-                      <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture
-                          {this.state.getBackPicture !== "" ?
-                          <>
-                            <img src={this.state.getBackPicture} alt="ImageBack" className="mt-2 mb-2 d-block" />
-                            <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
-                          </> :
-                          <>
-                            <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
-                            <img src={this.state.file2} alt=""/>
-                          </>
-                        }
-                      </label>
+                      <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture</label>
+                      <Form.Item name="getfrontPicture">
+                        <Image src={this.state.getBackPicture} />
+                        <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
+                      </Form.Item>
+                      {/* {this.state.getBackPicture !== "" ?
+                        <>
+                          <img src={this.state.getBackPicture} alt="ImageBack" className="mt-2 mb-2 d-block" />
+                        </> :
+                        <>
+                          <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
+                          <img src={this.state.file2} alt="" />
+                        </>
+                      } */}
+
                     </div>
                   </div>
                   <div className="form-check">
