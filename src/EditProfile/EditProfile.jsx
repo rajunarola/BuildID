@@ -16,7 +16,8 @@ export default class EditProfile extends Component {
   state = {
     experienceArray: [],
     Phones: [],
-    RideShareInterested: false
+    RideShareInterested: false,
+    loading: false
   }
 
   componentDidMount() {
@@ -48,15 +49,19 @@ export default class EditProfile extends Component {
             }
           });
         } else {
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while fetching data!'
+            });
+          });
+        }
+      }).catch(err => {
+        this.setState({ loading: false }, () => {
           notification.error({
             message: 'Error',
             description: 'There was an error while fetching data!'
           });
-        }
-      }).catch(err => {
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while fetching data!'
         });
       });
     })
@@ -91,34 +96,39 @@ export default class EditProfile extends Component {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        deleteAnExperience({ Id: id }).then(res => {
-          if (res.data.status === true) {
-            getUserExperienceHistory().then(response => {
-              if (response.status === 200) {
-                const datenewd = response.data.data.sort((a, b) => new Date(moment(b.endDate).format('YYYY')) - new Date(moment(a.endDate).format('YYYY')))
-                this.setState({ experienceArray: response.data.data });
-                const firstData = this.state.experienceArray[0].projectId;
-                const projectName = this.state.experienceArray[0].projectName;
-                const companyName = this.state.experienceArray[0].companyName;
-                this.setState({ projectName: projectName, projectID: firstData, companyName: companyName });
-              }
-            }).catch(Err => { });
-            notification.success({
-              message: 'Success',
-              description: 'Experience data deleted successfully!'
+        this.setState({ loading: true }, () => {
+          deleteAnExperience({ Id: id }).then(res => {
+            if (res.data.status === true) {
+              getUserExperienceHistory().then(response => {
+                if (response.status === 200) {
+                  this.setState({ experienceArray: response.data.data });
+                  const firstData = this.state.experienceArray[0].projectId;
+                  const projectName = this.state.experienceArray[0].projectName;
+                  const companyName = this.state.experienceArray[0].companyName;
+                  this.setState({ projectName: projectName, projectID: firstData, companyName: companyName, loading: false });
+                }
+              }).catch(Err => { });
+              notification.success({
+                message: 'Success',
+                description: 'Experience data deleted successfully!'
+              });
+            } else {
+              this.setState({ loading: false }, () => {
+                notification.error({
+                  message: 'Error',
+                  description: 'There was an error while deleting an experience'
+                });
+              });
+            }
+          }).catch(err => {
+            this.setState({ loading: false }, () => {
+              notification.error({
+                message: 'Error',
+                description: 'There was an error while deleting an experience'
+              });
             });
-          } else {
-            notification.error({
-              message: 'Error',
-              description: 'There was an error while deleting an experience'
-            });
-          }
-        }).catch(err => {
-          notification.error({
-            message: 'Error',
-            description: 'There was an error while deleting an experience'
           });
-        })
+        });
       } else {
         swal("Your experience data is safe!");
       }
@@ -164,59 +174,111 @@ export default class EditProfile extends Component {
   render() {
 
     const updateUserProfile = (values) => {
-      if (values.sights) {
-        var numbers = [...this.state.Phones, ...values.sights];
-      }
-      const formData = new FormData()
-      formData.append('UserId', parseInt(localStorage.getItem('userID')));
-      formData.append('FirstName', values.FirstName);
-      formData.append('LastName', values.LastName);
-      formData.append('Phones', JSON.stringify({ Phones: numbers ? numbers : this.state.Phones }));
-      formData.append('DateCreated', moment(new Date()).format());
-      formData.append('DateModified', moment(new Date()).format());
-      formData.append('CreatedBy', parseInt(localStorage.getItem('userID')));
-      formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
-      formData.append('RideShareInterested', this.state.RideShareInterested);
-      editUserProfile(formData).then(res => {
-        if (res.data.status === true) {
-          notification.success({
-            message: 'Success',
-            description: 'User data successfully updated!'
-          });
+      this.setState({ loading: true }, () => {
+        if (values.sights) {
+          var numbers = [...this.state.Phones, ...values.sights];
         }
-      }).catch(err => {
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while updating user data!'
+        const formData = new FormData()
+        formData.append('UserId', parseInt(localStorage.getItem('userID')));
+        formData.append('FirstName', values.FirstName);
+        formData.append('LastName', values.LastName);
+        formData.append('Phones', JSON.stringify({ Phones: numbers ? numbers : this.state.Phones }));
+        formData.append('DateCreated', moment(new Date()).format());
+        formData.append('DateModified', moment(new Date()).format());
+        formData.append('CreatedBy', parseInt(localStorage.getItem('userID')));
+        formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
+        formData.append('RideShareInterested', this.state.RideShareInterested);
+        editUserProfile(formData).then(res => {
+          this.setState({ loading: false }, () => {
+            if (res.data.status === true) {
+              Promise.all([getUserDetails(), getAddress()]).then(values => {
+                if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
+                  if (this.formRef) {
+                    this.formRef.current.setFieldsValue({
+                      FirstName: values[0].data.data.firstName,
+                      LastName: values[0].data.data.lastName,
+                    });
+                  }
+                  if (this.formRef1) {
+                    this.formRef1.current.setFieldsValue({
+                      Address1: values[1].data.data.address1,
+                      Address2: values[1].data.data.address2,
+                      City: values[1].data.data.city,
+                      Province: values[1].data.data.province,
+                      Country: values[1].data.data.country,
+                      postalCode: values[1].data.data.postalCode,
+                    });
+                  }
+                }
+              });
+              notification.success({
+                message: 'Success',
+                description: 'User data successfully updated!'
+              });
+            }
+          })
+        }).catch(err => {
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while updating user data!'
+            });
+          })
         });
-      });
+      })
     }
 
     const updateAddress = (values) => {
-      const data = {
-        UserId: parseInt(localStorage.getItem('userID')),
-        Address1: values.Address1,
-        Address2: values.Address2,
-        Country: values.Country,
-        Province: values.Province,
-        City: values.City,
-        PostalCode: values.postalCode,
-        CreatedBy: parseInt(localStorage.getItem('userID')),
-        ModifiedBy: parseInt(localStorage.getItem('userID')),
-        DateCreated: moment(new Date()).format(),
-        DateModified: moment(new Date()).format()
-      }
-      saveUserAddress(data).then(res => {
-        if (res.data.status === true) {
-          notification.success({
-            message: 'Success',
-            description: 'User address successfully updated!'
-          });
+      this.setState({ loading: true }, () => {
+        const data = {
+          UserId: parseInt(localStorage.getItem('userID')),
+          Address1: values.Address1,
+          Address2: values.Address2,
+          Country: values.Country,
+          Province: values.Province,
+          City: values.City,
+          PostalCode: values.postalCode,
+          CreatedBy: parseInt(localStorage.getItem('userID')),
+          ModifiedBy: parseInt(localStorage.getItem('userID')),
+          DateCreated: moment(new Date()).format(),
+          DateModified: moment(new Date()).format()
         }
-      }).catch(err => {
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while updating address!'
+        saveUserAddress(data).then(res => {
+          if (res.data.status === true) {
+            this.setState({ loading: false }, () => {
+              Promise.all([getUserDetails(), getAddress()]).then(values => {
+                if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
+                  if (this.formRef) {
+                    this.formRef.current.setFieldsValue({
+                      FirstName: values[0].data.data.firstName,
+                      LastName: values[0].data.data.lastName,
+                    });
+                  }
+                  if (this.formRef1) {
+                    this.formRef1.current.setFieldsValue({
+                      Address1: values[1].data.data.address1,
+                      Address2: values[1].data.data.address2,
+                      City: values[1].data.data.city,
+                      Province: values[1].data.data.province,
+                      Country: values[1].data.data.country,
+                      postalCode: values[1].data.data.postalCode,
+                    });
+                  }
+                }
+              });
+              notification.success({
+                message: 'Success',
+                description: 'User address successfully updated!'
+              });
+            });
+          }
+        }).catch(err => {
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while updating address!'
+            });
+          });
         });
       });
     }
