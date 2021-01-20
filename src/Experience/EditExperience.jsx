@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Select, Spin, DatePicker, notification, Checkbox } from 'antd';
-import { saveUserWorkHistory, editAnExperience, getUserExperienceHistory } from '../Services/Experience';
+import { saveUserWorkHistory, editAnExperience } from '../Services/Experience';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
 import Loader from '../Loader/Loader';
@@ -131,34 +131,54 @@ class EditExperience extends Component {
     const { Option } = Select;
 
     const updateExperience = values => {
-      const data = {
-        Id: parseInt(this.props.match.params.experienceId),
-        UserId: parseInt(localStorage.getItem('userID')),
-        StartDate: moment(values.StartDate._d).format('YYYY-MM-DD'),
-        EndDate: moment(values.EndDate._d).format('YYYY-MM-DD'),
-        CompanyId: parseInt(values.companyName.value),
-        TradeId: parseInt(values.tradeName.value),
-        RoleId: parseInt(values.roleName.value),
-        IncludeInResume: this.state.IncludeInResume,
-        CurrentCompany: this.state.CurrentCompany,
-        CreatedBy: parseInt(localStorage.getItem('userID')),
-        ModifiedBy: parseInt(localStorage.getItem('userID')),
-        DateCreated: moment(new Date()).format(),
-        DateModified: moment(new Date()).format()
-      }
-      saveUserWorkHistory(data).then(res => {
-        if (res.data.status === true) {
-          notification.success({
-            message: 'Success',
-            description: 'Experience updated successfully!'
-          });
+      this.setState({ loading: true }, () => {
+        const data = {
+          Id: parseInt(this.props.match.params.experienceId),
+          UserId: parseInt(localStorage.getItem('userID')),
+          StartDate: moment(values.StartDate._d).format('YYYY-MM-DD'),
+          EndDate: moment(values.EndDate._d).format('YYYY-MM-DD'),
+          CompanyId: parseInt(values.companyName.value),
+          TradeId: parseInt(values.tradeName.value),
+          RoleId: parseInt(values.roleName.value),
+          IncludeInResume: this.state.IncludeInResume,
+          CurrentCompany: this.state.CurrentCompany,
+          CreatedBy: parseInt(localStorage.getItem('userID')),
+          ModifiedBy: parseInt(localStorage.getItem('userID')),
+          DateCreated: moment(new Date()).format(),
+          DateModified: moment(new Date()).format()
         }
-      }).catch(err => {
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while updating the experience!'
+        saveUserWorkHistory(data).then(res => {
+          if (res.data.status === true) {
+            editAnExperience(localStorage.getItem('userID'), this.props.match.params.experienceId).then(res => {
+              if (res.status === 200) {
+                this.setState({
+                  CurrentCompany: res.data.data.currentCompany,
+                  IncludeInResume: res.data.data.includeInResume,
+                  loading: false
+                }, () => {
+                  this.formRef.current.setFieldsValue({
+                    companyName: { value: res.data.data.companyId, label: res.data.data.companyName, key: res.data.data.companyId },
+                    roleName: { value: res.data.data.roleId, label: res.data.data.roleName, key: res.data.data.roleId },
+                    tradeName: { value: res.data.data.tradeId, label: res.data.data.tradeName, key: res.data.data.tradeId },
+                    StartDate: moment(moment(res.data.data.startDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+                    EndDate: moment(moment(res.data.data.endDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+                  });
+                });
+              }
+            }).catch(err => {
+            });
+            notification.success({
+              message: 'Success',
+              description: 'Experience updated successfully!'
+            });
+          }
+        }).catch(err => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while updating the experience!'
+          });
         });
-      });
+      })
     }
 
     return (
@@ -200,7 +220,7 @@ class EditExperience extends Component {
                     </Form.Item>
                   </div>
                   <div className="form-group">
-                    <Checkbox checked={this.state.CurrentCompany ? true === true : false}
+                    <Checkbox checked={this.state.CurrentCompany}
                       onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)}>I currently work here </Checkbox>
                   </div>
                   <div className="form-group">
@@ -238,7 +258,7 @@ class EditExperience extends Component {
                     </Form.Item>
                   </div>
                   <div className="form-group">
-                    <Checkbox checked={this.state.IncludeInResume === true ? true : false}
+                    <Checkbox checked={this.state.IncludeInResume}
                       onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume </Checkbox>
                   </div>
                   <button type="submit" className="btn btn-blue btnManufacturer mr-2">Update Experience </button>
