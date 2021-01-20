@@ -29,7 +29,9 @@ class EditTicketFinal extends Component {
     data1: [],
     fetching1: false,
     getfrontPicture: '',
-    getBackPicture: ''
+    getBackPicture: '',
+    file: '',
+    file2: ''
   }
 
   componentDidMount() {
@@ -100,11 +102,11 @@ class EditTicketFinal extends Component {
   }
 
   frontPictureHandler = (event) => {
-    this.setState({ FrontPictureUrl: event.target.files[0] })
+    this.setState({ FrontPictureUrl: event.target.files[0], file: URL.createObjectURL(event.target.files[0]) })
   }
 
   backPictureHandler = (event) => {
-    this.setState({ BackPictureUrl: event.target.files[0] })
+    this.setState({ BackPictureUrl: event.target.files[0], file2: URL.createObjectURL(event.target.files[0]) })
   }
 
   cancelChanges() {
@@ -246,9 +248,12 @@ class EditTicketFinal extends Component {
                         {this.state.getfrontPicture !== "" ?
                           <>
                             <img src={this.state.getfrontPicture} alt="ImageFront" className="mt-2 mb-2 d-block" />
-                            <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
+                            <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
                           </> :
-                          <input type="file" id="img" name="img" accept="image/*" className="img-upload" onChange={(e) => this.frontPictureHandler(e)} />
+                          <>
+                            <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
+                            <img src={this.state.file} alt="" />
+                          </>
                         }
                       </label>
                     </div>
@@ -257,9 +262,12 @@ class EditTicketFinal extends Component {
                           {this.state.getBackPicture !== "" ?
                           <>
                             <img src={this.state.getBackPicture} alt="ImageBack" className="mt-2 mb-2 d-block" />
-                            <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
+                            <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
                           </> :
-                          <input type="file" id="img2" name="img2" accept="image/*" className="img-upload" onChange={(e) => this.backPictureHandler(e)} />
+                          <>
+                            <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
+                            <img src={this.state.file2} alt=""/>
+                          </>
                         }
                       </label>
                     </div>

@@ -1386,10 +1386,6 @@ ul.ticket-list.overlay-scroll {
     justify-content: space-between;
 }
 
-.manufacture-content {
-    padding: 0px 15px;
-}
-
 .manufacture-form.manufacture-content.pt-3 {
     padding: 0 20px 20px;
 }
@@ -1401,4 +1397,18 @@ ul.ticket-list.overlay-scroll {
 
 .btnManufacturer {
     padding: 5px 15px !important;
+}
+
+.manufacture-content {
+    padding: 10px 15px;
+    max-height: 830px;
+    overflow: auto;
+    margin: 0px 0px 20px 0;
+}
+
+.manu_upload {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
