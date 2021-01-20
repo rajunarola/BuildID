@@ -11,7 +11,7 @@ import {
   saveProjectPicture
 } from '../Services/Project';
 import debounce from 'lodash/debounce';
-import { Select, Form, Spin, notification, Button } from 'antd';
+import { Select, Form, Spin, notification } from 'antd';
 import Loader from '../Loader/Loader';
 
 export default class ProjectDetails extends Component {
@@ -274,15 +274,10 @@ export default class ProjectDetails extends Component {
                   </div>
                   { /* Manufacturer */}
                   <div className="col-lg-4 col-md-6 col-12">
-                    <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add New Manufacturer</button>
+                    <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add Global Manufacturer</button>
                     <div className="form-border crd-wrp">
                       <div className="proj-timeline">
                         <h4 className="k-card-title">MANUFACTURERS</h4>
-                        <div className="manufacture-content">
-                          {this.state.manufacturersData.map(data => (
-                            <div className="k-custom-tag">{data.manufacturerName}</div>
-                          ))}
-                        </div>
                         <div className="manufacture-form manufacture-content pt-3">
                           <Form ref={this.formRef}>
                             <Form.Item name="manufacturerName">
@@ -303,22 +298,22 @@ export default class ProjectDetails extends Component {
                               </Select>
                             </Form.Item>
                           </Form>
-                          <Button htmlType="button" onClick={() => this.addfinal()}>Add Manufacturer</Button>
+                          <button type="button" className="add-btn btn-blue" onClick={() => this.addfinal()}>Add Manufacturer To The Current Project</button>
+                        </div>
+                        <div className="manufacture-content">
+                          {this.state.manufacturersData.map(data => (
+                            <div className="k-custom-tag">{data.manufacturerName}</div>
+                          ))}
                         </div>
                       </div>
                     </div>
                   </div>
                   { /* Company */}
                   <div className="col-lg-4 col-md-6 col-12">
-                    <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i> Add New Company</button>
+                    <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i>Add Global Company</button>
                     <div className="form-border crd-wrp">
                       <div className="proj-timeline">
                         <h4 className="k-card-title">COMPANY</h4>
-                        <div className="manufacture-content">
-                          {this.state.companyData.map(data => (
-                            <div className="k-custom-tag">{data.companyName}</div>
-                          ))}
-                        </div>
                         <div className="manufacture-form manufacture-content pt-3">
                           <Form ref={this.formRef1}>
                             <Form.Item name="companyName">
@@ -338,8 +333,13 @@ export default class ProjectDetails extends Component {
                                 ))}
                               </Select>
                             </Form.Item>
-                            <Button htmlType="button" onClick={() => this.addfinalCompany()}>Add Company</Button>
+                            <button type="button" className="add-btn btn-blue" onClick={() => this.addfinalCompany()}>Add Company To The Current Project</button>
                           </Form>
+                        </div>
+                        <div className="manufacture-content">
+                          {this.state.companyData.map(data => (
+                            <div className="k-custom-tag">{data.companyName}</div>
+                          ))}
                         </div>
                       </div>
                     </div>

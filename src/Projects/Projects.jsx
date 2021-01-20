@@ -87,7 +87,7 @@ export default class Projects extends React.Component {
               <div className="com-padding">
                 <div className="row">
                   <div className="col-lg-4">
-                    <a className="add-btn btn-blue" href="javascript:;"><i className="fas fa-plus-circle"></i> Add Projects</a>
+                    <Link className="add-btn btn-blue"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                     <div className="accordion" id="projectaccordion">
                       <div className="crd-wrap">
                         <div className="crd-header" id="projectOne">
@@ -104,12 +104,12 @@ export default class Projects extends React.Component {
                               </Carousel>
                             </div>
                             <div className="pro-details">
-                              <a className="close-proj"><i className="fas fa-times-circle"></i></a>
+                              <span className="close-proj"><i className="fas fa-times-circle"></i></span>
                               <div className="wrap">
                                 <h4>{this.state.projectArray[0] && this.state.projectArray[0].projectName}</h4>
                                 <span>{this.state.projectArray[0] && this.state.projectArray[0].companyName}</span>
                               </div>
-                              <a className="approve-proj"><i className="fas fa-check-circle"></i></a>
+                              <span className="approve-proj"><i className="fas fa-check-circle"></i></span>
                             </div>
                             <div className="proj-timeline">
                               <h4>My Projects</h4>
@@ -146,12 +146,12 @@ export default class Projects extends React.Component {
                           <ul className="ticket-list overlay-scroll">
                             {this.state.ticketArray.map((data, index) => (
                               <li onClick={() => this.onModalPopUp(data.id)} className="ticket-block li-position" style={moment(data.expiry).isBefore(new Date()) ? { 'backgroundColor': "#fcecc3" } : { 'backgroundColor': "white" }}>
-                                <div className="ticket-img"><img src={data.backPictureUrl && data.backPictureUrl || data.frontPictureUrl && data.frontPictureUrl} alt="" /></div>
+                                <div className="ticket-img"><img src={data.backPictureUrl || data.frontPictureUrl} alt="" /></div>
                                 <div className="ticket-detail">
                                   <h4>{data.ticketType}</h4>
                                   <span>{data.issuedBy}</span>
                                 </div>
-                                <div className="ticket-date">{moment(data.dateCreated).format('ll')}</div>
+                                <div className="ticket-date">{moment(data.expiry).format('ll')}</div>
                                 <button onClick={() => this.editTicket(data.id)} className="edit-btn">Edit</button>
                               </li>
                             ))}
