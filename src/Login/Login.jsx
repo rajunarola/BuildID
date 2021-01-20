@@ -1,6 +1,7 @@
 import React from 'react'
 import Loader from '../Loader/Loader';
 import { userLogin } from '../Services/CommonAPI';
+import { Link } from 'react-router-dom';
 
 export default class Login extends React.Component {
 
@@ -55,9 +56,9 @@ export default class Login extends React.Component {
                                     <h3>Hello and welcome Back, login in to your account</h3>
                                     <h4>Login with your social media account</h4>
                                     <ul className="login-social">
-                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#4268b3' }}><i className="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#1ca1ee' }}><i className="fab fa-twitter"></i></a></li>
-                                        <li><a href="javascript:void(0)" style={{ 'backgroundColor': '#d44439' }}><i className="fab fa-google-plus-g"></i></a></li>
+                                        <li><Link style={{ 'backgroundColor': '#4268b3' }}><i className="fab fa-facebook-f"></i></Link></li>
+                                        <li><Link style={{ 'backgroundColor': '#1ca1ee' }}><i className="fab fa-twitter"></i></Link></li>
+                                        <li><Link style={{ 'backgroundColor': '#d44439' }}><i className="fab fa-google-plus-g"></i></Link></li>
                                     </ul>
                                     <form onSubmit={(e) => this.userLogin(e)}>
                                         <div className="form-group">
