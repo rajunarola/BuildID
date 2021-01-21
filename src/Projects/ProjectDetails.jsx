@@ -274,7 +274,7 @@ export default class ProjectDetails extends Component {
                   </div>
                   { /* Manufacturer */}
                   <div className="col-lg-4 col-md-6 col-12">
-                    <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add Global Manufacturer</button>
+                    {/* <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add Global Manufacturer</button> */}
                     <div className="form-border crd-wrp">
                       <div className="proj-timeline">
                         <h4 className="k-card-title">MANUFACTURERS</h4>
@@ -287,7 +287,7 @@ export default class ProjectDetails extends Component {
                                 showSearch
                                 labelInValue
                                 placeholder="Search for a manufacturer"
-                                notFoundContent={fetching ? <Spin size="small" /> : ""}
+                                notFoundContent={fetching ? <Spin size="small" /> : <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add Manufacturer</button>}
                                 filterOption={false}
                                 onSearch={(e) => this.fetchManufacturers(e)}
                                 onChange={(e) => this.handleChange(e)}
@@ -310,7 +310,7 @@ export default class ProjectDetails extends Component {
                   </div>
                   { /* Company */}
                   <div className="col-lg-4 col-md-6 col-12">
-                    <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i>Add Global Company</button>
+                    {/* <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i>Add Global Company</button> */}
                     <div className="form-border crd-wrp">
                       <div className="proj-timeline">
                         <h4 className="k-card-title">COMPANY</h4>
@@ -323,7 +323,7 @@ export default class ProjectDetails extends Component {
                                 showSearch
                                 labelInValue
                                 placeholder="Search for a comany"
-                                notFoundContent={fetching1 ? <Spin size="small" /> : ""}
+                                notFoundContent={fetching1 ? <Spin size="small" /> : <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i>Add Company</button>}
                                 filterOption={false}
                                 onSearch={(e) => this.fetchCompany(e)}
                                 onChange={(e) => this.handleCompanyChange(e)}
