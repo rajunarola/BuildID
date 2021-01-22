@@ -280,22 +280,23 @@ export default class ProjectDetails extends Component {
                         <h4 className="k-card-title">MANUFACTURERS</h4>
                         <div className="manufacture-form manufacture-content pt-3">
                           <Form ref={this.formRef}>
-                            <Form.Item name="manufacturerName">
+                            <Form.Item name="manufacturerName" className="manufacturerName_c">
                               <Select
                                 key="manufacturer"
                                 mode="multiple"
                                 showSearch
                                 labelInValue
                                 placeholder="Search for a manufacturer"
-                                notFoundContent={fetching ? <Spin size="small" /> : <button className="add-btn btn-blue" onClick={() => this.addManufacuterer()}><i className="fas fa-plus-circle"></i> Add Manufacturer</button>}
+                                notFoundContent={fetching ? <Spin size="small" /> : ""}
                                 filterOption={false}
                                 onSearch={(e) => this.fetchManufacturers(e)}
                                 onChange={(e) => this.handleChange(e)}
-                                style={{ width: '100%' }}>
+                                className="menuf_searches">
                                 {data.map(d => (
                                   <Select.Option key={d.value}>{d.text}</Select.Option>
                                 ))}
                               </Select>
+                              <i className="fas fa-plus-circle add-btn btn-blue m-0 w-auto" onClick={() => this.addManufacuterer()}></i>
                             </Form.Item>
                           </Form>
                           <button type="button" className="add-btn btn-blue" onClick={() => this.addfinal()}>Add Manufacturer To The Current Project</button>
@@ -315,26 +316,27 @@ export default class ProjectDetails extends Component {
                       <div className="proj-timeline">
                         <h4 className="k-card-title">COMPANY</h4>
                         <div className="manufacture-form manufacture-content pt-3">
-                          <Form ref={this.formRef1}>
+                          <Form ref={this.formRef1} className="manufacturerName_c">
                             <Form.Item name="companyName">
                               <Select
+                                className="menuf_searches"
                                 key="company"
                                 mode="multiple"
                                 showSearch
                                 labelInValue
                                 placeholder="Search for a comany"
-                                notFoundContent={fetching1 ? <Spin size="small" /> : <button className="add-btn btn-blue" onClick={() => this.addCompany()}><i className="fas fa-plus-circle"></i>Add Company</button>}
+                                notFoundContent={fetching1 ? <Spin size="small" /> : ""}
                                 filterOption={false}
                                 onSearch={(e) => this.fetchCompany(e)}
-                                onChange={(e) => this.handleCompanyChange(e)}
-                                style={{ width: '100%' }}>
+                                onChange={(e) => this.handleCompanyChange(e)}>
                                 {data1.map(d => (
                                   <Select.Option key={d.value}>{d.text}</Select.Option>
                                 ))}
                               </Select>
+                              <i className="fas fa-plus-circle add-btn btn-blue m-0 w-auto" onClick={() => this.addCompany()}></i>
                             </Form.Item>
-                            <button type="button" className="add-btn btn-blue" onClick={() => this.addfinalCompany()}>Add Company To The Current Project</button>
                           </Form>
+                          <button type="button" className="add-btn btn-blue" onClick={() => this.addfinalCompany()}>Add Company To The Current Project</button>
                         </div>
                         <div className="manufacture-content">
                           {this.state.companyData.map(data => (

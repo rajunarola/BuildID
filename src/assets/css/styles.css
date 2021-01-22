@@ -1412,3 +1412,20 @@ ul.ticket-list.overlay-scroll {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.manufacturerName_c .ant-form-item-control-input-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.manufacturerName_c .ant-form-item-control-input-content i {
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.manufacturerName_c .ant-form-item-control-input-content .ant-select-show-search {
+    margin: 0 10px 0px 0;
+}
+
+.menuf_searches {}
