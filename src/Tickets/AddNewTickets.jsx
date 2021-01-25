@@ -70,8 +70,6 @@ export default class AddNewTickets extends React.Component {
     });
   };
 
-  handleIssuedByChange() { };
-
   fetchTicketType = () => {
     this.lastFetchId1 += 1;
     const fetchId = this.lastFetchId1;
@@ -89,12 +87,9 @@ export default class AddNewTickets extends React.Component {
     });
   };
 
-  handleTicketTypeChange() { };
-
   render() {
 
     const { fetching, data, value, fetching1, data1, value1 } = this.state;
-    const { Option } = Select;
 
     const onFinishFailed = (errorInfo) => {
       console.log("Failed:", errorInfo);
@@ -155,10 +150,9 @@ export default class AddNewTickets extends React.Component {
                         notFoundContent={fetching1 ? <Spin size="small" /> : null}
                         filterOption={false}
                         onSearch={(e) => this.fetchTicketType(e)}
-                        onChange={(e) => this.handleTicketTypeChange(e)}
                         style={{ width: '100%' }}>
                         {data1.map(d => (
-                          <Option key={d.value}>{d.text}</Option>
+                          <Select.Option key={d.value}>{d.text}</Select.Option>
                         ))}
                       </Select>
                     </Form.Item>
@@ -194,10 +188,9 @@ export default class AddNewTickets extends React.Component {
                           notFoundContent={fetching ? <Spin size="small" /> : null}
                           filterOption={false}
                           onSearch={(e) => this.fetchCompany(e)}
-                          onChange={(e) => this.handleIssuedByChange(e)}
                           style={{ width: '100%' }}>
                           {data.map(d => (
-                            <Option key={d.value}>{d.text}</Option>
+                            <Select.Option key={d.value}>{d.text}</Select.Option>
                           ))}
                         </Select>
                       </Form.Item>
@@ -207,7 +200,7 @@ export default class AddNewTickets extends React.Component {
                     <div className="form-group col-lg-6 img-upload-btn">
                       <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span>  Front Picture
                           <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.fileChangedHandler(e, 'front_picture')} />
-                        <img src={this.state.file} alt="file"/>
+                        <img src={this.state.file} alt="file" />
                       </label>
                     </div>
                     <div className="form-group col-lg-6 img-upload-btn">

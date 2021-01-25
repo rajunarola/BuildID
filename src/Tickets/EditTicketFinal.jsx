@@ -22,10 +22,8 @@ class EditTicketFinal extends Component {
     FrontPictureUrl: '',
     BackPictureUrl: '',
     PublicTicket: false,
-    value: [],
     data: [],
     fetching: false,
-    value1: [],
     data1: [],
     fetching1: false,
     getfrontPicture: '',
@@ -115,7 +113,7 @@ class EditTicketFinal extends Component {
 
   render() {
 
-    const { fetching, data, value, fetching1, data1, value1 } = this.state;
+    const { fetching, data, fetching1, data1 } = this.state;
     const { Option } = Select;
 
     const onFinishFailed = () => { };
@@ -190,7 +188,6 @@ class EditTicketFinal extends Component {
                           key="TicketTypeId"
                           showSearch
                           labelInValue
-                          value={value1}
                           placeholder="Search ticket type"
                           notFoundContent={fetching1 ? <Spin size="small" /> : null}
                           filterOption={false}
@@ -229,7 +226,6 @@ class EditTicketFinal extends Component {
                           key="IssuedBy"
                           showSearch
                           labelInValue
-                          value={value}
                           placeholder="Search issued by"
                           notFoundContent={fetching ? <Spin size="small" /> : null}
                           filterOption={false}
@@ -249,16 +245,6 @@ class EditTicketFinal extends Component {
                         <Image src={this.state.getfrontPicture} />
                         <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
                       </Form.Item>
-                      {/* {this.state.getfrontPicture !== "" ?
-                          <>
-                            <img src={this.state.getfrontPicture} alt="ImageFront" className="mt-2 mb-2 d-block" />
-                          </> :
-                          <>
-                            <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
-                            <img src={this.state.file} alt="" />
-                          </>
-                        } */}
-
                     </div>
                     <div className="form-group col-lg-6 img-upload-btn">
                       <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture</label>
@@ -266,16 +252,6 @@ class EditTicketFinal extends Component {
                         <Image src={this.state.getBackPicture} />
                         <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
                       </Form.Item>
-                      {/* {this.state.getBackPicture !== "" ?
-                        <>
-                          <img src={this.state.getBackPicture} alt="ImageBack" className="mt-2 mb-2 d-block" />
-                        </> :
-                        <>
-                          <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
-                          <img src={this.state.file2} alt="" />
-                        </>
-                      } */}
-
                     </div>
                   </div>
                   <div className="form-check">

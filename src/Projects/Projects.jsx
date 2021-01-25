@@ -87,7 +87,7 @@ export default class Projects extends React.Component {
               <div className="com-padding">
                 <div className="row">
                   <div className="col-lg-4">
-                    <Link className="add-btn btn-blue"><i className="fas fa-plus-circle"></i> Add Projects</Link>
+                    <Link className="add-btn btn-blue" to="/add-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                     <div className="accordion" id="projectaccordion">
                       <div className="crd-wrap">
                         <div className="crd-header" id="projectOne">
@@ -171,7 +171,7 @@ export default class Projects extends React.Component {
                           <div className="qa-sec"><h4>The question wll go here it should take up a maximum of two lines of copy?</h4>
                             <form>
                               <ul className="ans-sec">
-                                <li><input type="radio" name="ansradio" checked="" /><span>An answer will go here</span></li>
+                                <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
                                 <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
                                 <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
                               </ul>

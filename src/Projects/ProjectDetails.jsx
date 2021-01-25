@@ -236,8 +236,8 @@ export default class ProjectDetails extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div class="edit-sec">
-                <div class="editprofile"> Project Details</div>
+              <div className="edit-sec">
+                <div className="editprofile"> Project Details</div>
               </div>
               <div className="addticketform com-padding">
                 <div className="row">

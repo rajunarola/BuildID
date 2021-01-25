@@ -50,9 +50,9 @@ export default class AddManufacturer extends Component {
               <div className="row">
                 <div className="col-12 col-md-6 offset-md-3">
                   <div className="form-border crd-wrp">
-                    <div class="proj-timeline">
-                      <h4 class="k-card-title mb-0 text-uppercase"> Add New Manufacturer</h4>
-                      <div class="manufacture-content p-4">
+                    <div className="proj-timeline">
+                      <h4 className="k-card-title mb-0 text-uppercase"> Add New Manufacturer</h4>
+                      <div className="manufacture-content p-4">
                         <Form onFinish={onFinish} ref={this.formRef}>
                           <label>Manufacturer Name</label>
                           <Form.Item name="manufacturerName" rules={[{ required: true, message: 'Please input manufacturer name!' }]}>

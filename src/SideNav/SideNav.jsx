@@ -17,19 +17,19 @@ class SideNav extends React.Component {
                     </div>
                     <ul className="main-nav">
                         <li>
-                            <Link to="/dashboard" activeClassName="active" className="nav-link" >
+                            <Link to="/dashboard" className="nav-link" >
                                 <i><img src={require("../assets/images/icon_dashboard.png")} alt="Dashboard" /></i>
                                 <span>Dashboard</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="/projects" activeClassName="active" className="nav-link">
+                            <Link to="/projects" className="nav-link">
                                 <i><img src={require("../assets/images/icon_projects.png")} alt="Projects" /></i>
                                 <span>Projects</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" onClick={e => e.preventDefault()} activeClassName="active" className="nav-link">
+                            <Link to="#" onClick={e => e.preventDefault()} className="nav-link">
                                 <i><img src={require("../assets/images/icon_link.png")} alt="Address" /></i>
                                 <span>Address</span>
                             </Link>
