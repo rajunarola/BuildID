@@ -60,3 +60,19 @@ export function saveProjectPicture(data) {
         return error
     });
 }
+
+export function getSearchProjectsBy(data) {
+    return axios.post(process.env.REACT_APP_API_URL + `api/projects/GetSearchProjectsBy`, data).then(response => {
+        return response
+    }).catch(error => {
+        return error
+    });
+}
+
+export function postSaveUserWorkHistory(data) {
+    return axios.post(process.env.REACT_APP_API_URL + `api/users/SaveUserWorkHistory`, data).then(response => {
+        return response
+    }).catch(error => {
+        return error
+    });
+}

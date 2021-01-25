@@ -1,9 +1,7 @@
 import axios from "axios";
 
-const userID = parseInt(localStorage.getItem('userID'));
-
 export function getAddress() {
-    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserAddress/${userID}`).then(response => {
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserAddress/${parseInt(localStorage.getItem('userID'))}`).then(response => {
         return response
     }).catch(error => {
         return error
