@@ -2,44 +2,53 @@ import React from 'react'
 import Loader from '../Loader/Loader';
 import { userLogin } from '../Services/CommonAPI';
 import { Link } from 'react-router-dom';
-
+import { Form, Input, notification } from 'antd';
 export default class Login extends React.Component {
 
     state = {
-        email: "",
-        password: "",
         loading: false
     }
 
-    changeHandler = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value,
-        });
-    }
-
-    userLogin = (e) => {
-        this.setState({ loading: true })
-        e.preventDefault();
-        const data = {
-            user: this.state.email,
-            password: this.state.password
-        }
-        userLogin(data).then(response => {
-            console.log('response => ', response);
-            if (response.data.status === true) {
-                this.setState({ loading: false });
-                localStorage.setItem('userID', response.data.data.userId);
-                localStorage.setItem('userImage', response.data.data.pictureUrl)
-                localStorage.setItem('userName', response.data.data.firstName + " " + response.data.data.lastName);
-                this.props.history.push("/dashboard");
-            }
-        }).catch(err => {
-            this.setState({ loading: false });
-            console.log('err => ', err);
-        });
-    }
-
     render() {
+
+        const login = (value) => {
+            this.setState({ loading: true }, () => {
+                const data = {
+                    user: value.email,
+                    password: value.password
+                }
+                userLogin(data).then(response => {
+                    if (response.data && response.data.status === true) {
+                        this.setState({ loading: false }, () => {
+                            localStorage.setItem('userID', response.data.data.userId);
+                            localStorage.setItem('userImage', response.data.data.pictureUrl)
+                            localStorage.setItem('userName', response.data.data.firstName + " " + response.data.data.lastName);
+                            this.props.history.push("/dashboard");
+                            notification.success({
+                                message: 'Success',
+                                description: 'You have successfully logged in!'
+                            });
+                        });
+                        return
+                    } else if (response.response.status === 400) {
+                        this.setState({ loading: false }, () => {
+                            notification.error({
+                                message: 'Error',
+                                description: `${response.response.data.message}`
+                            });
+                            return
+                        });
+                    }
+                }).catch(err => {
+                    this.setState({ loading: false });
+                    notification.error({
+                        message: 'Error',
+                        description: `Something went wrong! Please try again later!`
+                    });
+                });
+            });
+        }
+
         return (
             <>
                 {this.state.loading ? <Loader /> :
@@ -60,17 +69,21 @@ export default class Login extends React.Component {
                                         <li><Link style={{ 'backgroundColor': '#1ca1ee' }}><i className="fab fa-twitter"></i></Link></li>
                                         <li><Link style={{ 'backgroundColor': '#d44439' }}><i className="fab fa-google-plus-g"></i></Link></li>
                                     </ul>
-                                    <form onSubmit={(e) => this.userLogin(e)}>
+                                    <Form onFinish={login} className="login-form">
                                         <div className="form-group">
                                             <label>Email</label>
-                                            <input type="text" name="email" className="form-control" placeholder="email@address.com" onChange={(event) => this.changeHandler(event)} />
+                                            <Form.Item name="email" rules={[{ required: true, message: 'Please enter email!' }]}>
+                                                <Input className="form-control" />
+                                            </Form.Item>
                                         </div>
                                         <div className="form-group">
                                             <label>Password</label>
-                                            <input type="password" name="password" className="form-control" placeholder="********" onChange={(event) => this.changeHandler(event)} />
+                                            <Form.Item name="password" rules={[{ required: true, message: 'Please enter password!' }]}>
+                                                <Input.Password className="form-control" />
+                                            </Form.Item>
                                         </div>
                                         <button type="submit" className="btn-blue btn-login">Login</button>
-                                    </form>
+                                    </Form>
                                 </div>
                             </div>
                         </div>
