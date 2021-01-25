@@ -1428,4 +1428,40 @@ ul.ticket-list.overlay-scroll {
     margin: 0 10px 0px 0;
 }
 
-.menuf_searches {}
+.suggestion-input {
+    margin-bottom: 24px;
+}
+
+.suggestion-input .css-yk16xz-control {
+    min-height: initial;
+    height: initial;
+    padding: 0;
+    border: 1px solid #d9d9d9;
+    line-height: normal;
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.suggestion-input span.css-1okebmr-indicatorSeparator {
+    display: none;
+}
+
+.suggestion-input .css-tlfecz-indicatorContainer {
+    padding: 4px 8px;
+}
+
+.suggestion-input .css-yk16xz-control .css-1wa3eu0-placeholder {
+    color: rgba(0, 0, 0, 0.45);
+    margin: 0 0;
+}
+
+.suggestion-input .css-g1d714-ValueContainer {
+    min-height: 22px;
+    padding: 0 10px;
+}
+
+.login-form .form-group label {
+    color: #191509;
+    font-size: 24px;
+    line-height: normal;
+}
