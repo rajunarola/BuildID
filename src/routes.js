@@ -14,6 +14,8 @@ const AddAddress = lazy(() => import("./Address/AddAddress"));
 const ProjectDetails = lazy(() => import("./Projects/ProjectDetails"));
 const AddManufacturer = lazy(() => import("./Projects/AddManufacturer"));
 const AddCompany = lazy(() => import("./Projects/AddCompany"));
+const AddProject = lazy(() => import("./Projects/AddProject"));
+const SelectProject = lazy(() => import("./Projects/SelectProject"));
 
 export const routesCode = [
     { path: "/(login)?", exact: true, component: Login },
@@ -28,6 +30,8 @@ export const routesCode = [
     { path: "/project-details/:id", exact: true, component: ProjectDetails },
     { path: "/add-manufacturer", exact: true, component: AddManufacturer },
     { path: "/add-company", exact: true, component: AddCompany },
+    { path: "/add-project", exact: true, component: AddProject },
+    { path: "/select-project", exact: true, component: SelectProject },
 ];
 
 class Routes extends React.PureComponent {
