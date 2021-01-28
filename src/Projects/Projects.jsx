@@ -87,7 +87,7 @@ export default class Projects extends React.Component {
               <div className="com-padding">
                 <div className="row">
                   <div className="col-lg-4">
-                    <Link className="add-btn btn-blue" to="/add-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
+                    <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                     <div className="accordion" id="projectaccordion">
                       <div className="crd-wrap">
                         <div className="crd-header" id="projectOne">
@@ -195,10 +195,10 @@ export default class Projects extends React.Component {
           <Modal.Header className="stagehead text-white" closeButton>
             <Modal.Title>{this.state.singleTicketDetail.ticketType}</Modal.Title>
           </Modal.Header>
-          {this.state.singleTicketDetail.backPictureUrl &&
+          {(this.state.singleTicketDetail.backPictureUrl || this.state.singleTicketDetail.frontPictureUrl) &&
             <Col>
               <div className="stage-img">
-                <Image className="w-100" src={this.state.singleTicketDetail.backPictureUrl} />
+                <Image className="w-100" src={this.state.singleTicketDetail.backPictureUrl ? this.state.singleTicketDetail.backPictureUrl : this.state.singleTicketDetail.frontPictureUrl} />
               </div>
             </Col>
           }
