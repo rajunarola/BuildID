@@ -76,3 +76,13 @@ export function postSaveUserWorkHistory(data) {
         return error
     });
 }
+
+export function searchProjectsBy(city, projectName, buildingTypeId, contractorName) {
+    var uri = `${process.env.REACT_APP_API_URL}api/projects/GetSearchProjectsBy/{CityProv:'${city}',ProjectName:'${projectName}',BuildingTypeId:'${buildingTypeId}',ContractorName:'${contractorName}'}`;
+    var res = encodeURI(uri);
+    return axios.get(res).then(response => {
+        return response
+    }).catch(error => {
+        return error
+    });
+}
