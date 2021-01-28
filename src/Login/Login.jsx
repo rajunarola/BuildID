@@ -40,10 +40,11 @@ export default class Login extends React.Component {
                         });
                     }
                 }).catch(err => {
-                    this.setState({ loading: false });
-                    notification.error({
-                        message: 'Error',
-                        description: `Something went wrong! Please try again later!`
+                    this.setState({ loading: false }, () => {
+                        notification.error({
+                            message: 'Error',
+                            description: `Something went wrong! Please try again later!`
+                        });
                     });
                 });
             });

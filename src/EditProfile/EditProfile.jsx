@@ -216,7 +216,7 @@ export default class EditProfile extends Component {
                 description: 'User data successfully updated!'
               });
             }
-          })
+          });
         }).catch(err => {
           this.setState({ loading: false }, () => {
             notification.error({
@@ -225,7 +225,7 @@ export default class EditProfile extends Component {
             });
           })
         });
-      })
+      });
     }
 
     const updateAddress = (values) => {

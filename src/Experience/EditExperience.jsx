@@ -178,7 +178,7 @@ class EditExperience extends Component {
             description: 'There was an error while updating the experience!'
           });
         });
-      })
+      });
     }
 
     return (

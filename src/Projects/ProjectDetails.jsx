@@ -57,11 +57,9 @@ export default class ProjectDetails extends Component {
           manufacturersData: values[1].data.data,
           companyData: values[2].data.data,
           loading: false
-        }, () => {
-          console.log('this.state.manufacturersData => ', this.state.manufacturersData);
         });
       });
-    })
+    });
   }
 
   fetchManufacturers = value => {
@@ -142,7 +140,7 @@ export default class ProjectDetails extends Component {
   };
 
   handleCompanyChange = value => {
-    this.setState({ addCompanyData: value })
+    this.setState({ addCompanyData: value });
   };
 
   addfinalCompany() {
@@ -180,7 +178,7 @@ export default class ProjectDetails extends Component {
           message: 'Error',
           description: 'There was an error while adding a company to the current project!'
         });
-      })
+      });
     }
   }
 
@@ -206,16 +204,15 @@ export default class ProjectDetails extends Component {
             userProjects(this.props.match.params.id).then(Res => {
               if (Res.data.status === true) {
                 this.setState({ pictureList: Res.data.data.pictureList, loading: false }, () => {
-                  console.log(index);
                   if (index + 1 === imageLength.length) {
                     notification.success({
                       message: 'Success',
                       description: 'An Image has been successfully added to the current project!'
                     });
                   }
-                })
+                });
               }
-            })
+            });
           }
         }).catch(err => {
           notification.error({
@@ -224,7 +221,7 @@ export default class ProjectDetails extends Component {
           });
         });
       }
-    })
+    });
   }
 
   render() {

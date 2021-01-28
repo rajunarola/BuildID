@@ -4,7 +4,6 @@ import debounce from 'lodash/debounce';
 import moment from 'moment';
 import { postSaveUserWorkHistory } from '../Services/Project';
 import { withRouter } from 'react-router-dom';
-
 class SelectProject extends Component {
 
   constructor(props) {
@@ -86,6 +85,10 @@ class SelectProject extends Component {
     }
   }
 
+  componentWillUnmount() {
+    localStorage.removeItem('projectId')
+  }
+
   render() {
 
     const { fetching, data, fetching1, data1, fetching2, data2 } = this.state;
@@ -94,7 +97,7 @@ class SelectProject extends Component {
       const data = {
         Id: 0,
         UserId: parseInt(localStorage.getItem('userID')),
-        ProjectId: 6407,
+        ProjectId: parseInt(localStorage.getItem('projectId')),
         StartDate: moment(values.StartDate._d).format('YYYY-MM-DD'),
         EndDate: moment(values.EndDate._d).format('YYYY-MM-DD'),
         TradeId: parseInt(values.tradeName.value),
@@ -125,7 +128,7 @@ class SelectProject extends Component {
         <main className="index-main">
           <section className="index-sec">
             <div className="edit-sec">
-              <div className="editprofile">View Project</div>
+              <div className="editprofile">Add Project Details</div>
             </div>
             <div className="addticketform com-padding">
               <div className="row">
@@ -206,8 +209,8 @@ class SelectProject extends Component {
                               <Checkbox onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
                             </Form.Item>
                           </div>
-                          <Button htmlType="submit">Save</Button>
-                          <Button onClick={() => this.props.history.push(`/add-project`)}>Cancel</Button>
+                          <button className="btn btn-blue mr-3" type="submit">Save</button>
+                          <button className="btn btn-danger" onClick={() => this.props.history.push(`/search-project`)}>Cancel</button>
                         </Form>
                       </div>
                     </div>

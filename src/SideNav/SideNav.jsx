@@ -67,5 +67,4 @@ class SideNav extends React.Component {
     }
 }
 
-
 export default withRouter(SideNav);

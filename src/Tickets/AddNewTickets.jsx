@@ -33,24 +33,22 @@ export default class AddNewTickets extends React.Component {
 
   fileChangedHandler = (event, value) => {
     if (value === 'front_picture') {
-      this.setState({ FrontPictureUrl: event.target.files, file: URL.createObjectURL(event.target.files[0]) }, () => {
-        console.log('this.state. => ', this.state.FrontPictureUrl);
-      })
+      this.setState({ FrontPictureUrl: event.target.files, file: URL.createObjectURL(event.target.files[0]) })
     } else if (value === 'back_picture') {
-      this.setState({ BackPictureUrl: event.target.files, file2: URL.createObjectURL(event.target.files[0]) })
+      this.setState({ BackPictureUrl: event.target.files, file2: URL.createObjectURL(event.target.files[0]) });
     }
   }
 
   onChange(e) {
-    this.setState({ PublicTicket: e.target.checked })
+    this.setState({ PublicTicket: e.target.checked });
   }
 
   datePickerExpiry = (date) => {
-    this.setState({ Expiry: date })
+    this.setState({ Expiry: date });
   }
 
   datePickerIssuedOn = (date) => {
-    this.setState({ IssuedOn: date })
+    this.setState({ IssuedOn: date });
   }
 
   fetchCompany = value => {
@@ -91,9 +89,7 @@ export default class AddNewTickets extends React.Component {
 
     const { fetching, data, value, fetching1, data1, value1 } = this.state;
 
-    const onFinishFailed = (errorInfo) => {
-      console.log("Failed:", errorInfo);
-    };
+    const onFinishFailed = () => { };
 
     const sendNewTicket = values => {
       this.setState({ loading: true }, () => {
@@ -126,7 +122,7 @@ export default class AddNewTickets extends React.Component {
             description: 'There was an error while adding new Ticket!'
           });
         });
-      })
+      });
     }
 
     return (

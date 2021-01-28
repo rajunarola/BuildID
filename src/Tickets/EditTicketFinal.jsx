@@ -52,10 +52,11 @@ class EditTicketFinal extends Component {
           });
         }
       }).catch(err => {
-        this.setState({ loading: false });
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while fetching ticket data!'
+        this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while fetching ticket data!'
+          });
         });
       });
     });
@@ -96,15 +97,15 @@ class EditTicketFinal extends Component {
   };
 
   getCheckBoxValue = (e) => {
-    this.setState({ PublicTicket: e })
+    this.setState({ PublicTicket: e });
   }
 
   frontPictureHandler = (event) => {
-    this.setState({ FrontPictureUrl: event.target.files[0], getfrontPicture: URL.createObjectURL(event.target.files[0]) })
+    this.setState({ FrontPictureUrl: event.target.files[0], getfrontPicture: URL.createObjectURL(event.target.files[0]) });
   }
 
   backPictureHandler = (event) => {
-    this.setState({ BackPictureUrl: event.target.files[0], getBackPicture: URL.createObjectURL(event.target.files[0]) })
+    this.setState({ BackPictureUrl: event.target.files[0], getBackPicture: URL.createObjectURL(event.target.files[0]) });
   }
 
   cancelChanges() {
@@ -166,9 +167,9 @@ class EditTicketFinal extends Component {
               message: 'Error',
               description: 'There was an error while updating ticket!'
             });
-          })
+          });
         });
-      })
+      });
     }
 
     return (
