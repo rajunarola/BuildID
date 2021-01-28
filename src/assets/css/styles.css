@@ -421,6 +421,7 @@ section {
     font-size: 18px;
     line-height: normal;
     color: #191509;
+    display: inline-flex;
 }
 
 .login-block p {
