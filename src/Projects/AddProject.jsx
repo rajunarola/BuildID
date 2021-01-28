@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import debounce from 'lodash/debounce';
-import { Select, Form, Spin, Input, Button } from 'antd';
-import { getSearchProjectsBy } from '../Services/Project';
+import { Select, Form, Spin, Input, Button, notification } from 'antd';
+import { searchProjectsBy } from '../Services/Project';
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-
+import Loader from '../Loader/Loader';
 export default class AddProject extends Component {
 
   constructor(props) {
@@ -19,8 +19,22 @@ export default class AddProject extends Component {
     data1: [],
     fetching1: false,
     buildingTypeId: '',
-    contractor: ''
+    contractor: '',
+    cityName: '',
+    projectName: '',
+    resultofSearchedProject: [],
+    emptySearchResult: '',
+    loading: false
   }
+
+  componentDidMount() {
+    this.setState({ loading: true }, () => {
+      setTimeout(() => {
+        this.setState({ loading: false })
+      }, 2000);
+    })
+  }
+
 
   fetchBuildingType = (value, string) => {
     this.lastFetchId += 1;
@@ -30,7 +44,6 @@ export default class AddProject extends Component {
     if (string === 'buildingType') {
       this.setState({ data: [], fetching: true }, () => {
         fetch(process.env.REACT_APP_API_URL + `api/projects/GetBuildingTypes/${value}`).then(response => response.json()).then(body => {
-          console.log('body => ', body);
           if (fetchId !== this.lastFetchId) {
             // for fetch callback order
             return;
@@ -45,7 +58,6 @@ export default class AddProject extends Component {
     } else if (string === 'contractor') {
       this.setState({ data1: [], fetching1: true }, () => {
         fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies//${value}`).then(response => response.json()).then(body => {
-          console.log('body => ', body);
           if (fetchId1 !== this.lastFetchId1) {
             // for fetch callback order
             return;
@@ -69,7 +81,12 @@ export default class AddProject extends Component {
   };
 
   onLocationSelect(result) {
-    console.log('hi', result);
+    this.setState({ cityName: result.value.structured_formatting.main_text })
+  }
+
+  fetchProjectId = (id) => {
+    localStorage.setItem('projectId', id)
+    this.props.history.push('/searched-project')
   }
 
   render() {
@@ -77,87 +94,118 @@ export default class AddProject extends Component {
     const { data, fetching, data1, fetching1 } = this.state;
 
     const fetchProjectBySearch = (value) => {
-      console.log('hi');
-      const data = {
-        CityProv: "",
-        ProjectName: value.projectName,
-        BuildingTypeId: this.state.buildingTypeId,
-        ContractorName: this.state.contractor
-      }
-      this.props.history.push(`/select-project`)
-      // getSearchProjectsBy(data).then(Res => {
-      //   console.log('Res => ', Res);
-
-      // }).catch(Err => {
-      //   console.log('Err => ', Err);
-
-      // });
+      this.setState({ projectName: value.projectName === undefined ? "" : value.projectName }, () => {
+        searchProjectsBy(this.state.cityName, this.state.projectName, this.state.buildingTypeId, this.state.contractor).then(Res => {
+          if (Res.status === 200 && Res.data.data.length > 0) {
+            this.setState({ resultofSearchedProject: Res.data.data, emptySearchResult: '' });
+          } else if (Res.status === 200 && Res.data.data.length === 0) {
+            this.setState({ emptySearchResult: 'Search Result is Empty', resultofSearchedProject: [] });
+          }
+        }).catch(Err => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while fetching searched project!'
+          });
+        });
+      });
     }
 
     return (
       <>
-        <main className="index-main">
-          <section className="index-sec">
-            <div className="edit-sec">
-              <div className="editprofile">Add Project</div>
-            </div>
-            <div className="addticketform com-padding">
-              <div className="row">
-                <div className="col-lg-4 col-md-6 col-12">
-                  <div className="form-border crd-wrp">
-                    <div className="proj-timeline">
-                      <h4 className="k-card-title">Search Projects</h4>
-                      <div className="manufacture-form manufacture-content pt-3">
-                        <Form onFinish={fetchProjectBySearch}>
-                          <Form.Item name="projectName">
-                            <Input placeholder="Enter Project Name" />
-                          </Form.Item>
-                          <div className="suggestion-input">
-                            <GooglePlacesAutocomplete
-                              selectProps={{
-                                onChange: (result) => this.onLocationSelect(result),
-                              }}
-                              placeholder="Type in an address"
-                            />
-                          </div>
-                          <Form.Item name="buildingType">
-                            <Select
-                              showSearch
-                              labelInValue
-                              placeholder="Search by building type"
-                              notFoundContent={fetching ? <Spin size="small" /> : ""}
-                              filterOption={false}
-                              onSearch={(e) => this.fetchBuildingType(e, 'buildingType')}
-                              onChange={(e) => this.handleChange(e, 'buildingType')}>
-                              {data.map(d => (
-                                <Select.Option key={d.value}>{d.text}</Select.Option>
-                              ))}
-                            </Select>
-                          </Form.Item>
-                          <Form.Item name="projectSearch">
-                            <Select
-                              showSearch
-                              labelInValue
-                              placeholder="Search for a contractor"
-                              notFoundContent={fetching1 ? <Spin size="small" /> : ""}
-                              filterOption={false}
-                              onSearch={(e) => this.fetchBuildingType(e, 'contractor')}
-                              onChange={(e) => this.handleChange(e, 'contractor')}>
-                              {data1.map(d => (
-                                <Select.Option key={d.value}>{d.text}</Select.Option>
-                              ))}
-                            </Select>
-                          </Form.Item>
-                          <Button className="btn btn-blue" htmlType="submit">Search</Button>
-                        </Form>
+        {this.state.loading ? <Loader /> :
+          <main className="index-main">
+            <section className="index-sec">
+              <div className="edit-sec">
+                {/* <div className="editprofile">Sa Project</div> */}
+              </div>
+              <div className="addticketform com-padding">
+                <div className="row">
+                  <div className="col-12">
+                    <div className="form-border crd-wrp">
+                      <div className="proj-timeline">
+                        <h4 className="k-card-title">Search Projects</h4>
+                        <div className="manufacture-form manufacture-content seaerchForms pt-3">
+                          <Form onFinish={fetchProjectBySearch}>
+                            <div className="row">
+                              <div className="col-12 col-lg-3">
+                                <Form.Item name="projectName">
+                                  <Input placeholder="Enter Project Name" />
+                                </Form.Item>
+                              </div>
+                              <div className="col-12 col-lg-3">
+                                <div className="suggestion-input">
+                                  <GooglePlacesAutocomplete
+                                    className="select-bx"
+                                    apiKey={process.env.REACT_APP_GOOGLE_KEY}
+                                    selectProps={{
+                                      placeholder: 'Enter City, State, Country',
+                                      onChange: (result) => this.onLocationSelect(result),
+                                    }} />
+                                </div>
+                              </div>
+                              <div className="col-12 col-lg-3">
+                                <Form.Item name="buildingType">
+                                  <Select
+                                    className="select-bx"
+                                    showSearch
+                                    labelInValue
+                                    placeholder="Search by building type"
+                                    notFoundContent={fetching ? <Spin size="small" /> : ""}
+                                    filterOption={false}
+                                    onSearch={(e) => this.fetchBuildingType(e, 'buildingType')}
+                                    onChange={(e) => this.handleChange(e, 'buildingType')}>
+                                    {data.map(d => (
+                                      <Select.Option key={d.value}>{d.text}</Select.Option>
+                                    ))}
+                                  </Select>
+                                </Form.Item>
+                              </div>
+                              <div className="col-12 col-lg-3">
+                                <Form.Item name="projectSearch">
+                                  <Select
+                                    className="select-bx"
+                                    showSearch
+                                    labelInValue
+                                    placeholder="Search for a contractor"
+                                    notFoundContent={fetching1 ? <Spin size="small" /> : ""}
+                                    filterOption={false}
+                                    onSearch={(e) => this.fetchBuildingType(e, 'contractor')}
+                                    onChange={(e) => this.handleChange(e, 'contractor')}>
+                                    {data1.map(d => (
+                                      <Select.Option key={d.value}>{d.text}</Select.Option>
+                                    ))}
+                                  </Select>
+                                </Form.Item>
+                              </div>
+                              <div className="col-12 text-center">
+                                <button className="add-btn btn-Search" type="submit">Search</button>
+                              </div>
+                            </div>
+                          </Form>
+                          {this.state.resultofSearchedProject && this.state.resultofSearchedProject.length > 0 &&
+                            <>
+                              <div className="search-list-sec">
+                                <h4 className="mb-4">Search Result</h4>
+                                <div className="row">
+                                  {this.state.resultofSearchedProject.map(res => (
+                                    <div className="col-12 col-md-6 col-lg-3">
+                                      <p className="sls-list" onClick={() => this.fetchProjectId(res.id)}>{res.name}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </>
+                          }
+                          {this.state.emptySearchResult}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </main>
+            </section>
+          </main>
+        }
       </>
     )
   }
