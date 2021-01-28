@@ -1,15 +1,14 @@
 @media only screen and (min-width: 1430px) {
-	.container {
-		max-width: 1290px;
-	}
+    .container {
+        max-width: 1290px;
+    }
 }
+
 @media only screen and (min-width: 1600px) {
-	.container {
-		max-width: 1365px;
-	}
+    .container {
+        max-width: 1365px;
+    }
 }
-
-
 
 @media only screen and (max-width: 1599px) {
     /***  Login Page  ***/
@@ -48,11 +47,11 @@
         background-position: left top;
     }
     .login-block h1 {
-    font-size: 60px;
-}
-.login-block h1 small {
-    font-size: 65%;
-}
+        font-size: 60px;
+    }
+    .login-block h1 small {
+        font-size: 65%;
+    }
     /***  Login Page  ***/
 }
 
@@ -114,7 +113,6 @@
         padding-bottom: 40px;
         padding-top: 40px;
     }
-
     /***  Login Page  ***/
     .login-block .alternate [class*="col-"]:first-child {
         margin-bottom: 50px;
@@ -153,48 +151,40 @@
     }
     /***  Login Page  ***/
 }
-@media only screen and (max-width: 450px)
-{
-    .ticket-block
-    {
+
+@media only screen and (max-width: 450px) {
+    .ticket-block {
         display: block;
         text-align: center;
     }
-    .ticket-block .ticket-img
-    {
+    .ticket-block .ticket-img {
         margin: 0 auto;
     }
-    .ticket-detail h4
-    {
+    .ticket-detail h4 {
         margin-top: 7px;
         margin-bottom: 7px;
     }
-    .ticket-detail span
-    {
+    .ticket-detail span {
         margin-bottom: 7px;
         display: block;
     }
 }
+
 @media only screen and (max-width: 400px) {
-    .index-sec h1
-    {
+    .index-sec h1 {
         font-size: 20px;
     }
-    .edit-sec
-    {
+    .edit-sec {
         display: block;
         margin-right: 15px;
     }
-    .edit-sec h2
-    {
+    .edit-sec h2 {
         margin-bottom: 5px;
     }
-    .pro-details h4,.pro-details span
-    {
+    .pro-details h4, .pro-details span {
         font-size: 14px;
     }
-    .pro-images figure
-    {
+    .pro-images figure {
         margin-bottom: 5px;
     }
 }
