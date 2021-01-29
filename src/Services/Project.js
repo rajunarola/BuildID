@@ -86,3 +86,11 @@ export function searchProjectsBy(city, projectName, buildingTypeId, contractorNa
         return error
     });
 }
+
+export function getGoogleAPIKey() {
+    return axios.get(process.env.REACT_APP_API_URL + `api/misc/GetGoogleSearchCode`).then(response => {
+        return response
+    }).catch(error => {
+        return error
+    });
+}

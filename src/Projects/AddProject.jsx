@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import debounce from 'lodash/debounce';
 import { Select, Form, Spin, Input, Button, notification } from 'antd';
-import { searchProjectsBy } from '../Services/Project';
+import { getGoogleAPIKey, searchProjectsBy } from '../Services/Project';
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import Loader from '../Loader/Loader';
 export default class AddProject extends Component {
@@ -24,15 +24,25 @@ export default class AddProject extends Component {
     projectName: '',
     resultofSearchedProject: [],
     emptySearchResult: '',
-    loading: false
+    loading: false,
+    googleAPIKey: ''
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
-      setTimeout(() => {
-        this.setState({ loading: false })
-      }, 2000);
-    })
+      getGoogleAPIKey().then(res => {
+        if (res.status === 200) {
+          this.setState({ googleAPIKey: res.data.data, loading: false })
+        }
+      }).catch(res => {
+        this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: 'Something went wrong! Please try again'
+          });
+        });
+      });
+    });
   }
 
 
@@ -136,7 +146,7 @@ export default class AddProject extends Component {
                                 <div className="suggestion-input">
                                   <GooglePlacesAutocomplete
                                     className="select-bx"
-                                    apiKey={process.env.REACT_APP_GOOGLE_KEY}
+                                    apiKey={this.state.googleAPIKey}
                                     selectProps={{
                                       placeholder: 'Enter City, State, Country',
                                       onChange: (result) => this.onLocationSelect(result),
