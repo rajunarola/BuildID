@@ -10,7 +10,6 @@ const EditTicketFinal = lazy(() => import("./Tickets/EditTicketFinal"));
 const EditProfile = lazy(() => import("./EditProfile/EditProfile"));
 const AddExperience = lazy(() => import("./Experience/AddExperience"));
 const EditExperience = lazy(() => import("./Experience/EditExperience"));
-const AddAddress = lazy(() => import("./Address/AddAddress"));
 const ProjectDetails = lazy(() => import("./Projects/ProjectDetails"));
 const AddManufacturer = lazy(() => import("./Projects/AddManufacturer"));
 const AddCompany = lazy(() => import("./Projects/AddCompany"));
@@ -27,7 +26,6 @@ export const routesCode = [
     { path: "/add-experience", exact: true, component: AddExperience },
     { path: "/edit-experience/:userId/:experienceId", exact: true, component: EditExperience },
     { path: "/edit-ticket/:id", exact: true, component: EditTicketFinal },
-    { path: "/add-address", exact: true, component: AddAddress },
     { path: "/project-details/:id", exact: true, component: ProjectDetails },
     { path: "/add-manufacturer", exact: true, component: AddManufacturer },
     { path: "/add-company", exact: true, component: AddCompany },
