@@ -61,3 +61,19 @@ export function editUserProfile(data) {
         return error;
     });
 }
+
+export function getNewQuestionForTheUser() {
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetNewQuestionForTheUser/${parseInt(localStorage.getItem('userID'))}/0`).then(response => {
+        return response;
+    }).catch(error => {
+        return error;
+    });
+}
+
+export function saveUserQuestion(data) {
+    return axios.post(process.env.REACT_APP_API_URL + `api/users/SaveUserQuestion`, data).then(response => {
+        return response;
+    }).catch(error => {
+        return error;
+    });
+}
