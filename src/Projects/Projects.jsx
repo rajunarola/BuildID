@@ -1,13 +1,25 @@
 import React from 'react'
-import { userProjects, userWorkHistory, getTicketsByUserId, getTicketDetails } from '../Services/CommonAPI';
+import {
+  userProjects, userWorkHistory, getTicketsByUserId,
+  getTicketDetails, getNewQuestionForTheUser, saveUserQuestion
+} from '../Services/CommonAPI';
 import * as moment from "moment";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { Modal, Image, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { notification } from 'antd';
+import { notification, Form, Select, Spin, Input } from 'antd';
 import Loader from '../Loader/Loader';
+import debounce from 'lodash/debounce';
 export default class Projects extends React.Component {
+
+  formRef = React.createRef()
+
+  constructor(props) {
+    super(props);
+    this.lastFetchId = 0;
+    this.fetchSelectData = debounce(this.fetchSelectData, 800);
+  }
 
   state = {
     loading: false,
@@ -16,15 +28,45 @@ export default class Projects extends React.Component {
     pictureList: [],
     changeBackground: false,
     modalShow: false,
-    singleTicketDetail: []
+    singleTicketDetail: [],
+    type: '',
+    parameter1: '',
+    parameter2: '',
+    question: '',
+    questionId: '',
+    option1: '',
+    option2: '',
+    option3: '',
+    option4: '',
+    option1A: '',
+    option2A: '',
+    option3A: '',
+    option4A: '',
+    notSure: '',
+    emptyQuestions: '',
+    location: ''
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
       Promise.all([userWorkHistory(),
-      getTicketsByUserId()]).then((values) => {
-        if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
-          this.setState({ projectArray: values[0].data.data, ticketArray: values[1].data.data }, () => {
+      getTicketsByUserId(), getNewQuestionForTheUser()]).then((values) => {
+        if (values[0] && values[1] && values[2] && values[0].status === 200 && values[1].status === 200 && values[2].status === 200) {
+          this.setState({
+            projectArray: values[0].data.data,
+            ticketArray: values[1].data.data,
+            parameter1: values[2].data.data !== null && values[2].data.data.parameter1,
+            parameter2: values[2].data.data !== null && values[2].data.data.parameter2,
+            question: values[2].data.data !== null && values[2].data.data.description,
+            location: values[2].data.data !== null && values[2].data.data.searchAnswerIn,
+            type: values[2].data.data !== null && values[2].data.data.type,
+            questionId: values[2].data.data !== null && values[2].data.data.id,
+            option1: values[2].data.data !== null && values[2].data.data.option1,
+            option2: values[2].data.data !== null && values[2].data.data.option2,
+            option3: values[2].data.data !== null && values[2].data.data.option3,
+            option4: values[2].data.data !== null && values[2].data.data.option4,
+            emptyQuestions: values[2].data.data === null && 'No more questions available this time. Please try again later!'
+          }, () => {
             const firstData = values[0].data.data[0].projectId;
             userProjects(firstData).then(response => {
               const pictureList = response.data.data.pictureList;
@@ -71,9 +113,179 @@ export default class Projects extends React.Component {
     this.props.history.push(`/project-details/${id}`)
   }
 
+  fetchSelectData = (value) => {
+    this.lastFetchId += 1;
+    const fetchId = this.lastFetchId;
+    this.setState({ data: [], fetching: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/misc/GetSearchResults/${parseInt(localStorage.getItem('userID'))}/${this.state.location}/${value}`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId) {
+          // for fetch callback order
+          return;
+        }
+        const data = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data, fetching: false });
+      }).catch(err => {
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while fetching search results!'
+        });
+      });
+    });
+  }
+
+  postAnswer(data) {
+    saveUserQuestion(data).then(res => {
+      if (res.data && res.data.status === true) {
+        this.setState({ option1: '', option2: '', option3: '', option4: '', answer1: '', option1A: '', option2A: '', option3A: '', option4A: '' }, () => {
+          this.formRef.current.resetFields();
+          getNewQuestionForTheUser().then(res => {
+            if (res.status === 200) {
+              this.setState({
+                parameter1: res.data.data !== null && res.data.data.parameter1,
+                parameter2: res.data.data !== null && res.data.data.parameter2,
+                question: res.data.data !== null && res.data.data.description,
+                location: res.data.data !== null && res.data.data.searchAnswerIn,
+                type: res.data.data !== null && res.data.data.type,
+                questionId: res.data.data !== null && res.data.data.id,
+                option1: res.data.data !== null && res.data.data.option1,
+                option2: res.data.data !== null && res.data.data.option2,
+                option3: res.data.data !== null && res.data.data.option3,
+                option4: res.data.data !== null && res.data.data.option4,
+                emptyQuestions: res.data.data === null && 'No more questions available this time. Please try again later!'
+              }, () => {
+                notification.success({
+                  message: 'Success',
+                  description: 'Your answer has been saved!'
+                });
+              });
+            }
+          });
+        })
+      }
+    }).catch(err => {
+      notification.error({
+        message: 'Error',
+        description: 'There was an error while submitting your answer!'
+      });
+    });
+  }
+
+  getCheckBoxValue = (key, state, e) => {
+    if (key === 'option1') {
+      this.setState({ option1A: state }, () => {
+        this.validatorRule()
+      });
+    } else if (key === 'option2') {
+      this.setState({ option2A: state }, () => {
+        this.validatorRule()
+      });
+    } else if (key === 'option3') {
+      this.setState({ option3A: state }, () => {
+        this.validatorRule()
+      });
+    } else if (key === 'option4') {
+      this.setState({ option4A: state }, () => {
+        this.validatorRule()
+      });
+    }
+  }
+
+  skipQuestion = () => {
+    const skipped = {
+      Id: 0,
+      UserId: parseInt(localStorage.getItem('userID')),
+      QuestionId: this.state.questionId,
+      Answer1: "",
+      Answer2: "",
+      Answer3: "",
+      Answer4: "",
+      Parameter1: parseInt(this.state.parameter1),
+      Parameter2: parseInt(this.state.parameter2),
+      Answered: false
+    }
+    this.postAnswer(skipped);
+  }
+
+  validatorRule = () => {
+    const checkBoxes = document.getElementsByClassName('myCheckBox');
+    let isChecked = false;
+    for (var i = 0; i < checkBoxes.length; i++) {
+      if (checkBoxes[i].checked) {
+        isChecked = true;
+      };
+    };
+    if (isChecked) {
+      this.setState({ notSure: '' })
+      return true;
+    } else {
+      this.setState({ notSure: "Please select atleast one checkbox!" })
+      return false;
+    }
+  }
+
+  multipleCheck = () => {
+    if (this.validatorRule()) {
+      const answer = {
+        Id: 0,
+        UserId: parseInt(localStorage.getItem('userID')),
+        QuestionId: this.state.questionId,
+        Answer1: this.state.option1A,
+        Answer2: this.state.option2A,
+        Answer3: this.state.option3A,
+        Answer4: this.state.option4A,
+        Parameter1: parseInt(this.state.parameter1),
+        Parameter2: parseInt(this.state.parameter2),
+        Answered: this.state.notSure === false ? this.state.notSure : true
+      }
+      this.postAnswer(answer);
+    }
+  }
+
+  yesNo = (values) => {
+    const answer = {
+      Id: 0,
+      UserId: parseInt(localStorage.getItem('userID')),
+      QuestionId: values,
+      Parameter1: parseInt(this.state.parameter1),
+      Parameter2: parseInt(this.state.parameter2),
+      Answered: this.state.notSure === false ? this.state.notSure : true
+    }
+    this.postAnswer(answer);
+  }
+
   render() {
 
     const userName = localStorage.getItem('userName');
+    const { fetching, data } = this.state;
+
+    const textTypeAnswer = (values) => {
+      const answer = {
+        Id: 0,
+        UserId: parseInt(localStorage.getItem('userID')),
+        QuestionId: this.state.questionId,
+        Answer1: values.answer !== undefined ? values.answer : "",
+        Parameter1: parseInt(this.state.parameter1),
+        Parameter2: parseInt(this.state.parameter2),
+        Answered: values.answer !== undefined ? true : false
+      }
+      this.postAnswer(answer);
+    }
+
+    const generalSubmit = (values) => {
+      const answer = {
+        Id: 0,
+        UserId: parseInt(localStorage.getItem('userID')),
+        QuestionId: this.state.questionId,
+        Answer1: values.companyName !== undefined ? parseInt(values.companyName.value) : "",
+        Parameter1: parseInt(this.state.parameter1),
+        Parameter2: parseInt(this.state.parameter2),
+        Answered: values.companyName !== undefined ? true : false
+      }
+      this.postAnswer(answer);
+    }
 
     return (
       <>
@@ -168,18 +380,57 @@ export default class Projects extends React.Component {
                           <i className="far fa-chevron-up" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
                         </div>
                         <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#qaaccordion">
-                          <div className="qa-sec"><h4>The question wll go here it should take up a maximum of two lines of copy?</h4>
-                            <form>
-                              <ul className="ans-sec">
-                                <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
-                                <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
-                                <li><input type="radio" name="ansradio" /><span>An answer will go here</span></li>
-                              </ul>
-                              <div className="crd-body">
-                                <span className="add-btn btn-blue">Submit Answer</span>
-                                {/* <a className="link-btn" href="javascript:;">Skip Questions</a> */}
-                              </div>
-                            </form>
+                          <p>{this.state.emptyQuestions}</p>
+                          <div className="qa-sec"><h4>{this.state.question}</h4>
+                            {this.state.type === 'Text' &&
+                              <Form onFinish={textTypeAnswer} ref={this.formRef}>
+                                <Form.Item name="answer" rules={[{ required: true, message: 'Please enter an answer!' }]}>
+                                  <Input placeholder="Type in your answer" />
+                                </Form.Item>
+                                <div className="crd-body">
+                                  <button className="add-btn btn-blue" type="submit">Submit Answer</button>
+                                  <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
+                                </div>
+                              </Form>}
+                            {this.state.type === 'MultipleChoicePredefined' &&
+                              <Form onFinish={() => this.multipleCheck()} ref={this.formRef}>
+                                {this.state.option1 !== "" && <> <input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option1', this.state.option1, e.target.checked)} />{this.state.option1} </>}
+                                {this.state.option2 !== "" && <><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option2', this.state.option2, e.target.checked)} />{this.state.option2} </>}
+                                {this.state.option3 !== "" && <><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option3', this.state.option3, e.target.checked)} />{this.state.option3} </>}
+                                {this.state.option4 !== "" && <><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option4', this.state.option4, e.target.checked)} />{this.state.option4} </>}
+                                <p>{this.state.notSure}</p>
+                                <div className="crd-body">
+                                  <button className="add-btn btn-blue" type="submit">Submit Answer</button>
+                                  <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
+                                </div>
+                              </Form>}
+                            {this.state.type === 'General' &&
+                              <Form onFinish={generalSubmit} ref={this.formRef}>
+                                <Form.Item name="companyName" rules={[{ required: true, message: 'Please select an answer!' }]}>
+                                  <Select
+                                    showSearch
+                                    labelInValue
+                                    placeholder="Search for an answer"
+                                    notFoundContent={fetching ? <Spin size="small" /> : null}
+                                    filterOption={false}
+                                    onSearch={(e) => this.fetchSelectData(e)}
+                                    style={{ width: '100%' }}>
+                                    {data.map(d => (
+                                      <Select.Option key={d.value}>{d.text}</Select.Option>
+                                    ))}
+                                  </Select>
+                                </Form.Item>
+                                <div className="crd-body">
+                                  <button className="add-btn btn-blue" type="submit">Submit Answer</button>
+                                  <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
+                                </div>
+                              </Form>}
+                            {this.state.type === 'YesNo' &&
+                              <Form ref={this.formRef}>
+                                <button className="btn btn-blue" onClick={() => this.yesNo("YES")} >YES</button>
+                                <button className="btn btn-danger" onClick={() => this.yesNo("NO")} >No</button>
+                                <button className="btn btn-dark" onClick={() => this.skipQuestion()}>Not Sure</button>
+                              </Form>}
                           </div>
                         </div>
                       </div>
@@ -200,24 +451,20 @@ export default class Projects extends React.Component {
               <div className="stage-img">
                 <Image className="w-100" src={this.state.singleTicketDetail.backPictureUrl ? this.state.singleTicketDetail.backPictureUrl : this.state.singleTicketDetail.frontPictureUrl} />
               </div>
-            </Col>
-          }
+            </Col>}
           <Modal.Body>
             {this.state.singleTicketDetail.issuedBy &&
               <p className="stage-detail">
                 <span className="stage-label">Issued By:</span> <span>{this.state.singleTicketDetail.issuedBy}</span>
-              </p>
-            }
+              </p>}
             {this.state.singleTicketDetail.dateCreated &&
               <p className="stage-detail">
                 <span className="stage-label">Created On:</span> <span>{moment(this.state.singleTicketDetail.dateCreated).format('ll')}</span>
-              </p>
-            }
+              </p>}
             {this.state.singleTicketDetail.expiry &&
               <p className="stage-detail border-bottom-0">
                 <span className="stage-label">Expiry Date:</span> <span>{moment(this.state.singleTicketDetail.expiry).format('ll')}</span>
-              </p>
-            }
+              </p>}
           </Modal.Body>
         </Modal>
       </>
