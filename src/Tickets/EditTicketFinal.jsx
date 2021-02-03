@@ -100,24 +100,22 @@ class EditTicketFinal extends Component {
     this.setState({ PublicTicket: e });
   }
 
-  frontPictureHandler = (event) => {
-    this.setState({ FrontPictureUrl: event.target.files[0], getfrontPicture: URL.createObjectURL(event.target.files[0]) });
-  }
-
-  backPictureHandler = (event) => {
-    this.setState({ BackPictureUrl: event.target.files[0], getBackPicture: URL.createObjectURL(event.target.files[0]) });
+  pictureHandler = (typeOfPicture, event) => {
+    if (typeOfPicture === 'frontPicture') {
+      this.setState({ FrontPictureUrl: event.target.files[0], getfrontPicture: URL.createObjectURL(event.target.files[0]) });
+    } else if (typeOfPicture === 'backPicture') {
+      this.setState({ BackPictureUrl: event.target.files[0], getBackPicture: URL.createObjectURL(event.target.files[0]) });
+    }
   }
 
   cancelChanges() {
-    this.props.history.push('/projects')
+    this.props.history.push('/projects');
   }
 
   render() {
 
     const { fetching, data, fetching1, data1 } = this.state;
     const { Option } = Select;
-
-    const onFinishFailed = () => { };
 
     const sendNewTicket = values => {
       this.setState({ loading: true }, () => {
@@ -159,6 +157,7 @@ class EditTicketFinal extends Component {
                 });
               }
             }).catch(err => {
+              this.setState({ loading: false })
             });
           }
         }).catch(err => {
@@ -180,7 +179,7 @@ class EditTicketFinal extends Component {
             <div className="edit-sec mt-80"><h2>Edit Ticket</h2></div>
             <div className="addticketform ml-4">
               <div className="form-border p-4 w-30 mt-5 crd-wrap">
-                <Form className="card-body" onFinish={sendNewTicket} onFinishFailed={onFinishFailed} ref={this.formRef}>
+                <Form className="card-body" onFinish={sendNewTicket} ref={this.formRef}>
                   <div className="form-group">
                     <div className="dropdown dd-type">
                       <label className="form-label formlabel">Ticket Type</label>
@@ -244,14 +243,14 @@ class EditTicketFinal extends Component {
                       <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture</label>
                       <Form.Item name="getfrontPicture">
                         <Image src={this.state.getfrontPicture} />
-                        <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.frontPictureHandler(e)} />
+                        <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.pictureHandler('frontPicture', e)} />
                       </Form.Item>
                     </div>
                     <div className="form-group col-lg-6 img-upload-btn">
                       <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture</label>
                       <Form.Item name="getfrontPicture">
                         <Image src={this.state.getBackPicture} />
-                        <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.backPictureHandler(e)} />
+                        <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.pictureHandler('backPicture', e)} />
                       </Form.Item>
                     </div>
                   </div>

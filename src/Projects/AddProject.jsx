@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import debounce from 'lodash/debounce';
-import { Select, Form, Spin, Input, Button, notification } from 'antd';
+import { Select, Form, Spin, Input, notification } from 'antd';
 import { getGoogleAPIKey, searchProjectsBy } from '../Services/Project';
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import Loader from '../Loader/Loader';

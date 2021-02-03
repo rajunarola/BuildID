@@ -158,7 +158,7 @@ export default class EditProfile extends Component {
       }, () => {
         this.formRef.current.setFieldsValue({
           FirstName: res.data.data.firstName,
-          LastName: res.data.data.lastName,
+          LastName: res.data.data.lastName
         });
       });
     }).catch(err => {
@@ -372,7 +372,6 @@ export default class EditProfile extends Component {
                     </div>
                   </div>
                   <div className="col-lg-4">
-                    <Link to="/add-address" className="add-btn btn-blue" ><i className="fas fa-plus-circle"></i> Add Address</Link>
                     <div className="crd-wrap">
                       <div className="inner-wrap-card">
                         <Form className="card-body" ref={this.formRef1} onFinish={updateAddress}>

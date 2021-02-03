@@ -43,14 +43,6 @@ export default class AddNewTickets extends React.Component {
     this.setState({ PublicTicket: e.target.checked });
   }
 
-  datePickerExpiry = (date) => {
-    this.setState({ Expiry: date });
-  }
-
-  datePickerIssuedOn = (date) => {
-    this.setState({ IssuedOn: date });
-  }
-
   fetchCompany = value => {
     this.lastFetchId += 1;
     const fetchId = this.lastFetchId;
@@ -88,8 +80,6 @@ export default class AddNewTickets extends React.Component {
   render() {
 
     const { fetching, data, value, fetching1, data1, value1 } = this.state;
-
-    const onFinishFailed = () => { };
 
     const sendNewTicket = values => {
       this.setState({ loading: true }, () => {
@@ -133,7 +123,7 @@ export default class AddNewTickets extends React.Component {
             <div className="edit-sec mt-80"><h2>Add Ticket</h2></div>
             <div className="addticketform ml-4">
               <div className="form-border p-4 w-30 mt-5 crd-wrap">
-                <Form className="card-body" onFinish={sendNewTicket} onFinishFailed={onFinishFailed} ref={this.formRef}>
+                <Form className="card-body" onFinish={sendNewTicket} ref={this.formRef}>
                   <div className="form-group">
                     <label className="form-label formlabel">Ticket Type</label>
                     <Form.Item name="TicketTypeId" rules={[{ required: true, message: 'Please select a ticket type!' }]}>
@@ -196,18 +186,18 @@ export default class AddNewTickets extends React.Component {
                     <div className="form-group col-lg-6 img-upload-btn">
                       <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span>  Front Picture
                           <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.fileChangedHandler(e, 'front_picture')} />
-                        <img src={this.state.file} alt="file" />
+                        <img src={this.state.file} alt="" />
                       </label>
                     </div>
                     <div className="form-group col-lg-6 img-upload-btn">
                       <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture
                        <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.fileChangedHandler(e, 'back_picture')} />
-                        <img src={this.state.file2} alt="file2" />
+                        <img src={this.state.file2} alt="" />
                       </label>
                     </div>
                   </div>
                   <div className="form-check">
-                    <Checkbox onChange={(e) => this.onChange(e)} >Public Ticket</Checkbox>
+                    <Checkbox onChange={(e) => this.onChange(e)}>Public Ticket</Checkbox>
                   </div>
                   <button type="submit" className="btn btn-blue btnManufacturer mt-3">Add New Ticket</button>
                 </Form>

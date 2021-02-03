@@ -53,10 +53,11 @@ class EditExperience extends Component {
           });
         }
       }).catch(err => {
-        this.setState({ loading: false })
-        notification.error({
-          message: 'Error',
-          description: 'There was an error while fetching experience details!'
+        this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while fetching experience details!'
+          });
         });
       });
     })
@@ -163,19 +164,22 @@ class EditExperience extends Component {
                     StartDate: moment(moment(res.data.data.startDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
                     EndDate: moment(moment(res.data.data.endDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
                   });
+                  notification.success({
+                    message: 'Success',
+                    description: 'Experience updated successfully!'
+                  });
                 });
               }
             }).catch(err => {
-            });
-            notification.success({
-              message: 'Success',
-              description: 'Experience updated successfully!'
+              this.setState({ loading: false })
             });
           }
         }).catch(err => {
-          notification.error({
-            message: 'Error',
-            description: 'There was an error while updating the experience!'
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while updating the experience!'
+            });
           });
         });
       });
