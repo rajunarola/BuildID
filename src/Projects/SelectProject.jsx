@@ -209,7 +209,8 @@ class SelectProject extends Component {
                               <Checkbox onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
                             </Form.Item>
                           </div>
-                          <button className="btn btn-blue mr-3" type="submit">Add Project To Timeline</button>
+
+                          <button className="btn btn-blue mr-3 mb-3" type="submit">Add Project To Timeline</button>
                           <button className="btn btn-danger" onClick={() => this.props.history.push(`/search-project`)}>Cancel</button>
                         </Form>
                       </div>

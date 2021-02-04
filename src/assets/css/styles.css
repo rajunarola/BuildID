@@ -452,7 +452,7 @@ section {
 
 .sidebar {
     /* min-height: 100vh; */
-    width: 100px;
+    width: 90px;
     display: flex;
     flex-direction: column;
     transition: all 0.5s;
@@ -494,7 +494,7 @@ section {
     border: 3px solid #ffb900;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: 10px;
+    margin-right: 0;
     transition: all 0.5s;
 }
 
@@ -509,12 +509,23 @@ section {
     opacity: 0;
     transform: translate(-60px);
     visibility: hidden;
+    display: none;
 }
 
 .sidebar:hover .user-id>div, .sidebar:hover .main-nav a span, .sidebar:hover .lower-menu a span {
     opacity: 1;
     transform: translate(0px);
     visibility: visible;
+    display: block;
+}
+
+.main-nav a {
+    text-align: center;
+}
+
+.sidebar:hover .main-nav a {
+    text-align: left;
+    display: flex;
 }
 
 .user-id p {
@@ -526,6 +537,7 @@ section {
 
 .sidebar:hover .user-id p {
     font-size: 20px;
+    margin: 0 0 0 10px;
 }
 
 .user-id p small {
@@ -535,7 +547,7 @@ section {
 
 .main-nav {
     padding: 0;
-    margin: 0;
+    margin: 20px 0 0 0;
     list-style: none;
 }
 
@@ -589,6 +601,7 @@ section {
     opacity: 0;
     transform: translate(-60px);
     visibility: hidden;
+    display: none;
 }
 
 .lower-menu {
@@ -601,7 +614,7 @@ section {
     font-size: 16px;
     color: #777777;
     padding: 12px 25px;
-    display: block;
+    display: flex;
 }
 
 .lower-menu a i {
@@ -618,7 +631,7 @@ section {
 /***  Index  ***/
 
 .index-main {
-    padding-left: 100px;
+    padding-left: 90px;
 }
 
 .index-sec {
@@ -627,7 +640,7 @@ section {
 }
 
 .index-sec h1 {
-    padding: 15px 30px 25px;
+    padding: 0;
     font-size: 30px;
     font-weight: 700;
     margin: 0;
@@ -636,8 +649,7 @@ section {
 .edit-sec {
     display: flex;
     align-items: center;
-    margin-left: 15px;
-    padding: 25px 15px;
+    padding: 20px 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     justify-content: space-between;
 }
@@ -1470,7 +1482,7 @@ ul.ticket-list.overlay-scroll {
 /*btn-Search*/
 
 .btn-Search {
-    max-width: 60%;
+    width: 200px;
     margin: 0 auto;
     color: #fff;
     background: #093cb9;
@@ -1559,4 +1571,60 @@ ul.ticket-list.overlay-scroll {
     min-height: 60px;
     font-weight: 600;
     border: 1px solid #ddd;
+}
+
+/* === */
+
+.form_c_button {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+
+.form_c_button button {
+    margin: 0 5px 0 5px;
+}
+
+.custom_inputs .ant-row {
+    padding: 0 20px;
+}
+
+.custom_inputs .ant-row input {
+    height: 40px;
+}
+
+.form_c_button button {
+    font-size: 16px;
+}
+
+.custom_inputs {}
+
+.multiple_checkbox {
+    padding: 0 20px;
+    margin: 0 0 20px 0;
+}
+
+.multiple_checkbox input {
+    margin: 0 6px 0px 0;
+    font-size: 15px;
+}
+
+.color-danger {
+    color: red;
+}
+
+/*  */
+
+.sidebar_open_icon {
+    display: none;
+}
+
+/*  */
+
+.note_class {
+    text-align: center;
+    font-size: 18px;
+    padding: 10px 0 0 0;
+    margin: 0;
+    color: red;
 }

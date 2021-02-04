@@ -168,6 +168,68 @@
         margin-bottom: 7px;
         display: block;
     }
+    /*  */
+    .index-main {
+        padding-left: 0;
+    }
+    .sidebar {
+        left: -270px;
+    }
+    .sidebar_open {
+        left: 0;
+    }
+    .sidebar_open_icon {
+        display: block;
+        position: absolute;
+        right: -40px;
+        top: 105px;
+        width: 40px;
+        height: 40px;
+        font-size: 19px;
+        background-color: #eeaf00;
+        color: white;
+        border: 1px solid #eeaf00;
+    }
+    .sidebar {
+        width: 270px;
+    }
+    .main-nav a span, .lower-menu a span {
+        opacity: 1;
+        transition: all 0.5s;
+        position: relative;
+        display: inline-block;
+        transform: translate(0);
+        visibility: visible;
+        display: block;
+        margin: 0 0 0 10px;
+    }
+    .user-id>div {
+        flex: 1 1;
+        transition: all 0.5s;
+        opacity: 1;
+        transform: translate(0px);
+        visibility: visible;
+        display: block;
+    }
+    .main-nav a {
+        display: flex;
+    }
+    .main-nav a i {
+        width: auto;
+    }
+    .sidebar .user-id p {
+        font-size: 20px;
+        margin: 0 0 0 10px;
+    }
+    .sidebar .logo {
+        font-size: 30px;
+    }
+    .index-sec h1 {
+        font-size: 18px;
+    }
+    .edit-sec .editprofile {
+        font-size: 16px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -176,7 +238,7 @@
     }
     .edit-sec {
         display: block;
-        margin-right: 15px;
+        /* margin-right: 15px; */
     }
     .edit-sec h2 {
         margin-bottom: 5px;

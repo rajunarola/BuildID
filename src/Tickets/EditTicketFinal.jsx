@@ -176,94 +176,98 @@ class EditTicketFinal extends Component {
       <>
         {this.state.loading ? <Loader /> :
           <div className="index-main">
-            <div className="edit-sec mt-80"><h2>Edit Ticket</h2></div>
-            <div className="addticketform ml-4">
-              <div className="form-border p-4 w-30 mt-5 crd-wrap">
-                <Form className="card-body" onFinish={sendNewTicket} ref={this.formRef}>
-                  <div className="form-group">
-                    <div className="dropdown dd-type">
-                      <label className="form-label formlabel">Ticket Type</label>
-                      <Form.Item name="TicketTypeId" rules={[{ required: true, message: 'Please select a ticket type!' }]}>
-                        <Select
-                          key="TicketTypeId"
-                          showSearch
-                          labelInValue
-                          placeholder="Search ticket type"
-                          notFoundContent={fetching1 ? <Spin size="small" /> : null}
-                          filterOption={false}
-                          onSearch={(e) => this.fetchTicketType(e)}
-                          style={{ width: '100%' }}>
-                          {data1.map(d => (
-                            <Option key={d.value}>{d.text}</Option>
-                          ))}
-                        </Select>
+            <div className="edit-sec"><h2>Edit Ticket</h2></div>
+
+            <div className="container-fluid">
+              <div className="addticketform row">
+                <div className="form-border col-lg-5 col-md-8 mt-4 ml-md-4 pt-4">
+                  <Form className="card-body" onFinish={sendNewTicket} ref={this.formRef}>
+                    <div className="form-group">
+                      <div className="dropdown dd-type">
+                        <label className="form-label formlabel">Ticket Type</label>
+                        <Form.Item name="TicketTypeId" rules={[{ required: true, message: 'Please select a ticket type!' }]}>
+                          <Select
+                            key="TicketTypeId"
+                            showSearch
+                            labelInValue
+                            placeholder="Search ticket type"
+                            notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                            filterOption={false}
+                            onSearch={(e) => this.fetchTicketType(e)}
+                            style={{ width: '100%' }}>
+                            {data1.map(d => (
+                              <Option key={d.value}>{d.text}</Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <label className="formlabel">Issued On</label>
+                      <Form.Item name="IssuedOn" rules={[{ required: true, message: "Please enter an issued on date!" }]}>
+                        <DatePicker className="w-100 inputstyle" />
                       </Form.Item>
                     </div>
-                  </div>
-                  <div className="form-group">
-                    <label className="formlabel">Issued On</label>
-                    <Form.Item name="IssuedOn" rules={[{ required: true, message: "Please enter an issued on date!" }]}>
-                      <DatePicker className="w-100 inputstyle" />
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label className="formlabel">Expiry Date</label>
-                    <Form.Item name="Expiry" rules={[{ required: true, message: "Please enter an expiry date!" }]}>
-                      <DatePicker className="w-100 inputstyle" />
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label className="formlabel">Ticket Name</label>
-                    <Form.Item name="TicketId" rules={[{ required: true, message: "Please enter ticket name!" }]}>
-                      <Input className="w-100 inputstyle" />
-                    </Form.Item>
-                  </div>
-                  <div className="form-row">
-                    <div className="form-group col-lg-12">
-                      <label for="issuedby">Issued By</label>
-                      <Form.Item name="IssuedBy" rules={[{ required: true, message: "Please enter your issued type!" }]}>
-                        <Select
-                          key="IssuedBy"
-                          showSearch
-                          labelInValue
-                          placeholder="Search issued by"
-                          notFoundContent={fetching ? <Spin size="small" /> : null}
-                          filterOption={false}
-                          onSearch={(e) => this.fetchCompany(e)}
-                          style={{ width: '100%' }}>
-                          {data.map(d => (
-                            <Option key={d.value}>{d.text}</Option>
-                          ))}
-                        </Select>
+                    <div className="form-group">
+                      <label className="formlabel">Expiry Date</label>
+                      <Form.Item name="Expiry" rules={[{ required: true, message: "Please enter an expiry date!" }]}>
+                        <DatePicker className="w-100 inputstyle" />
                       </Form.Item>
                     </div>
-                  </div>
-                  <div className="form-row">
-                    <div className="form-group col-lg-6 img-upload-btn">
-                      <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture</label>
-                      <Form.Item name="getfrontPicture">
-                        <Image src={this.state.getfrontPicture} />
-                        <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.pictureHandler('frontPicture', e)} />
+                    <div className="form-group">
+                      <label className="formlabel">Ticket Name</label>
+                      <Form.Item name="TicketId" rules={[{ required: true, message: "Please enter ticket name!" }]}>
+                        <Input className="w-100 inputstyle" />
                       </Form.Item>
                     </div>
-                    <div className="form-group col-lg-6 img-upload-btn">
-                      <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture</label>
-                      <Form.Item name="getfrontPicture">
-                        <Image src={this.state.getBackPicture} />
-                        <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.pictureHandler('backPicture', e)} />
-                      </Form.Item>
+                    <div className="form-row">
+                      <div className="form-group col-lg-12">
+                        <label for="issuedby">Issued By</label>
+                        <Form.Item name="IssuedBy" rules={[{ required: true, message: "Please enter your issued type!" }]}>
+                          <Select
+                            key="IssuedBy"
+                            showSearch
+                            labelInValue
+                            placeholder="Search issued by"
+                            notFoundContent={fetching ? <Spin size="small" /> : null}
+                            filterOption={false}
+                            onSearch={(e) => this.fetchCompany(e)}
+                            style={{ width: '100%' }}>
+                            {data.map(d => (
+                              <Option key={d.value}>{d.text}</Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </div>
                     </div>
-                  </div>
-                  <div className="form-check">
-                    <Checkbox checked={this.state.PublicTicket === true ? true : false} onChange={(e) => this.getCheckBoxValue(e.target.checked)} >Public Ticket</Checkbox>
-                  </div>
-                  <div className="d-flex mt-3">
-                    <button type="submit" className="btn btn-blue btnManufacturer mr-2">Update Ticket</button>
-                    <button type="reset" onClick={() => this.cancelChanges()} className="btn btn-danger btnManufacturer">Cancel</button>
-                  </div>
-                </Form>
+                    <div className="form-row">
+                      <div className="form-group col-lg-6 img-upload-btn">
+                        <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span> Front Picture</label>
+                        <Form.Item name="getfrontPicture">
+                          <Image src={this.state.getfrontPicture} />
+                          <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.pictureHandler('frontPicture', e)} />
+                        </Form.Item>
+                      </div>
+                      <div className="form-group col-lg-6 img-upload-btn">
+                        <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture</label>
+                        <Form.Item name="getfrontPicture">
+                          <Image src={this.state.getBackPicture} />
+                          <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.pictureHandler('backPicture', e)} />
+                        </Form.Item>
+                      </div>
+                    </div>
+                    <div className="form-check">
+                      <Checkbox checked={this.state.PublicTicket === true ? true : false} onChange={(e) => this.getCheckBoxValue(e.target.checked)} >Public Ticket</Checkbox>
+                    </div>
+                    <div className="d-flex mt-3 mb-4">
+                      <button type="submit" className="btn btn-blue btnManufacturer mr-2">Update Ticket</button>
+                      <button type="reset" onClick={() => this.cancelChanges()} className="btn btn-danger btnManufacturer">Cancel</button>
+                    </div>
+                  </Form>
+                </div>
               </div>
             </div>
+
           </div>
         }
       </>

@@ -190,85 +190,93 @@ class EditExperience extends Component {
       <>
         {this.state.loading ? <Loader /> :
           <div className="index-main">
-            <div className="edit-sec mt-80"><h2>Edit Experience</h2></div>
-            <div className="addticketform ml-4">
-              <div className="form-border p-4 w-30 mt-5 crd-wrap">
-                <Form className="card-body" onFinish={updateExperience} ref={this.formRef}>
-                  <div className="form-group">
-                    <label>Company</label>
-                    <Form.Item name="companyName">
-                      <Select
-                        showSearch
-                        labelInValue
-                        placeholder="Search Companies"
-                        notFoundContent={fetching ? <Spin size="small" /> : null}
-                        filterOption={false}
-                        onSearch={(e) => this.fetchCompany(e)}
-                        style={{ width: '100%' }}>
-                        {data.map(d => (
-                          <Select.Option key={d.value}>{d.text}</Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label>Start Date</label>
-                    <Form.Item name="StartDate">
-                      <DatePicker className="w-100 inputstyle" />
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label>End Date</label>
-                    <Form.Item name="EndDate">
-                      <DatePicker className="w-100 inputstyle" />
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <Checkbox checked={this.state.CurrentCompany}
-                      onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)}>I currently work here </Checkbox>
-                  </div>
-                  <div className="form-group">
-                    <label>Trade</label>
-                    <Form.Item name="tradeName">
-                      <Select
-                        showSearch
-                        labelInValue
-                        placeholder="Search Trades"
-                        notFoundContent={fetching2 ? <Spin size="small" /> : null}
-                        filterOption={false}
-                        onSearch={(e) => this.fetchTrade(e)}
-                        style={{ width: '100%' }}>
-                        {data2.map(d => (
-                          <Option key={d.value}>{d.text}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label>Role</label>
-                    <Form.Item name="roleName">
-                      <Select
-                        showSearch
-                        labelInValue
-                        placeholder="Search Roles"
-                        notFoundContent={fetching1 ? <Spin size="small" /> : null}
-                        filterOption={false}
-                        onSearch={(e) => this.fetchRole(e)}
-                        style={{ width: '100%' }}>
-                        {data1.map(d => (
-                          <Option key={d.value}>{d.text}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <Checkbox checked={this.state.IncludeInResume}
-                      onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume </Checkbox>
-                  </div>
-                  <button type="submit" className="btn btn-blue btnManufacturer mr-2">Update Experience </button>
-                  <button type="reset" onClick={() => this.cancelChanges()} className="btn btn-danger btnManufacturer">Cancel</button>
-                </Form>
+            <div className="edit-sec"><h2>Edit Experience</h2></div>
+
+            <div className="container-fluid">
+
+
+              <div className="addticketform row">
+                <div className="form-border col-lg-5 col-md-8 mt-4 ml-md-4 pt-4">
+                  <Form className="card-body" onFinish={updateExperience} ref={this.formRef}>
+                    <div className="form-group">
+                      <label>Company</label>
+                      <Form.Item name="companyName">
+                        <Select
+                          showSearch
+                          labelInValue
+                          placeholder="Search Companies"
+                          notFoundContent={fetching ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchCompany(e)}
+                          style={{ width: '100%' }}>
+                          {data.map(d => (
+                            <Select.Option key={d.value}>{d.text}</Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <label>Start Date</label>
+                      <Form.Item name="StartDate">
+                        <DatePicker className="w-100 inputstyle" />
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <label>End Date</label>
+                      <Form.Item name="EndDate">
+                        <DatePicker className="w-100 inputstyle" />
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <Checkbox checked={this.state.CurrentCompany}
+                        onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)}>I currently work here </Checkbox>
+                    </div>
+                    <div className="form-group">
+                      <label>Trade</label>
+                      <Form.Item name="tradeName">
+                        <Select
+                          showSearch
+                          labelInValue
+                          placeholder="Search Trades"
+                          notFoundContent={fetching2 ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchTrade(e)}
+                          style={{ width: '100%' }}>
+                          {data2.map(d => (
+                            <Option key={d.value}>{d.text}</Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <label>Role</label>
+                      <Form.Item name="roleName">
+                        <Select
+                          showSearch
+                          labelInValue
+                          placeholder="Search Roles"
+                          notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchRole(e)}
+                          style={{ width: '100%' }}>
+                          {data1.map(d => (
+                            <Option key={d.value}>{d.text}</Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <Checkbox checked={this.state.IncludeInResume}
+                        onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume </Checkbox>
+                    </div>
+                    <div className="d-flex mt-3 mb-4">
+                      <button type="submit" className="btn btn-blue btnManufacturer mr-2">Update Experience </button>
+                      <button type="reset" onClick={() => this.cancelChanges()} className="btn btn-danger btnManufacturer">Cancel</button>
+                    </div>
+                  </Form>
+                </div>
               </div>
+
             </div>
           </div>
         }

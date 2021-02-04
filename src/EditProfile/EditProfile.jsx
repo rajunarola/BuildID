@@ -288,11 +288,11 @@ export default class EditProfile extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"> <h2> Edit Profile </h2></div>
+              <div className="edit-sec"> <h1> Edit Profile </h1></div>
               <div className="com-padding">
                 <div className="row">
-                  <div className="col-lg-4">
-                    <div className="crd-wrap">
+                  <div className="col-lg-4 col-md-6">
+                    <div className="crd-wrap mb-4">
                       <div className="inner-wrap-card">
                         <Form onFinish={updateUserProfile} ref={this.formRef}>
                           <Form.Item label="First Name" name="FirstName">
@@ -371,7 +371,7 @@ export default class EditProfile extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6">
                     <div className="crd-wrap">
                       <div className="inner-wrap-card">
                         <Form className="card-body" ref={this.formRef1} onFinish={updateAddress}>
@@ -419,8 +419,7 @@ export default class EditProfile extends Component {
                       </div>
                     </div>
                   </div>
-
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6">
                     <Link to="/add-experience" className="add-btn btn-blue" ><i className="fas fa-plus-circle"></i> Add Experience</Link>
                     <div className="crd-wrap">
                       <div className="inner-wrap-card">

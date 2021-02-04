@@ -292,13 +292,13 @@ export default class Projects extends React.Component {
         {this.state.loading ? <Loader /> : <>
           <main className="index-main">
             <section className="index-sec">
-              <h1>{userName}</h1>
-              <div className="edit-sec flex-end">
+              <div className="edit-sec">
+                <h1 className="p-0">{userName}</h1>
                 <Link to="/edit-profile" className="editprofile"><i className="fas fa-cog"></i> Edit Profile</Link>
               </div>
               <div className="com-padding">
                 <div className="row">
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6">
                     <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                     <div className="accordion" id="projectaccordion">
                       <div className="crd-wrap">
@@ -346,7 +346,7 @@ export default class Projects extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6">
                     <Link className="add-btn btn-blue" to="/add-ticket"><i className="fas fa-plus-circle"></i> Add Ticket</Link>
                     <div className="accordion" id="ticketaccordion">
                       <div className="crd-wrap">
@@ -372,7 +372,7 @@ export default class Projects extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6">
                     <div className="accordion" id="qaaccordion">
                       <div className="crd-wrap">
                         <div className="crd-header" id="ticketOne">
@@ -380,26 +380,41 @@ export default class Projects extends React.Component {
                           <i className="far fa-chevron-up" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
                         </div>
                         <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#qaaccordion">
-                          <p>{this.state.emptyQuestions}</p>
+                          <p className="note_class">{this.state.emptyQuestions}</p>
                           <div className="qa-sec"><h4>{this.state.question}</h4>
                             {this.state.type === 'Text' &&
-                              <Form onFinish={textTypeAnswer} ref={this.formRef}>
+                              // Text-Input
+                              <Form className="custom_inputs" onFinish={textTypeAnswer} ref={this.formRef}>
                                 <Form.Item name="answer" rules={[{ required: true, message: 'Please enter an answer!' }]}>
                                   <Input placeholder="Type in your answer" />
                                 </Form.Item>
-                                <div className="crd-body">
+                                <div className="crd-body form_c_button">
                                   <button className="add-btn btn-blue" type="submit">Submit Answer</button>
                                   <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
                                 </div>
-                              </Form>}
+                              </Form>
+                              // Text-Input 
+                            }
                             {this.state.type === 'MultipleChoicePredefined' &&
-                              <Form onFinish={() => this.multipleCheck()} ref={this.formRef}>
-                                {this.state.option1 !== "" && <> <input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option1', this.state.option1, e.target.checked)} />{this.state.option1} </>}
-                                {this.state.option2 !== "" && <><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option2', this.state.option2, e.target.checked)} />{this.state.option2} </>}
-                                {this.state.option3 !== "" && <><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option3', this.state.option3, e.target.checked)} />{this.state.option3} </>}
-                                {this.state.option4 !== "" && <><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option4', this.state.option4, e.target.checked)} />{this.state.option4} </>}
-                                <p>{this.state.notSure}</p>
-                                <div className="crd-body">
+                              <Form className="custom_inputs" onFinish={() => this.multipleCheck()} ref={this.formRef}>
+                                <div className="multiple_checkbox row">
+                                  <div className="col-md-6 p-0">
+                                    {this.state.option1 !== "" && <label> <input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option1', this.state.option1, e.target.checked)} />{this.state.option1} </label>}
+                                  </div>
+                                  <div className="col-md-6 p-0">
+                                    {this.state.option2 !== "" && <label><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option2', this.state.option2, e.target.checked)} />{this.state.option2} </label>}
+                                  </div>
+                                  <div className="col-md-6 p-0">
+                                    {this.state.option3 !== "" && <label><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option3', this.state.option3, e.target.checked)} />{this.state.option3} </label>}
+                                  </div>
+                                  <div className="col-md-6 p-0">
+                                    {this.state.option4 !== "" && <label><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option4', this.state.option4, e.target.checked)} />{this.state.option4} </label>}
+                                  </div>
+                                  <div className="col-md-12 p-0">
+                                    <p className="color-danger">{this.state.notSure}</p>
+                                  </div>
+                                </div>
+                                <div className="crd-body form_c_button">
                                   <button className="add-btn btn-blue" type="submit">Submit Answer</button>
                                   <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
                                 </div>
@@ -420,16 +435,18 @@ export default class Projects extends React.Component {
                                     ))}
                                   </Select>
                                 </Form.Item>
-                                <div className="crd-body">
+                                <div className="crd-body form_c_button">
                                   <button className="add-btn btn-blue" type="submit">Submit Answer</button>
                                   <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
                                 </div>
                               </Form>}
                             {this.state.type === 'YesNo' &&
                               <Form ref={this.formRef}>
-                                <button className="btn btn-blue" onClick={() => this.yesNo("YES")} >YES</button>
-                                <button className="btn btn-danger" onClick={() => this.yesNo("NO")} >No</button>
-                                <button className="btn btn-dark" onClick={() => this.skipQuestion()}>Not Sure</button>
+                                <div className="crd-body form_c_button">
+                                  <button className="btn btn-blue" onClick={() => this.yesNo("YES")} >YES</button>
+                                  <button className="btn btn-danger" onClick={() => this.yesNo("NO")} >No</button>
+                                  <button className="btn btn-dark" onClick={() => this.skipQuestion()}>Not Sure</button>
+                                </div>
                               </Form>}
                           </div>
                         </div>

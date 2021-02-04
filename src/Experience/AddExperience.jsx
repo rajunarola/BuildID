@@ -135,83 +135,87 @@ export default class AddExperience extends Component {
       <>
         {this.state.loading ? <Loader /> :
           <div className="index-main">
-            <div className="edit-sec mt-80"><h2>Add Experience</h2></div>
-            <div className="addticketform ml-4">
-              <div className="form-border p-4 w-30 mt-5 crd-wrap">
-                <Form className="card-body" onFinish={addExperienceTicket} ref={this.formRef}>
-                  <div className="form-group">
-                    <label>Company</label>
-                    <Form.Item name="companyName" rules={[{ required: true, message: 'Please select a company!' }]}>
-                      <Select
-                        showSearch
-                        labelInValue
-                        placeholder="Search Companies"
-                        notFoundContent={fetching2 ? <Spin size="small" /> : null}
-                        filterOption={false}
-                        onSearch={(e) => this.fetchSearchResult(e, 'company')}
-                        style={{ width: '100%' }}>
-                        {data2.map(d => (
-                          <Select.Option key={d.value}>{d.text}</Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label>Start Date</label>
-                    <Form.Item name="StartDate" rules={[{ required: true, message: 'Please select a start date!' }]}>
-                      <DatePicker className="w-100 inputstyle" />
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label>End Date</label>
-                    <Form.Item name="EndDate" rules={[{ required: true, message: 'Please select an end date!' }]}>
-                      <DatePicker className="w-100 inputstyle" />
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <Checkbox onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} >I currently work here</Checkbox>
-                  </div>
-                  <div className="form-group">
-                    <label>Trade</label>
-                    <Form.Item name="tradeName" rules={[{ required: true, message: 'Please select a trade!' }]}>
-                      <Select
-                        showSearch
-                        labelInValue
-                        placeholder="Search Trades"
-                        notFoundContent={fetching ? <Spin size="small" /> : null}
-                        filterOption={false}
-                        onSearch={(e) => this.fetchSearchResult(e, 'trade')}
-                        style={{ width: '100%' }}>
-                        {data.map(d => (
-                          <Select.Option key={d.value}>{d.text}</Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <label>Role</label>
-                    <Form.Item name="roleName" rules={[{ required: true, message: 'Please select a trade!' }]}>
-                      <Select
-                        showSearch
-                        labelInValue
-                        placeholder="Search Roles"
-                        notFoundContent={fetching1 ? <Spin size="small" /> : null}
-                        filterOption={false}
-                        onSearch={(e) => this.fetchSearchResult(e, 'role')}
-                        style={{ width: '100%' }}>
-                        {data1.map(d => (
-                          <Select.Option key={d.value}>{d.text}</Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="form-group">
-                    <Checkbox onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
-                  </div>
-                  <button type="submit" className="btn btn-blue btnManufacturer">Add Experience </button>
-                </Form>
+            <div className="edit-sec"><h2>Add Experience</h2></div>
+
+            <div className="container-fluid">
+              <div className="addticketform row">
+                <div className="form-border col-lg-5 col-md-8 mt-4 ml-md-4 pt-4">
+                  <Form className="card-body" onFinish={addExperienceTicket} ref={this.formRef}>
+                    <div className="form-group">
+                      <label>Company</label>
+                      <Form.Item name="companyName" rules={[{ required: true, message: 'Please select a company!' }]}>
+                        <Select
+                          showSearch
+                          labelInValue
+                          placeholder="Search Companies"
+                          notFoundContent={fetching2 ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchSearchResult(e, 'company')}
+                          style={{ width: '100%' }}>
+                          {data2.map(d => (
+                            <Select.Option key={d.value}>{d.text}</Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <label>Start Date</label>
+                      <Form.Item name="StartDate" rules={[{ required: true, message: 'Please select a start date!' }]}>
+                        <DatePicker className="w-100 inputstyle" />
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <label>End Date</label>
+                      <Form.Item name="EndDate" rules={[{ required: true, message: 'Please select an end date!' }]}>
+                        <DatePicker className="w-100 inputstyle" />
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <Checkbox onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} >I currently work here</Checkbox>
+                    </div>
+                    <div className="form-group">
+                      <label>Trade</label>
+                      <Form.Item name="tradeName" rules={[{ required: true, message: 'Please select a trade!' }]}>
+                        <Select
+                          showSearch
+                          labelInValue
+                          placeholder="Search Trades"
+                          notFoundContent={fetching ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchSearchResult(e, 'trade')}
+                          style={{ width: '100%' }}>
+                          {data.map(d => (
+                            <Select.Option key={d.value}>{d.text}</Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <label>Role</label>
+                      <Form.Item name="roleName" rules={[{ required: true, message: 'Please select a trade!' }]}>
+                        <Select
+                          showSearch
+                          labelInValue
+                          placeholder="Search Roles"
+                          notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                          filterOption={false}
+                          onSearch={(e) => this.fetchSearchResult(e, 'role')}
+                          style={{ width: '100%' }}>
+                          {data1.map(d => (
+                            <Select.Option key={d.value}>{d.text}</Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className="form-group">
+                      <Checkbox onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
+                    </div>
+                    <button type="submit" className="btn btn-blue btnManufacturer">Add Experience </button>
+                  </Form>
+                </div>
               </div>
             </div>
+
           </div>
         }
       </>
