@@ -1,11 +1,7 @@
 import axios from "axios";
 
 export function getAddress() {
-    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserAddress/${parseInt(localStorage.getItem('userID'))}`).then(response => {
-        return response
-    }).catch(error => {
-        return error
-    });
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserAddress/${parseInt(localStorage.getItem('userID'))}`);
 }
 
 export function saveUserAddress(data) {
@@ -14,9 +10,5 @@ export function saveUserAddress(data) {
             "Content-Type": "application/json",
             "Accept": "application/json"
         }
-    }).then(response => {
-        return response
-    }).catch(error => {
-        return error
     });
 }

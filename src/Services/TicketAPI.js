@@ -7,17 +7,9 @@ export function addNewTicket(data) {
             "Accept": "application/json",
             "type": "formData"
         }
-    }).then(response => {
-        return response
-    }).catch(error => {
-        return error
     });
 }
 
 export function getTicketByID(id) {
-    return axios.get(process.env.REACT_APP_API_URL + `api/tickets/GetTicketById/${id}`).then(response => {
-        return response
-    }).catch(error => {
-        return error
-    });
+    return axios.get(process.env.REACT_APP_API_URL + `api/tickets/GetTicketById/${id}`);
 }
