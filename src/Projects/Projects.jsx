@@ -256,6 +256,10 @@ export default class Projects extends React.Component {
     this.postAnswer(answer);
   }
 
+  editProject = (data) => {
+    this.props.history.push(`/edit-project/${data.id}`)
+  }
+
   render() {
 
     const userName = localStorage.getItem('userName');
@@ -335,7 +339,8 @@ export default class Projects extends React.Component {
                                       <span>{data.tradeName}</span>
                                       <span>{data.roleName}</span>
                                       <h5>{data.companyName}</h5>
-                                      <button onClick={() => this.getProjectDetails(data.projectId)} className="btn btn-blue">Project Details</button>
+                                      <button onClick={() => this.getProjectDetails(data.projectId)} className="btn btn-blue mr-3">Project Details</button>
+                                      <button onClick={() => this.editProject(data)} className="btn btn-dark">Edit Details</button>
                                     </div>
                                   </li>
                                 ))}
@@ -383,7 +388,6 @@ export default class Projects extends React.Component {
                           <p className="note_class">{this.state.emptyQuestions}</p>
                           <div className="qa-sec"><h4>{this.state.question}</h4>
                             {this.state.type === 'Text' &&
-                              // Text-Input
                               <Form className="custom_inputs" onFinish={textTypeAnswer} ref={this.formRef}>
                                 <Form.Item name="answer" rules={[{ required: true, message: 'Please enter an answer!' }]}>
                                   <Input placeholder="Type in your answer" />
@@ -393,7 +397,6 @@ export default class Projects extends React.Component {
                                   <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
                                 </div>
                               </Form>
-                              // Text-Input 
                             }
                             {this.state.type === 'MultipleChoicePredefined' &&
                               <Form className="custom_inputs" onFinish={() => this.multipleCheck()} ref={this.formRef}>
@@ -416,7 +419,7 @@ export default class Projects extends React.Component {
                                 </div>
                                 <div className="crd-body form_c_button">
                                   <button className="add-btn btn-blue" type="submit">Submit Answer</button>
-                                  <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
+                                  <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Question</button>
                                 </div>
                               </Form>}
                             {this.state.type === 'General' &&

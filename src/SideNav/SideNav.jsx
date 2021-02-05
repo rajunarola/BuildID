@@ -14,11 +14,9 @@ class SideNav extends React.Component {
 
             <>
                 <aside className={this.state.open === true ? "sidebar bar-close sidebar_open" : "sidebar bar-close"} style={{ cursor: "pointer" }}>
-
                     <button className="sidebar_open_icon" onClick={() => this.setState({ open: !this.state.open })}>
-                        <i class="fas fa-bars"></i>
+                        <i className="fas fa-bars"></i>
                     </button>
-
                     <NavLink to="#" onClick={e => e.preventDefault()} className="logo">BUILD <b>ID</b></NavLink>
                     <div className="user-id" onClick={() => this.props.history.push('/projects')}>
                         <span> <img src={localStorage.getItem('userImage')} alt="" /></span>
