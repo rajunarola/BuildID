@@ -191,10 +191,7 @@ class EditExperience extends Component {
         {this.state.loading ? <Loader /> :
           <div className="index-main">
             <div className="edit-sec"><h2>Edit Experience</h2></div>
-
             <div className="container-fluid">
-
-
               <div className="addticketform row">
                 <div className="form-border col-lg-5 col-md-8 mt-4 ml-md-4 pt-4">
                   <Form className="card-body" onFinish={updateExperience} ref={this.formRef}>

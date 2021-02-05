@@ -243,7 +243,7 @@ export default class ProjectDetails extends Component {
                     <button type="button" className="add-btn btn-blue mb-4">
                       <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
                     </button>
-                    <input type="file" id="file" style={{ 'display': 'none' }} onChange={(e) => this.saveImage(e)} multiple={true} />
+                    <input type="file" id="file" style={{ 'display': 'none' }} onChange={(e) => this.saveImage(e)} multiple />
                     <div className="form-border crd-wrp">
                       <div className="pro-img slider-main mb-2 embed-responsive">
                         <Carousel autoPlay>

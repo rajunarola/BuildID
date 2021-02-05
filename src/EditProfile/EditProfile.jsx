@@ -358,7 +358,7 @@ export default class EditProfile extends Component {
                             )}
                           </Form.List>
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" checked={this.state.RideShareInterested === true ? true : false} name="RideShareInterested" onChange={(e) => this.getCheckBoxValue(e.target.checked)} />
+                            <input className="form-check-input" type="checkbox" checked={this.state.RideShareInterested} name="RideShareInterested" onChange={(e) => this.getCheckBoxValue(e.target.checked)} />
                             <label className="form-check-label">Interested in ride share to site</label>
                           </div>
                           <Form.Item>

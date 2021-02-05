@@ -87,6 +87,7 @@ class SelectProject extends Component {
 
   componentWillUnmount() {
     localStorage.removeItem('projectId')
+    localStorage.removeItem('projectName')
   }
 
   render() {
@@ -135,7 +136,7 @@ class SelectProject extends Component {
                 <div className="col-lg-4 col-md-6 col-12">
                   <div className="form-border crd-wrp">
                     <div className="proj-timeline">
-                      {/* <h4 className="k-card-title">View Projects</h4> */}
+                      <h4 className="k-card-title">{localStorage.getItem('projectName')}</h4>
                       <div className="manufacture-form manufacture-content pt-3">
                         <Form onFinish={saveWorkHistory}>
                           <div className="form-group">
@@ -209,8 +210,7 @@ class SelectProject extends Component {
                               <Checkbox onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
                             </Form.Item>
                           </div>
-
-                          <button className="btn btn-blue mr-3 mb-3" type="submit">Add Project To Timeline</button>
+                          <button className="btn btn-blue mr-3" type="submit">Add Project To Timeline</button>
                           <button className="btn btn-danger" onClick={() => this.props.history.push(`/search-project`)}>Cancel</button>
                         </Form>
                       </div>

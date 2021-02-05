@@ -257,7 +257,7 @@ class EditTicketFinal extends Component {
                       </div>
                     </div>
                     <div className="form-check">
-                      <Checkbox checked={this.state.PublicTicket === true ? true : false} onChange={(e) => this.getCheckBoxValue(e.target.checked)} >Public Ticket</Checkbox>
+                      <Checkbox checked={this.state.PublicTicket} onChange={(e) => this.getCheckBoxValue(e.target.checked)} >Public Ticket</Checkbox>
                     </div>
                     <div className="d-flex mt-3 mb-4">
                       <button type="submit" className="btn btn-blue btnManufacturer mr-2">Update Ticket</button>
