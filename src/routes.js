@@ -13,9 +13,11 @@ const EditExperience = lazy(() => import("./Experience/EditExperience"));
 const ProjectDetails = lazy(() => import("./Projects/ProjectDetails"));
 const AddManufacturer = lazy(() => import("./Projects/AddManufacturer"));
 const AddCompany = lazy(() => import("./Projects/AddCompany"));
-const AddProject = lazy(() => import("./Projects/AddProject"));
+const SearchProjects = lazy(() => import("./Projects/SearchProjects"));
 const SelectProject = lazy(() => import("./Projects/SelectProject"));
 const ViewSearchedProject = lazy(() => import("./Projects/ViewSearchedProject"));
+const EditProject = lazy(() => import("./Projects/EditProject"));
+const AddGlobalProject = lazy(() => import("./Projects/AddGlobalProject"));
 
 export const routesCode = [
     { path: "/(login)?", exact: true, component: Login },
@@ -29,9 +31,11 @@ export const routesCode = [
     { path: "/project-details/:id", exact: true, component: ProjectDetails },
     { path: "/add-manufacturer", exact: true, component: AddManufacturer },
     { path: "/add-company", exact: true, component: AddCompany },
-    { path: "/search-project", exact: true, component: AddProject },
+    { path: "/search-project", exact: true, component: SearchProjects },
     { path: "/select-project", exact: true, component: SelectProject },
     { path: "/searched-project", exact: true, component: ViewSearchedProject },
+    { path: "/edit-project/:id", exact: true, component: EditProject },
+    { path: "/add-project", exact: true, component: AddGlobalProject },
 ];
 
 class Routes extends React.PureComponent {
