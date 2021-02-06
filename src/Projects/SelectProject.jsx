@@ -22,7 +22,8 @@ class SelectProject extends Component {
     data2: [],
     fetching2: false,
     Present: false,
-    IncludeInResume: false
+    IncludeInResume: false,
+    CurrentCompany: false
   };
 
   fetchSelectData = (value, string) => {

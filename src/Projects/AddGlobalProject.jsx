@@ -90,12 +90,14 @@ export default class AddGlobalProject extends Component {
   };
 
   onLocationSelect(result) {
-    this.formRef.current.setFieldsValue({
-      address: result.value.description,
-      city: result.value.terms && result.value.terms[0] && result.value.terms[0].value,
-      country: result.value.terms && result.value.terms[2] && result.value.terms[2].value,
-      province: result.value.terms && result.value.terms[0] && result.value.terms[0].value
-    });
+    console.log('result => ', result);
+
+    // this.formRef.current.setFieldsValue({
+    //   address: result.value.description,
+    //   city: result.value.terms && result.value.terms[0] && result.value.terms[0].value,
+    //   country: result.value.terms && result.value.terms[2] && result.value.terms[2].value,
+    //   province: result.value.terms && result.value.terms[0] && result.value.terms[0].value
+    // });
   }
 
   handleFile = ({ target }) => {

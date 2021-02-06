@@ -1741,3 +1741,7 @@ ul.ticket-list.overlay-scroll {
     background-repeat: no-repeat;
     background-color: #ddd;
 }
+
+.question_one {
+    padding: 0 20px !important;
+}

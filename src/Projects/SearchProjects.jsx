@@ -4,6 +4,7 @@ import { Select, Form, Spin, Input, notification } from 'antd';
 import { getGoogleAPIKey, searchProjectsBy } from '../Services/Project';
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import Loader from '../Loader/Loader';
+import { Link } from 'react-router-dom';
 export default class SearchProjects extends Component {
 
   constructor(props) {
@@ -135,7 +136,7 @@ export default class SearchProjects extends Component {
                       <div className="proj-timeline">
                         <h4 className="k-card-title">Search Projects</h4>
                         <div className="manufacture-form manufacture-content seaerchForms pt-3">
-                          <p className="note_infor">Can't find your project ? <a href="/add-project"> Click here to add new project </a>
+                          <p className="note_infor">Can't find your project ? <Link to="/add-project" className="color-danger"> Click here to add new project </Link>
                           or come back later as hundreds of projects are getting added everyday.
                           </p>
                           <Form onFinish={fetchProjectBySearch}>

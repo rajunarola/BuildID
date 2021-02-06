@@ -44,13 +44,16 @@ export default class Projects extends React.Component {
     option4A: '',
     notSure: '',
     emptyQuestions: '',
-    location: ''
+    location: '',
+    data: []
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
       Promise.all([userWorkHistory(),
       getTicketsByUserId(), getNewQuestionForTheUser()]).then((values) => {
+        console.log('values => ', values[2].data);
+
         if (values[0] && values[1] && values[2] && values[0].status === 200 && values[1].status === 200 && values[2].status === 200) {
           this.setState({
             projectArray: values[0].data.data,
@@ -248,9 +251,10 @@ export default class Projects extends React.Component {
     const answer = {
       Id: 0,
       UserId: parseInt(localStorage.getItem('userID')),
-      QuestionId: values,
-      Parameter1: parseInt(this.state.parameter1),
-      Parameter2: parseInt(this.state.parameter2),
+      QuestionId: this.state.questionId,
+      Answer1: values,
+      Parameter1: this.state.parameter1 !== "" ? parseInt(this.state.parameter1) : "",
+      Parameter2: this.state.parameter2 !== "" ? parseInt(this.state.parameter2) : "",
       Answered: this.state.notSure === false ? this.state.notSure : true
     }
     this.postAnswer(answer);
@@ -423,7 +427,7 @@ export default class Projects extends React.Component {
                                 </div>
                               </Form>}
                             {this.state.type === 'General' &&
-                              <Form onFinish={generalSubmit} ref={this.formRef}>
+                              <Form onFinish={generalSubmit} ref={this.formRef} className="question_one">
                                 <Form.Item name="companyName" rules={[{ required: true, message: 'Please select an answer!' }]}>
                                   <Select
                                     showSearch
@@ -442,12 +446,13 @@ export default class Projects extends React.Component {
                                   <button className="add-btn btn-blue" type="submit">Submit Answer</button>
                                   <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
                                 </div>
-                              </Form>}
+                              </Form>
+                            }
                             {this.state.type === 'YesNo' &&
                               <Form ref={this.formRef}>
                                 <div className="crd-body form_c_button">
-                                  <button className="btn btn-blue" onClick={() => this.yesNo("YES")} >YES</button>
-                                  <button className="btn btn-danger" onClick={() => this.yesNo("NO")} >No</button>
+                                  <button className="btn btn-blue" onClick={() => this.yesNo("YES")}>Yes</button>
+                                  <button className="btn btn-danger" onClick={() => this.yesNo("NO")}>No</button>
                                   <button className="btn btn-dark" onClick={() => this.skipQuestion()}>Not Sure</button>
                                 </div>
                               </Form>}
