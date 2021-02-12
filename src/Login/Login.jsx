@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Loader from '../Loader/Loader';
 import { userLogin } from '../Services/CommonAPI';
 import { Link } from 'react-router-dom';

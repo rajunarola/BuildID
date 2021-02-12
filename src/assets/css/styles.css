@@ -1654,7 +1654,7 @@ ul.ticket-list.overlay-scroll {
 
 .removeImage {
     position: absolute;
-    right: -9px;
+    right: 0px;
     top: -9px;
     margin: 0;
     background: linear-gradient(137.21deg, #754ea0 5.4%, #ee2750 75.09%);
@@ -1744,4 +1744,94 @@ ul.ticket-list.overlay-scroll {
 
 .question_one {
     padding: 0 20px !important;
+}
+
+.montages_sec {
+    margin: 30px 0 0 0;
+}
+
+.montages_sec .crd-wrap {
+    padding: 20px 20px 20px 20px;
+}
+
+.playlist_sec button {
+    margin: 0 3px;
+}
+
+.playlist_sec {
+    padding: 14px 14px 14px 14px;
+    margin: 10px 0 7px 0;
+    border: 1px solid #dddddd;
+}
+
+.music_file_section {
+    padding: 15px 15px 15px 15px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin: 0px 0px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.music_name_f {
+    display: flex;
+    align-items: center;
+}
+
+.music_name_f label {
+    margin: 0px 15px 0 10px;
+    font-size: 18px !important;
+}
+
+.music_name_f input {
+    margin: 0px 9px 0 0px;
+}
+
+.preview {
+    padding: 15px 15px 15px 15px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin: 0 0 30px 0;
+}
+
+.plays_buttons .btn {
+    margin: 0 5px;
+    font-size: 12px;
+    padding: 5px 10px !important;
+    width: 35px;
+    height: 30px !important;
+}
+
+.gallary_name_sec {
+    display: flex;
+    align-items: center;
+}
+
+.gallary_name_sec {
+    margin: 0 0 10px 0;
+}
+
+.gallary_name_sec input {
+    margin: 0 8px 0 0;
+}
+
+.gallary_name_sec p {
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    width: 130px;
+}
+
+.mon_p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.project_address_l {
+    display: flex;
+    align-items: center;
 }

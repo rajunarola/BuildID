@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import Loader from '../Loader/Loader';
 import { Form, Input, notification, Spin, Select } from 'antd';
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { addGlobalProject, getGoogleAPIKey, saveProjectPicture } from '../Services/Project';
 import debounce from 'lodash/debounce';
-
 export default class AddGlobalProject extends Component {
 
   formRef = React.createRef();
@@ -25,7 +24,8 @@ export default class AddGlobalProject extends Component {
     data1: [],
     fetching1: false,
     projectId: '',
-    gallery: []
+    gallery: [],
+    newValue: ''
   }
 
   componentDidMount() {
@@ -90,14 +90,14 @@ export default class AddGlobalProject extends Component {
   };
 
   onLocationSelect(result) {
-    console.log('result => ', result);
-
-    // this.formRef.current.setFieldsValue({
-    //   address: result.value.description,
-    //   city: result.value.terms && result.value.terms[0] && result.value.terms[0].value,
-    //   country: result.value.terms && result.value.terms[2] && result.value.terms[2].value,
-    //   province: result.value.terms && result.value.terms[0] && result.value.terms[0].value
-    // });
+    this.setState({ newValue: result }, () => {
+      this.formRef.current.setFieldsValue({
+        address: result.value.description,
+        city: result.value.terms && result.value.terms[0] && result.value.terms[0].value,
+        country: result.value.terms && result.value.terms[2] && result.value.terms[2].value,
+        province: result.value.terms && result.value.terms[0] && result.value.terms[0].value
+      });
+    });
   }
 
   handleFile = ({ target }) => {
@@ -121,9 +121,21 @@ export default class AddGlobalProject extends Component {
     this.setState({ gallery });
   };
 
+  removeAddress() {
+    this.setState({ newValue: '' }, () => {
+      this.formRef.current.setFieldsValue({
+        address: "",
+        city: "",
+        country: "",
+        postalCode: "",
+        province: ""
+      });
+    });
+  }
+
   render() {
 
-    const { data, fetching, data1, fetching1 } = this.state;
+    const { data, fetching, data1, fetching1, newValue } = this.state;
 
     const SaveImageAPI = () => {
       for (let index = 0; index < this.files.length; index++) {
@@ -151,9 +163,11 @@ export default class AddGlobalProject extends Component {
             });
           }
         }).catch(err => {
-          notification.error({
-            message: 'Error',
-            description: 'There was an error while uploading an image to the current project!'
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while uploading an image to the current project!'
+            });
           });
         });
       }
@@ -210,9 +224,7 @@ export default class AddGlobalProject extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec">
-                <div className="editprofile">Add Global Project</div>
-              </div>
+              <div className="edit-sec"> <h1> Add Global Project </h1></div>
               <div className="addticketform com-padding">
                 <div className="row">
                   <div className="col-lg-4 col-md-6 col-12">
@@ -228,8 +240,19 @@ export default class AddGlobalProject extends Component {
                             </div>
                             <div className="form-group">
                               <label> Search Project Address</label>
-                              <GooglePlacesAutocomplete className="select-bx" apiKey={this.state.googleAPIKey}
-                                selectProps={{ placeholder: 'Enter City, State, Country', onChange: (value) => this.onLocationSelect(value) }} />
+                              <div className="project_address_l">
+                                <div className="w-100">
+                                  <GooglePlacesAutocomplete className="select-bx w-100" apiKey={this.state.googleAPIKey}
+                                    selectProps={{
+                                      placeholder: 'Enter City, State, Country',
+                                      onChange: (value) => this.onLocationSelect(value),
+                                      value: newValue
+                                    }} />
+                                </div>
+                                <span className="delete-icon">
+                                  <i className="fa fa-close" onClick={() => this.removeAddress()} style={{ cursor: "pointer" }}></i>
+                                </span>
+                              </div>
                             </div>
                             <div className="form-group">
                               <label> Address</label>
@@ -307,7 +330,7 @@ export default class AddGlobalProject extends Component {
                                   <div className="gallary_bg_hn" htmlFor="gallery" style={{ backgroundImage: `url(${res})`, pointerEvents: 'none' }}>
                                     <div className="removeImage" onClick={() => this.removeImage(e)}>
                                       <svg width="10" height="10" viewBox="0 0 10 10" fill="white" xmlns="http://www.w3.org/2000/svg" >
-                                        <path d="M1 9L5 5M9 1L5 5M5 5L1 1L9 9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M1 9L5 5M9 1L5 5M5 5L1 1L9 9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                       </svg>
                                     </div>
                                   </div>

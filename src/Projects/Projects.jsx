@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import { notification, Form, Select, Spin, Input } from 'antd';
 import Loader from '../Loader/Loader';
 import debounce from 'lodash/debounce';
+import swal from 'sweetalert';
+import { deleteMontage, getMontages } from '../Services/Montage';
 export default class Projects extends React.Component {
 
   formRef = React.createRef()
@@ -45,19 +47,19 @@ export default class Projects extends React.Component {
     notSure: '',
     emptyQuestions: '',
     location: '',
-    data: []
+    data: [],
+    userMontages: []
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
       Promise.all([userWorkHistory(),
-      getTicketsByUserId(), getNewQuestionForTheUser()]).then((values) => {
-        console.log('values => ', values[2].data);
-
+      getTicketsByUserId(), getNewQuestionForTheUser(), getMontages()]).then((values) => {
         if (values[0] && values[1] && values[2] && values[0].status === 200 && values[1].status === 200 && values[2].status === 200) {
           this.setState({
             projectArray: values[0].data.data,
             ticketArray: values[1].data.data,
+            userMontages: values[3].data.data !== [] ? values[3].data.data : [],
             parameter1: values[2].data.data !== null && values[2].data.data.parameter1,
             parameter2: values[2].data.data !== null && values[2].data.data.parameter2,
             question: values[2].data.data !== null && values[2].data.data.description,
@@ -264,10 +266,59 @@ export default class Projects extends React.Component {
     this.props.history.push(`/edit-project/${data.id}`)
   }
 
+  editMontage = (id) => {
+    this.props.history.push(`/edit-montage/${id}`)
+  }
+
+  montagePreview = (id) => {
+    this.props.history.push(`/preview-montage/${id}`)
+  }
+
+  deleteOneMontage = (id) => {
+    swal({
+      title: "Are you sure you want to delete the selected montage?",
+      text: "Once deleted, you will not be able to recover this data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        deleteMontage(id).then(res => {
+          if (res.data.status === true) {
+            notification.success({
+              message: 'Success',
+              description: 'Montage deleted successfully!'
+            });
+            getMontages().then(res => {
+              if (res.status === 200) {
+                this.setState({ userMontages: res.data.data })
+              }
+            })
+          } else {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while deleting a montage'
+            });
+          }
+        }).catch(err => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while deleting a montage'
+          });
+        })
+      } else {
+        notification.info({
+          message: 'Success',
+          description: 'Your montage data is Safe!'
+        });
+      }
+    })
+  }
+
   render() {
 
     const userName = localStorage.getItem('userName');
-    const { fetching, data } = this.state;
+    const { fetching, data, userMontages } = this.state;
 
     const textTypeAnswer = (values) => {
       const answer = {
@@ -460,6 +511,26 @@ export default class Projects extends React.Component {
                         </div>
                       </div>
                     </div>
+                    {/* Montage Section Start */}
+                    <div className="accordion montages_sec">
+                      <div className="crd-wrap">
+                        <Link className="add-btn btn-blue" to="/add-montage"><i className="fas fa-plus-circle"></i> Add Montage</Link>
+                        {this.state.userMontages.length > 0 &&
+                          <>
+                            <div> <h4 className="k-card-title">List of Montages</h4> </div>
+                            {userMontages.map(data => (
+                              <div className="playlist_sec">
+                                <h4>{data.name}</h4>
+                                <button className="btn btn-blue" onClick={() => this.editMontage(data.id)}><i className="fa fa-edit"></i></button>
+                                <button className="btn btn-danger" onClick={() => this.deleteOneMontage(data.id)}><i className="fa fa-trash"></i></button>
+                                <button className="btn btn-dark fa fa-play" onClick={() => this.montagePreview(data.id)}></button>
+                              </div>
+                            ))}
+                          </>
+                        }
+                      </div>
+                    </div>
+                    {/* Montage Section End */}
                   </div>
                 </div>
               </div>
