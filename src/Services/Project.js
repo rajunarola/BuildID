@@ -59,3 +59,11 @@ export function addGlobalProject(data) {
         }
     });
 }
+
+export function getUserProjectPicture() {
+    return axios.get(process.env.REACT_APP_API_URL + `api/projects/getuserprojectpictures/${parseInt(localStorage.getItem('userID'))}`);
+}
+
+export function getProjectsByUser() {
+    return axios.get(process.env.REACT_APP_API_URL + `api/projects/GetProjectsByUser/${parseInt(localStorage.getItem('userID'))}`);
+}
