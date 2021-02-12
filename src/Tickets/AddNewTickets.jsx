@@ -46,34 +46,36 @@ export default class AddNewTickets extends React.Component {
   fetchCompany = value => {
     this.lastFetchId += 1;
     const fetchId = this.lastFetchId;
-    this.setState({ data: [], fetching: true });
-    fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
-      if (fetchId !== this.lastFetchId) {
-        // for fetch callback order
-        return;
-      }
-      const data = body.data.map(user => ({
-        text: `${user.name}`,
-        value: user.id,
-      }));
-      this.setState({ data, fetching: false });
+    this.setState({ data: [], fetching: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId) {
+          // for fetch callback order
+          return;
+        }
+        const data = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data, fetching: false });
+      });
     });
   };
 
   fetchTicketType = () => {
     this.lastFetchId1 += 1;
     const fetchId = this.lastFetchId1;
-    this.setState({ data1: [], fetching1: true });
-    fetch(process.env.REACT_APP_API_URL + `api/tickets/GetTicketTypes`).then(response => response.json()).then(body => {
-      if (fetchId !== this.lastFetchId1) {
-        // for fetch callback order
-        return;
-      }
-      const data = body.data.map(user => ({
-        text: `${user.name}`,
-        value: user.id,
-      }));
-      this.setState({ data1: data, fetching1: false });
+    this.setState({ data1: [], fetching1: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/tickets/GetTicketTypes`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId1) {
+          // for fetch callback order
+          return;
+        }
+        const data = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data1: data, fetching1: false });
+      });
     });
   };
 
@@ -121,7 +123,6 @@ export default class AddNewTickets extends React.Component {
         {this.state.loading ? <Loader /> :
           <div className="index-main">
             <div className="edit-sec"><h2>Add Ticket</h2></div>
-
             <div className="container-fluid">
               <div className="addticketform row">
                 <div className="form-border col-lg-5 col-md-8 mt-4 ml-md-4 pt-4">
@@ -206,7 +207,6 @@ export default class AddNewTickets extends React.Component {
                 </div>
               </div>
             </div>
-
           </div>
         }
       </>

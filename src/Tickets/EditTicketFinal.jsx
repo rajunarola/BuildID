@@ -34,29 +34,33 @@ class EditTicketFinal extends Component {
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
-      getTicketByID(parseInt(this.props.match.params.id)).then(res => {
-        if (res.status === 200) {
-          this.setState({
-            loading: false,
-            PublicTicket: res.data.data.publicTicket,
-            getfrontPicture: res.data.data.frontPictureUrl,
-            getBackPicture: res.data.data.backPictureUrl
-          }, () => {
-            this.formRef.current.setFieldsValue({
-              TicketTypeId: { value: res.data.data.ticketTypeId, label: res.data.data.ticketType, key: res.data.data.ticketTypeId },
-              IssuedOn: moment(moment(res.data.data.issuedOn).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-              Expiry: moment(moment(res.data.data.expiry).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-              TicketId: res.data.data.ticketId,
-              IssuedBy: { value: res.data.data.issuedById, label: res.data.data.issuedBy, key: res.data.data.issuedById },
-            });
+      this.apiCall();
+    });
+  }
+
+  apiCall = () => {
+    getTicketByID(parseInt(this.props.match.params.id)).then(res => {
+      if (res.status === 200) {
+        this.setState({
+          loading: false,
+          PublicTicket: res.data.data.publicTicket,
+          getfrontPicture: res.data.data.frontPictureUrl,
+          getBackPicture: res.data.data.backPictureUrl
+        }, () => {
+          this.formRef.current.setFieldsValue({
+            TicketTypeId: { value: res.data.data.ticketTypeId, label: res.data.data.ticketType, key: res.data.data.ticketTypeId },
+            IssuedOn: moment(moment(res.data.data.issuedOn).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+            Expiry: moment(moment(res.data.data.expiry).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+            TicketId: res.data.data.ticketId,
+            IssuedBy: { value: res.data.data.issuedById, label: res.data.data.issuedBy, key: res.data.data.issuedById },
           });
-        }
-      }).catch(err => {
-        this.setState({ loading: false }, () => {
-          notification.error({
-            message: 'Error',
-            description: 'There was an error while fetching ticket data!'
-          });
+        });
+      }
+    }).catch(err => {
+      this.setState({ loading: false }, () => {
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while fetching ticket data!'
         });
       });
     });
@@ -65,34 +69,36 @@ class EditTicketFinal extends Component {
   fetchCompany = value => {
     this.lastFetchId += 1;
     const fetchId = this.lastFetchId;
-    this.setState({ data: [], fetching: true });
-    fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
-      if (fetchId !== this.lastFetchId) {
-        // for fetch callback order
-        return;
-      }
-      const data = body.data.map(user => ({
-        text: `${user.name}`,
-        value: user.id,
-      }));
-      this.setState({ data, fetching: false });
+    this.setState({ data: [], fetching: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId) {
+          // for fetch callback order
+          return;
+        }
+        const data = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data, fetching: false });
+      });
     });
   };
 
   fetchTicketType = () => {
     this.lastFetchId1 += 1;
     const fetchId = this.lastFetchId1;
-    this.setState({ data1: [], fetching1: true });
-    fetch(process.env.REACT_APP_API_URL + `api/tickets/GetTicketTypes`).then(response => response.json()).then(body => {
-      if (fetchId !== this.lastFetchId1) {
-        // for fetch callback order
-        return;
-      }
-      const data = body.data.map(user => ({
-        text: `${user.name}`,
-        value: user.id,
-      }));
-      this.setState({ data1: data, fetching1: false });
+    this.setState({ data1: [], fetching1: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/tickets/GetTicketTypes`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId1) {
+          // for fetch callback order
+          return;
+        }
+        const data = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data1: data, fetching1: false });
+      });
     });
   };
 
@@ -139,26 +145,7 @@ class EditTicketFinal extends Component {
               message: 'Success',
               description: 'Ticket successfully updated!'
             });
-            getTicketByID(parseInt(this.props.match.params.id)).then(res => {
-              if (res.status === 200) {
-                this.setState({
-                  loading: false,
-                  PublicTicket: res.data.data.publicTicket,
-                  getfrontPicture: res.data.data.frontPictureUrl,
-                  getBackPicture: res.data.data.backPictureUrl
-                }, () => {
-                  this.formRef.current.setFieldsValue({
-                    TicketTypeId: { value: res.data.data.ticketTypeId, label: res.data.data.ticketType, key: res.data.data.ticketTypeId },
-                    IssuedOn: moment(moment(res.data.data.issuedOn).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-                    Expiry: moment(moment(res.data.data.expiry).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-                    TicketId: res.data.data.ticketId,
-                    IssuedBy: { value: res.data.data.issuedById, label: res.data.data.issuedBy, key: res.data.data.issuedById },
-                  });
-                });
-              }
-            }).catch(err => {
-              this.setState({ loading: false })
-            });
+            this.apiCall();
           }
         }).catch(err => {
           this.setState({ loading: false }, () => {
@@ -177,7 +164,6 @@ class EditTicketFinal extends Component {
         {this.state.loading ? <Loader /> :
           <div className="index-main">
             <div className="edit-sec"><h2>Edit Ticket</h2></div>
-
             <div className="container-fluid">
               <div className="addticketform row">
                 <div className="form-border col-lg-5 col-md-8 mt-4 ml-md-4 pt-4">

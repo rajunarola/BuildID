@@ -4,7 +4,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { notification } from 'antd';
 import Loader from '../Loader/Loader';
-
 export default class ViewSearchedProject extends Component {
 
     state = {
@@ -17,7 +16,7 @@ export default class ViewSearchedProject extends Component {
         this.setState({ loading: true }, () => {
             userProjects(localStorage.getItem('projectId')).then(res => {
                 if (res.status === 200) {
-                    this.setState({ loading: false, pictureList: res.data.data.pictureList, projectDetails: res.data.data.project })
+                    this.setState({ loading: false, pictureList: res.data.data.pictureList, projectDetails: res.data.data.project });
                 }
             }).catch(err => {
                 this.setState({ loading: false }, () => {
@@ -56,7 +55,8 @@ export default class ViewSearchedProject extends Component {
                                                             ))}
                                                         </Carousel>
                                                         :
-                                                        <span className="text-danger text-uppercase">No Image Available</span>}
+                                                        <span className="text-danger text-uppercase">No Image Available</span>
+                                                    }
                                                 </div>
                                                 {this.state.projectDetails &&
                                                     <div className="proj-timeline project-address-location">
