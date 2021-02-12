@@ -18,6 +18,9 @@ const SelectProject = lazy(() => import("./Projects/SelectProject"));
 const ViewSearchedProject = lazy(() => import("./Projects/ViewSearchedProject"));
 const EditProject = lazy(() => import("./Projects/EditProject"));
 const AddGlobalProject = lazy(() => import("./Projects/AddGlobalProject"));
+const EditMontageById = lazy(() => import("./Montages/EditMontage"));
+const AddNewMontage = lazy(() => import("./Montages/AddMontage"));
+const PreviewOfMontage = lazy(() => import("./Montages/MontagePreview"));
 
 export const routesCode = [
     { path: "/(login)?", exact: true, component: Login },
@@ -36,6 +39,9 @@ export const routesCode = [
     { path: "/searched-project", exact: true, component: ViewSearchedProject },
     { path: "/edit-project/:id", exact: true, component: EditProject },
     { path: "/add-project", exact: true, component: AddGlobalProject },
+    { path: "/edit-montage/:id", exact: true, component: EditMontageById },
+    { path: "/add-montage", exact: true, component: AddNewMontage },
+    { path: "/preview-montage/:id", exact: true, component: PreviewOfMontage }
 ];
 
 class Routes extends React.PureComponent {
