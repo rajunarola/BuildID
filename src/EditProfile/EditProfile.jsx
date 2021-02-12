@@ -96,39 +96,40 @@ export default class EditProfile extends Component {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        this.setState({ loading: true }, () => {
-          deleteAnExperience({ Id: id }).then(res => {
-            if (res.data.status === true) {
-              getUserExperienceHistory().then(response => {
-                if (response.status === 200) {
-                  this.setState({ experienceArray: response.data.data });
+        // this.setState({ loading: true }, () => {
+        deleteAnExperience({ Id: id }).then(res => {
+          if (res.data.status === true) {
+            getUserExperienceHistory().then(response => {
+              if (response.status === 200) {
+                this.setState({ experienceArray: response.data.data }, () => {
                   const firstData = this.state.experienceArray[0].projectId;
                   const projectName = this.state.experienceArray[0].projectName;
                   const companyName = this.state.experienceArray[0].companyName;
-                  this.setState({ projectName: projectName, projectID: firstData, companyName: companyName, loading: false });
-                }
-              }).catch(Err => { });
-              notification.success({
-                message: 'Success',
-                description: 'Experience data deleted successfully!'
-              });
-            } else {
-              this.setState({ loading: false }, () => {
-                notification.error({
-                  message: 'Error',
-                  description: 'There was an error while deleting an experience'
+                  this.setState({ projectName: projectName, projectID: firstData, companyName: companyName });
                 });
-              });
-            }
-          }).catch(err => {
-            this.setState({ loading: false }, () => {
-              notification.error({
-                message: 'Error',
-                description: 'There was an error while deleting an experience'
-              });
+              }
+            }).catch(Err => { });
+            notification.success({
+              message: 'Success',
+              description: 'Experience data deleted successfully!'
             });
+          } else {
+            // this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: 'There was an error while deleting an experience'
+            });
+            // });
+          }
+        }).catch(err => {
+          // this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while deleting an experience'
           });
+          // });
         });
+        // });
       } else {
         swal("Your experience data is safe!");
       }
@@ -193,6 +194,9 @@ export default class EditProfile extends Component {
             if (res.data.status === true) {
               Promise.all([getUserDetails(), getAddress()]).then(values => {
                 if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
+                  localStorage.setItem('userID', values[0].data.data.userId);
+                  localStorage.setItem('userImage', values[0].data.data.pictureUrl)
+                  localStorage.setItem('userName', values[0].data.data.firstName + " " + values[0].data.data.lastName);
                   if (this.formRef) {
                     this.formRef.current.setFieldsValue({
                       FirstName: values[0].data.data.firstName,

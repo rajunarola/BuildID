@@ -54,10 +54,9 @@ export default class EditProject extends Component {
               tradeName: { value: res.data.data.tradeId, label: res.data.data.tradeName, key: res.data.data.tradeId },
               StartDate: moment(moment(res.data.data.startDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
               EndDate: moment(moment(res.data.data.endDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-            })
-          })
+            });
+          });
         }
-
       }).catch(Err => {
         this.setState({ loading: false }, () => {
           notification.error({

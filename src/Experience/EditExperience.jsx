@@ -21,13 +21,10 @@ class EditExperience extends Component {
 
   state = {
     data: [],
-    value: [],
     fetching: false,
     data1: [],
-    value1: [],
     fetching1: false,
     data2: [],
-    value2: [],
     fetching2: false,
     CurrentCompany: false,
     IncludeInResume: false,
@@ -36,81 +33,88 @@ class EditExperience extends Component {
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
-      editAnExperience(localStorage.getItem('userID'), this.props.match.params.experienceId).then(res => {
-        if (res.status === 200) {
-          this.setState({
-            CurrentCompany: res.data.data.currentCompany,
-            IncludeInResume: res.data.data.includeInResume,
-            loading: false
-          }, () => {
-            this.formRef.current.setFieldsValue({
-              companyName: { value: res.data.data.companyId, label: res.data.data.companyName, key: res.data.data.companyId },
-              roleName: { value: res.data.data.roleId, label: res.data.data.roleName, key: res.data.data.roleId },
-              tradeName: { value: res.data.data.tradeId, label: res.data.data.tradeName, key: res.data.data.tradeId },
-              StartDate: moment(moment(res.data.data.startDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-              EndDate: moment(moment(res.data.data.endDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-            });
-          });
-        }
-      }).catch(err => {
-        this.setState({ loading: false }, () => {
-          notification.error({
-            message: 'Error',
-            description: 'There was an error while fetching experience details!'
+      this.apiCall();
+    });
+  }
+
+  apiCall = () => {
+    editAnExperience(localStorage.getItem('userID'), this.props.match.params.experienceId).then(res => {
+      if (res.status === 200) {
+        this.setState({
+          CurrentCompany: res.data.data.currentCompany,
+          IncludeInResume: res.data.data.includeInResume,
+          loading: false
+        }, () => {
+          this.formRef.current.setFieldsValue({
+            companyName: { value: res.data.data.companyId, label: res.data.data.companyName, key: res.data.data.companyId },
+            roleName: { value: res.data.data.roleId, label: res.data.data.roleName, key: res.data.data.roleId },
+            tradeName: { value: res.data.data.tradeId, label: res.data.data.tradeName, key: res.data.data.tradeId },
+            StartDate: moment(moment(res.data.data.startDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
+            EndDate: moment(moment(res.data.data.endDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
           });
         });
+      }
+    }).catch(err => {
+      this.setState({ loading: false }, () => {
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while fetching experience details!'
+        });
       });
-    })
+    });
   }
 
   fetchCompany = value => {
     this.lastFetchId += 1;
     const fetchId = this.lastFetchId;
-    this.setState({ data: [], fetching: true });
-    fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
-      if (fetchId !== this.lastFetchId) {
-        // for fetch callback order
-        return;
-      }
-      const data = body.data.map(user => ({
-        text: `${user.name}`,
-        value: user.id,
-      }));
-      this.setState({ data: data, fetching: false });
+    this.setState({ data: [], fetching: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/companies/GetCompanies/${value}`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId) {
+          // for fetch callback order
+          return;
+        }
+        const data = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data: data, fetching: false });
+      });
     });
   };
 
   fetchRole = value => {
     this.lastFetchId1 += 1;
     const fetchId = this.lastFetchId1;
-    this.setState({ data1: [], fetching1: true });
-    fetch(process.env.REACT_APP_API_URL + `api/misc/GetRolesV1/${value}`).then(response => response.json()).then(body => {
-      if (fetchId !== this.lastFetchId1) {
-        // for fetch callback order
-        return;
-      }
-      const data1 = body.data.map(user => ({
-        text: `${user.name}`,
-        value: user.id,
-      }));
-      this.setState({ data1: data1, fetching1: false });
+    this.setState({ data1: [], fetching1: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/misc/GetRolesV1/${value}`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId1) {
+          // for fetch callback order
+          return;
+        }
+        const data1 = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data1, fetching1: false });
+      });
     });
   }
 
   fetchTrade = value => {
     this.lastFetchId2 += 1;
     const fetchId = this.lastFetchId2;
-    this.setState({ data2: [], fetching2: true });
-    fetch(process.env.REACT_APP_API_URL + `api/misc/GetTradesV1/${value}`).then(response => response.json()).then(body => {
-      if (fetchId !== this.lastFetchId2) {
-        // for fetch callback order
-        return;
-      }
-      const data2 = body.data.map(user => ({
-        text: `${user.name}`,
-        value: user.id,
-      }));
-      this.setState({ data2: data2, fetching2: false });
+    this.setState({ data2: [], fetching2: true }, () => {
+      fetch(process.env.REACT_APP_API_URL + `api/misc/GetTradesV1/${value}`).then(response => response.json()).then(body => {
+        if (fetchId !== this.lastFetchId2) {
+          // for fetch callback order
+          return;
+        }
+        const data2 = body.data.map(user => ({
+          text: `${user.name}`,
+          value: user.id,
+        }));
+        this.setState({ data2, fetching2: false });
+      });
     });
   }
 
@@ -150,28 +154,13 @@ class EditExperience extends Component {
         }
         saveUserWorkHistory(data).then(res => {
           if (res.data.status === true) {
-            editAnExperience(localStorage.getItem('userID'), this.props.match.params.experienceId).then(res => {
-              if (res.status === 200) {
-                this.setState({
-                  CurrentCompany: res.data.data.currentCompany,
-                  IncludeInResume: res.data.data.includeInResume,
-                  loading: false
-                }, () => {
-                  this.formRef.current.setFieldsValue({
-                    companyName: { value: res.data.data.companyId, label: res.data.data.companyName, key: res.data.data.companyId },
-                    roleName: { value: res.data.data.roleId, label: res.data.data.roleName, key: res.data.data.roleId },
-                    tradeName: { value: res.data.data.tradeId, label: res.data.data.tradeName, key: res.data.data.tradeId },
-                    StartDate: moment(moment(res.data.data.startDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-                    EndDate: moment(moment(res.data.data.endDate).format('YYYY-MM-DD'), ('YYYY-MM-DD')),
-                  });
-                  notification.success({
-                    message: 'Success',
-                    description: 'Experience updated successfully!'
-                  });
-                });
-              }
-            }).catch(err => {
-              this.setState({ loading: false })
+            this.apiCall();
+          } else {
+            this.setState({ loading: false }, () => {
+              notification.error({
+                message: 'Error',
+                description: 'There was an error while updating the experience!'
+              });
             });
           }
         }).catch(err => {
