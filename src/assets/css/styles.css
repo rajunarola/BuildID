@@ -1311,6 +1311,12 @@ ul.ticket-list.overlay-scroll {
     border-color: #dc3545 !important;
 }
 
+.select-add-btn .btn-blue {
+    font-size: 14px;
+    line-height: 1;
+    margin-left: 15px;
+}
+
 @media (max-width: 991px) {
     .com-padding .row .col-lg-4+.col-lg-4 {
         margin-bottom: 30px;

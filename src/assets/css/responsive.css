@@ -249,4 +249,11 @@
     .pro-images figure {
         margin-bottom: 5px;
     }
+    .add-btn-list button {
+        font-size: 14px;
+    }
+    .add-btn-list {
+        display: flex;
+        justify-content: space-between;
+    }
 }
