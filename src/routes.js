@@ -21,6 +21,9 @@ const AddGlobalProject = lazy(() => import("./Projects/AddGlobalProject"));
 const EditMontageById = lazy(() => import("./Montages/EditMontage"));
 const AddNewMontage = lazy(() => import("./Montages/AddMontage"));
 const PreviewOfMontage = lazy(() => import("./Montages/MontagePreview"));
+const SaveTrade = lazy(() => import("./Experience/AddGlobalTrade"));
+const SaveRole = lazy(() => import("./Experience/AddGlobalRole"));
+const SaveBuildingType = lazy(() => import("./Experience/AddBuildingType"));
 
 export const routesCode = [
     { path: "/(login)?", exact: true, component: Login },
@@ -41,7 +44,10 @@ export const routesCode = [
     { path: "/add-project", exact: true, component: AddGlobalProject },
     { path: "/edit-montage/:id", exact: true, component: EditMontageById },
     { path: "/add-montage", exact: true, component: AddNewMontage },
-    { path: "/preview-montage/:id", exact: true, component: PreviewOfMontage }
+    { path: "/preview-montage/:id", exact: true, component: PreviewOfMontage },
+    { path: "/add-trade", exact: true, component: SaveTrade },
+    { path: "/add-role", exact: true, component: SaveRole },
+    { path: "/add-building-type", exact: true, component: SaveBuildingType }
 ];
 
 class Routes extends React.PureComponent {
