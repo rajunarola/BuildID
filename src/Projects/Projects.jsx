@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 import {
   userProjects, userWorkHistory, getTicketsByUserId,
   getTicketDetails, getNewQuestionForTheUser, saveUserQuestion
 } from '../Services/CommonAPI';
+import swal from 'sweetalert';
 import * as moment from "moment";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
-import { Modal, Image, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { notification, Form, Select, Spin, Input } from 'antd';
 import Loader from '../Loader/Loader';
 import debounce from 'lodash/debounce';
-import swal from 'sweetalert';
+import { Link } from 'react-router-dom';
+import { Modal, Image, Col } from 'react-bootstrap';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { notification, Form, Select, Spin, Input } from 'antd';
 import { deleteMontage, getMontages } from '../Services/Montage';
 export default class Projects extends React.Component {
 
@@ -28,7 +28,6 @@ export default class Projects extends React.Component {
     projectArray: [],
     ticketArray: [],
     pictureList: [],
-    changeBackground: false,
     modalShow: false,
     singleTicketDetail: [],
     type: '',
