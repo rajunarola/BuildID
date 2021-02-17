@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { getMontageFiles, getMontageFilesByUserIdAndId } from '../Services/Montage';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
-import Loader from '../Loader/Loader';
 import { notification } from 'antd';
-
+import Loader from '../Loader/Loader';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { getMontageFiles, getMontageFilesByUserIdAndId } from '../Services/Montage';
 export default class MontagePreview extends Component {
 
   audio = new Audio();
@@ -59,6 +58,12 @@ export default class MontagePreview extends Component {
     this.audio.pause();
   }
 
+  playPause() {
+    this.setState({ pauseButton: !this.state.pauseButton }, () => {
+      this.state.pauseButton ? this.audio.play() : this.audio.pause();
+    });
+  }
+
   render() {
 
     return (
@@ -72,9 +77,14 @@ export default class MontagePreview extends Component {
                     <div className="form-border crd-wrp">
                       <div className="proj-timeline">
                         <h4 className="k-card-title mb-0 text-uppercase mon_p"> Montage Preview
-                            {this.state.pauseButton && <button className="btn btn-dark" onClick={() => this.audio.pause()}>
-                            <i className="fa fa-pause"></i>
-                          </button>}
+                            {this.state.pauseButton ?
+                            <button className="btn btn-dark" onClick={() => this.playPause()}>
+                              <i className="fa fa-pause"></i>
+                            </button> :
+                            <button className="btn btn-dark" onClick={() => this.playPause()}>
+                              <i className="fa fa-play"></i>
+                            </button>
+                          }
                         </h4>
                         <div className="manufacture-content p-4">
                           <div id="collapseOne" className="collapse show" aria-labelledby="projectOne" data-parent="#projectaccordion">
