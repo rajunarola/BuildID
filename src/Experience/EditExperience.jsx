@@ -186,20 +186,28 @@ class EditExperience extends Component {
                   <Form className="card-body" onFinish={updateExperience} ref={this.formRef}>
                     <div className="form-group">
                       <label>Company</label>
-                      <Form.Item name="companyName">
-                        <Select
-                          showSearch
-                          labelInValue
-                          placeholder="Search Companies"
-                          notFoundContent={fetching ? <Spin size="small" /> : null}
-                          filterOption={false}
-                          onSearch={(e) => this.fetchCompany(e)}
-                          style={{ width: '100%' }}>
-                          {data.map(d => (
-                            <Select.Option key={d.value}>{d.text}</Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
+                      <div className="d-flex justify-content-between select-add-btn">
+                        <Form.Item name="companyName" className="w-100 mb-0">
+                          <Select
+                            showSearch
+                            labelInValue
+                            placeholder="Search Companies"
+                            notFoundContent={fetching ? <Spin size="small" /> : null}
+                            filterOption={false}
+                            onSearch={(e) => this.fetchCompany(e)}
+                            style={{ width: '100%' }}>
+                            {data.map(d => (
+                              <Select.Option key={d.value}>{d.text}</Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                        <button type="button" className="btn btn-blue"
+                          onClick={() =>
+                            this.props.history.push(`/add-company?redirect=edit-experience/${this.props.match.params.userId}/${this.props.match.params.experienceId}`
+                            )}>
+                          <i className="fa fa-plus"></i>
+                        </button>
+                      </div>
                     </div>
                     <div className="form-group">
                       <label>Start Date</label>
@@ -219,37 +227,54 @@ class EditExperience extends Component {
                     </div>
                     <div className="form-group">
                       <label>Trade</label>
-                      <Form.Item name="tradeName">
-                        <Select
-                          showSearch
-                          labelInValue
-                          placeholder="Search Trades"
-                          notFoundContent={fetching2 ? <Spin size="small" /> : null}
-                          filterOption={false}
-                          onSearch={(e) => this.fetchTrade(e)}
-                          style={{ width: '100%' }}>
-                          {data2.map(d => (
-                            <Option key={d.value}>{d.text}</Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
+                      <div className="d-flex justify-content-between select-add-btn">
+                        <Form.Item name="tradeName" className="w-100 mb-0">
+                          <Select
+                            showSearch
+                            labelInValue
+                            placeholder="Search Trades"
+                            notFoundContent={fetching2 ? <Spin size="small" /> : null}
+                            filterOption={false}
+                            onSearch={(e) => this.fetchTrade(e)}
+                            style={{ width: '100%' }}>
+                            {data2.map(d => (
+                              <Option key={d.value}>{d.text}</Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                        <button type="button" className="btn btn-blue"
+                          onClick={() =>
+                            this.props.history.push(`/add-trade?redirect=edit-experience/${this.props.match.params.userId}/${this.props.match.params.experienceId}`
+                            )}>
+                          <i className="fa fa-plus"></i>
+                        </button>
+                      </div>
                     </div>
                     <div className="form-group">
                       <label>Role</label>
-                      <Form.Item name="roleName">
-                        <Select
-                          showSearch
-                          labelInValue
-                          placeholder="Search Roles"
-                          notFoundContent={fetching1 ? <Spin size="small" /> : null}
-                          filterOption={false}
-                          onSearch={(e) => this.fetchRole(e)}
-                          style={{ width: '100%' }}>
-                          {data1.map(d => (
-                            <Option key={d.value}>{d.text}</Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
+                      <div className="d-flex justify-content-between select-add-btn">
+
+                        <Form.Item name="roleName" className="w-100 mb-0">
+                          <Select
+                            showSearch
+                            labelInValue
+                            placeholder="Search Roles"
+                            notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                            filterOption={false}
+                            onSearch={(e) => this.fetchRole(e)}
+                            style={{ width: '100%' }}>
+                            {data1.map(d => (
+                              <Option key={d.value}>{d.text}</Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                        <button type="button" className="btn btn-blue"
+                          onClick={() =>
+                            this.props.history.push(`/add-role?redirect=edit-experience/${this.props.match.params.userId}/${this.props.match.params.experienceId}`
+                            )}>
+                          <i className="fa fa-plus"></i>
+                        </button>
+                      </div>
                     </div>
                     <div className="form-group">
                       <Checkbox checked={this.state.IncludeInResume}

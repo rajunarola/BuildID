@@ -285,8 +285,8 @@ export default class AddGlobalProject extends Component {
                               </Form.Item>
                             </div>
                             <div className="form-group">
-                              <label>Building Name</label>
-                              <Form.Item name="buildingType" rules={[{ required: true, message: 'Please select Building Name!' }]}>
+                              <label>Building Type</label>
+                              <Form.Item name="buildingType" rules={[{ required: true, message: 'Please select Building Type!' }]}>
                                 <Select
                                   className="select-bx"
                                   showSearch

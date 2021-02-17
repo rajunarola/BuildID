@@ -5,7 +5,6 @@ import moment from 'moment';
 import debounce from 'lodash/debounce';
 import Loader from '../Loader/Loader';
 import { postSaveUserWorkHistory } from '../Services/Project';
-
 export default class EditProject extends Component {
 
   formRef = React.createRef();
@@ -22,13 +21,10 @@ export default class EditProject extends Component {
 
   state = {
     data: [],
-    value: [],
     fetching: false,
     data1: [],
-    value1: [],
     fetching1: false,
     data2: [],
-    value2: [],
     fetching2: false,
     CurrentCompany: false,
     IncludeInResume: false,
@@ -207,6 +203,12 @@ export default class EditProject extends Component {
                                   ))}
                                 </Select>
                               </Form.Item>
+                              <button type="button" className="btn btn-blue"
+                                onClick={() =>
+                                  this.props.history.push(`/add-company?redirect=edit-project/${this.props.match.params.id}`
+                                  )}>
+                                <i className="fa fa-plus"></i>
+                              </button>
                             </div>
                             <div className="form-group">
                               <label>Role</label>
@@ -224,6 +226,12 @@ export default class EditProject extends Component {
                                   ))}
                                 </Select>
                               </Form.Item>
+                              <button type="button" className="btn btn-blue"
+                                onClick={() =>
+                                  this.props.history.push(`/add-role?redirect=edit-project/${this.props.match.params.id}`
+                                  )}>
+                                <i className="fa fa-plus"></i>
+                              </button>
                             </div>
                             <div className="form-group">
                               <label>Trade</label>
@@ -241,6 +249,12 @@ export default class EditProject extends Component {
                                   ))}
                                 </Select>
                               </Form.Item>
+                              <button type="button" className="btn btn-blue"
+                                onClick={() =>
+                                  this.props.history.push(`/add-trade?redirect=edit-project/${this.props.match.params.id}`
+                                  )}>
+                                <i className="fa fa-plus"></i>
+                              </button>
                             </div>
                             <div className="form-group">
                               <Checkbox checked={this.state.CurrentCompany}
