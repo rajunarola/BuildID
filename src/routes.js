@@ -2,6 +2,9 @@ import React, { lazy } from "react";
 import { Route, Switch } from "react-router-dom";
 import SideNav from "./SideNav/SideNav";
 import Login from './Login/Login';
+import Register from "./Register/Register";
+import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import ConfirmCode from "./ForgotPassword/ConfirmCode";
 
 const Dashboard = lazy(() => import("./Dashboard/Dashboard"));
 const Projects = lazy(() => import("./Projects/Projects"));
@@ -24,11 +27,16 @@ const PreviewOfMontage = lazy(() => import("./Montages/MontagePreview"));
 const SaveTrade = lazy(() => import("./Experience/AddGlobalTrade"));
 const SaveRole = lazy(() => import("./Experience/AddGlobalRole"));
 const SaveBuildingType = lazy(() => import("./Experience/AddBuildingType"));
+const Quiz = lazy(() => import("./Quiz/Quiz"));
+const Montage = lazy(() => import("./Montages/SideNavMontage"));
+const TicketPreview = lazy(() => import("./Tickets/TicketPreview"));
 
 export const routesCode = [
-    { path: "/(login)?", exact: true, component: Login },
     { path: "/dashboard", exact: true, component: Dashboard },
     { path: "/projects", exact: true, component: Projects },
+    { path: "/tickets", exact: true, component: TicketPreview },
+    { path: "/quiz", exact: true, component: Quiz },
+    { path: "/montages", exact: true, component: Montage },
     { path: "/edit-profile", exact: true, component: EditProfile },
     { path: "/add-ticket", exact: true, component: AddNewTickets },
     { path: "/add-experience", exact: true, component: AddExperience },
@@ -55,6 +63,9 @@ class Routes extends React.PureComponent {
         return (
             <Switch>
                 <Route path="(login)?" exact component={Login} />
+                <Route path="/register" exact component={Register} />
+                <Route path="/forgot-password" exact component={ForgotPassword} />
+                <Route path="/confirm-code" exact component={ConfirmCode} />
                 <>
                     <SideNav />
                     <div>
