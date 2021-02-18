@@ -59,17 +59,17 @@ export default class Login extends React.Component {
                                 <div className="col-lg-5 col-md-6">
                                     <h1><small>Welcome to</small>BUILD <b>ID</b></h1>
                                     <p>Help us help you showcase the projects that you have been a part of that make you be proud of working in construction. </p>
-                                    <p>oh and get builders bucks that you can exchange for chances to win prizes tools and other cool things</p>
+                                    <p>Oh and get builders bucks that you can exchange for chances to win prizes tools and other cool things</p>
                                 </div>
                                 <div className="col-lg-5 col-md-6">
                                     <h2>BUILD <b>ID</b></h2>
                                     <h3>Hello and welcome Back, login in to your account</h3>
-                                    <h4>Login with your social media account</h4>
+                                    {/* <h4>Login with your social media account</h4>
                                     <ul className="login-social">
                                         <li><Link style={{ 'backgroundColor': '#4268b3' }}><i className="fab fa-facebook-f"></i></Link></li>
                                         <li><Link style={{ 'backgroundColor': '#1ca1ee' }}><i className="fab fa-twitter"></i></Link></li>
                                         <li><Link style={{ 'backgroundColor': '#d44439' }}><i className="fab fa-google-plus-g"></i></Link></li>
-                                    </ul>
+                                    </ul> */}
                                     <Form onFinish={login} className="login-form">
                                         <div className="form-group">
                                             <label>Email</label>
@@ -84,6 +84,13 @@ export default class Login extends React.Component {
                                             </Form.Item>
                                         </div>
                                         <button type="submit" className="btn-blue btn-login">Login</button>
+                                        <Link to="/forgot-password" className="forgot_password">Forgot Password?</Link>
+
+                                        <div className="or_section">
+                                            <span>or</span>
+                                        </div>
+
+                                        <span className="create_link"> <Link to="/register" className="">Create a new account</Link> </span>
                                     </Form>
                                 </div>
                             </div>
