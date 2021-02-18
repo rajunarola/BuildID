@@ -1841,3 +1841,46 @@ ul.ticket-list.overlay-scroll {
     display: flex;
     align-items: center;
 }
+
+/* or */
+
+.or_section {
+    margin: 15px 0px;
+    font-size: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.or_section:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: #c2c2c2;
+    left: 0;
+    z-index: -1;
+    top: 17px;
+}
+
+.or_section span {
+    background-color: #ffffff;
+    padding: 0 10px;
+    z-index: 6;
+}
+
+.forgot_password {
+    font-size: 19px;
+    display: inline-block;
+    float: right;
+    line-height: 45px;
+}
+
+.create_link {
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
+.create_link a {
+    font-size: 20px;
+}
