@@ -5,6 +5,7 @@ import Login from './Login/Login';
 import Register from "./Register/Register";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
 import ConfirmCode from "./ForgotPassword/ConfirmCode";
+import ChangePassword from "./ForgotPassword/ChangePassword";
 
 const Dashboard = lazy(() => import("./Dashboard/Dashboard"));
 const Projects = lazy(() => import("./Projects/Projects"));
@@ -65,7 +66,8 @@ class Routes extends React.PureComponent {
                 <Route path="(login)?" exact component={Login} />
                 <Route path="/register" exact component={Register} />
                 <Route path="/forgot-password" exact component={ForgotPassword} />
-                <Route path="/confirm-code" exact component={ConfirmCode} />
+                <Route path="/confirm-code/:email" exact component={ConfirmCode} />
+                <Route path="/change-password" exact component={ChangePassword} />
                 <>
                     <SideNav />
                     <div>
