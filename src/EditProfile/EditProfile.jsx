@@ -26,18 +26,17 @@ export default class EditProfile extends Component {
         if (values[0] && values[1] && values[2] && values[0].status === 200 && values[1].status === 200 && values[2].status === 200) {
           this.setState({
             loading: false,
-            RideShareInterested: values[0].data.data.rideShareInterested,
-            UserId: values[0].data.data.userId,
-            Phones: values[0].data.data.phones,
+            RideShareInterested: values[0].data.data !== null ? values[0].data.data.rideShareInterested : false,
+            Phones: values[0].data.data !== null ? values[0].data.data.phones : [],
             experienceArray: values[2].data.data
           }, () => {
-            if (this.formRef) {
+            if (values[0].data.data !== null) {
               this.formRef.current.setFieldsValue({
                 FirstName: values[0].data.data.firstName,
                 LastName: values[0].data.data.lastName,
               });
             }
-            if (this.formRef1) {
+            if (values[1].data.data !== null) {
               this.formRef1.current.setFieldsValue({
                 Address1: values[1].data.data.address1,
                 Address2: values[1].data.data.address2,
@@ -49,12 +48,7 @@ export default class EditProfile extends Component {
             }
           });
         } else {
-          this.setState({ loading: false }, () => {
-            notification.error({
-              message: 'Error',
-              description: 'There was an error while fetching data!'
-            });
-          });
+          this.setState({ loading: false })
         }
       }).catch(err => {
         this.setState({ loading: false }, () => {
@@ -197,13 +191,13 @@ export default class EditProfile extends Component {
                   localStorage.setItem('userID', values[0].data.data.userId);
                   localStorage.setItem('userImage', values[0].data.data.pictureUrl)
                   localStorage.setItem('userName', values[0].data.data.firstName + " " + values[0].data.data.lastName);
-                  if (this.formRef) {
+                  if (values[0].data.data !== null) {
                     this.formRef.current.setFieldsValue({
                       FirstName: values[0].data.data.firstName,
                       LastName: values[0].data.data.lastName,
                     });
                   }
-                  if (this.formRef1) {
+                  if (values[1].data.data !== null) {
                     this.formRef1.current.setFieldsValue({
                       Address1: values[1].data.data.address1,
                       Address2: values[1].data.data.address2,
@@ -426,27 +420,29 @@ export default class EditProfile extends Component {
                   <div className="col-lg-4 col-md-6">
                     <Link to="/add-experience" className="add-btn btn-blue" ><i className="fas fa-plus-circle"></i> Add Experience</Link>
                     <div className="crd-wrap">
-                      <div className="inner-wrap-card">
-                        <div className="proj-timeline">
-                          <h4>My Experiences</h4>
-                          <ul className="timeline-sec">
-                            {this.state.experienceArray.map((data, index) => (
-                              <li>
-                                <h4 className="year">{moment(data.endDate).format('YYYY')}</h4>
-                                <div className="timeline-block">
-                                  <h4>{data.projectName}</h4>
-                                  <span>{moment(data.startDate).format('MMM YYYY')} - {moment(data.endDate).format('MMM YYYY')}</span>
-                                  <span>{data.tradeName}</span>
-                                  <span>{data.roleName}</span>
-                                  <h5>{data.companyName}</h5>
-                                  <button onClick={() => this.editExperience(localStorage.getItem('userID'), data.id)} className="btn btn-blue">Edit</button>
-                                  <button onClick={() => this.deleteExperience(data.id)} className="btn btn-danger">Delete</button>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
+                      {this.state.experienceArray.length > 0 &&
+                        <div className="inner-wrap-card">
+                          <div className="proj-timeline">
+                            <h4>My Experiences</h4>
+                            <ul className="timeline-sec">
+                              {this.state.experienceArray.map((data, index) => (
+                                <li>
+                                  <h4 className="year">{moment(data.endDate).format('YYYY')}</h4>
+                                  <div className="timeline-block">
+                                    <h4>{data.projectName}</h4>
+                                    <span>{moment(data.startDate).format('MMM YYYY')} - {moment(data.endDate).format('MMM YYYY')}</span>
+                                    <span>{data.tradeName}</span>
+                                    <span>{data.roleName}</span>
+                                    <h5>{data.companyName}</h5>
+                                    <button onClick={() => this.editExperience(localStorage.getItem('userID'), data.id)} className="btn btn-blue">Edit</button>
+                                    <button onClick={() => this.deleteExperience(data.id)} className="btn btn-danger">Delete</button>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                      </div>
+                      }
                     </div>
                   </div>
                 </div>
