@@ -60,17 +60,14 @@ export default class ConfirmCode extends Component {
                                         <div className="form-group">
                                             <label>Code</label>
                                             <Form.Item name="code" rules={[{ required: true, message: 'Please enter your code!' }]}>
-                                                <Input className="form-control" />
+                                                <Input className="form-control" placeholder="Enter the code from your email" />
                                             </Form.Item>
                                         </div>
                                         <button type="submit" className="btn-blue btn-login">Verify Code</button>
-
                                         <div className="or_section">
                                             <span>or</span>
                                         </div>
-
                                         <span className="create_link"> <Link to="/">Take me back to login</Link> </span>
-
                                     </Form>
                                 </div>
                             </div>

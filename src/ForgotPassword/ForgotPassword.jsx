@@ -61,7 +61,7 @@ export default class ForgotPassword extends Component {
                     <div className="form-group">
                       <label>Email</label>
                       <Form.Item name="email" rules={[{ required: true, message: 'Please enter email!' }]}>
-                        <Input className="form-control" />
+                        <Input className="form-control" placeholder="Enter your email" />
                       </Form.Item>
                     </div>
                     <button type="submit" className="btn-blue btn-login">Verify Email</button>

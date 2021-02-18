@@ -83,13 +83,13 @@ export default class ChangePassword extends Component {
                     <div className="form-group">
                       <label>Email</label>
                       <Form.Item name="email" rules={[{ required: true, message: 'Please enter your email!' }]}>
-                        <Input className="form-control" />
+                        <Input className="form-control" placeholder="Enter your email" />
                       </Form.Item>
                     </div>
                     <div className="form-group">
                       <label>New Password</label>
                       <Form.Item name="password" rules={[{ required: true, message: 'Please enter a new password!' }]}>
-                        <Input.Password className="form-control" />
+                        <Input.Password className="form-control" placeholder="Enter your password" />
                       </Form.Item>
                     </div>
                     <button type="submit" className="btn-blue btn-login">Change Password</button>
