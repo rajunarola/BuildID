@@ -18,9 +18,9 @@ class SideNav extends React.Component {
                         <i className="fas fa-bars"></i>
                     </button>
                     <NavLink to="#" onClick={e => e.preventDefault()} className="logo">BUILD <b>ID</b></NavLink>
-                    <div className="user-id" onClick={() => this.props.history.push('/projects')}>
+                    <div className="user-id">
                         <span> <img src={localStorage.getItem('userImage')} alt="" /></span>
-                        <div> <p>{localStorage.getItem('userName')}</p> </div>
+                        <div onClick={() => this.props.history.push(`/edit-profile`)}> <p>{localStorage.getItem('userName')}</p> </div>
                     </div>
                     <ul className="main-nav">
                         <li>
@@ -36,21 +36,21 @@ class SideNav extends React.Component {
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" onClick={e => e.preventDefault()} className="nav-link">
+                            <Link to="/tickets" className="nav-link">
                                 <i><img src={require("../assets/images/icon_link.png")} alt="Address" /></i>
-                                <span>Address</span>
+                                <span>Tickets</span>
                             </Link>
                         </li>
                         <li>
-                            <NavLink to="#" onClick={e => e.preventDefault()}>
+                            <NavLink to="/quiz" className="nav-link">
                                 <i><img src={require("../assets/images/icon_comment.png")} alt="Comment" /></i>
-                                <span>Comment</span>
+                                <span>Quiz</span>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="#" onClick={e => e.preventDefault()}>
+                            <NavLink to="/montages" className="nav-link">
                                 <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
-                                <span>Timesheet</span>
+                                <span>Montage</span>
                             </NavLink>
                         </li>
                     </ul>
