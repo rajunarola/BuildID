@@ -45,3 +45,19 @@ export function saveUserQuestion(data) {
 export function getUserWorkExperience(id) {
     return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserWorkExperience/${parseInt(localStorage.getItem('userID'))}/${id}`);
 }
+
+export function signUp(data) {
+    return axios.post(process.env.REACT_APP_API_URL + `api/users/CreateAccount`, data);
+}
+
+export function getResetCode(email) {
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/GenerateResetCode2/${email}`);
+}
+
+export function checkIfValidCode(email, code) {
+    return axios.get(process.env.REACT_APP_API_URL + `api/users/IsValidResetCode/${email}/${code}`);
+}
+
+export function saveNewPassword(data) {
+    return axios.post(process.env.REACT_APP_API_URL + `api/users/SaveNewPassword`, data);
+}
