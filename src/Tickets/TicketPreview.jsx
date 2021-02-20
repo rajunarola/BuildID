@@ -63,31 +63,35 @@ export default class TicketPreview extends Component {
           <main className="index-main">
             <section className="index-sec">
               <div className="edit-sec"><h1>Tickets</h1></div>
-              <div className="com-padding">
+              <div className="com-padding newpage_section">
                 <div className="row">
-                  <div className="col-lg-4 col-md-6">
-                    <Link className="add-btn btn-blue" to="/add-ticket"><i className="fas fa-plus-circle"></i> Add Ticket</Link>
+                  <div className="col-md-12">
+
                     {this.state.ticketArray.length > 0 &&
                       <div className="accordion" id="ticketaccordion">
                         <div className="crd-wrap">
+
                           <div className="crd-header" id="ticketOne">
-                            <h4><img src={require("../assets/images/icon_ticket.png")} alt="" /> Tickets</h4>
-                            <i className="far fa-chevron-up" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i>
+                            <h4>Tickets</h4>
+                            <Link className="add-btn btn-blue" to="/add-ticket"><i className="fas fa-plus-circle"></i> Add Ticket</Link>
                           </div>
+
                           <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#ticketaccordion">
-                            <ul className="ticket-list overlay-scroll">
+                            <div className="ticket-list overlay-scroll row">
                               {this.state.ticketArray.map((data, index) => (
-                                <li onClick={() => this.onModalPopUp(data.id)} className="ticket-block li-position" style={moment(data.expiry).isBefore(new Date()) ? { 'backgroundColor': "#fcecc3" } : { 'backgroundColor': "white" }}>
-                                  <div className="ticket-img"><img src={data.backPictureUrl || data.frontPictureUrl} alt="" /></div>
-                                  <div className="ticket-detail">
-                                    <h4>{data.ticketType}</h4>
-                                    <span>{data.issuedBy}</span>
+                                <div className="col-lg-3">
+                                  <div onClick={() => this.onModalPopUp(data.id)} className="ticket-block li-position" style={moment(data.expiry).isBefore(new Date()) ? { 'backgroundColor': "#fcecc3" } : { 'backgroundColor': "white" }}>
+                                    <div className="ticket-img"><img src={data.backPictureUrl || data.frontPictureUrl} alt="" /></div>
+                                    <div className="ticket-detail">
+                                      <h4>{data.ticketType}</h4>
+                                      <span>{data.issuedBy}</span>
+                                    </div>
+                                    <div className="ticket-date">{moment(data.expiry).format('ll')}</div>
+                                    <button onClick={() => this.editTicket(data.id)} className="edit-btn">Edit</button>
                                   </div>
-                                  <div className="ticket-date">{moment(data.expiry).format('ll')}</div>
-                                  <button onClick={() => this.editTicket(data.id)} className="edit-btn">Edit</button>
-                                </li>
+                                </div>
                               ))}
-                            </ul>
+                            </div>
                           </div>
                         </div>
                       </div>

@@ -70,12 +70,14 @@ export default class Projects extends React.Component {
             <section className="index-sec">
               <div className="edit-sec">
                 <h1 className="p-0">{userName}</h1>
-                <Link to="/edit-profile" className="editprofile"><i className="fas fa-cog"></i> Edit Profile</Link>
+                {/* <Link to="/edit-profile" className="editprofile"><i className="fas fa-cog"></i> Edit Profile</Link> */}
               </div>
               <div className="com-padding">
-                <div className="row">
-                  <div className="col-lg-4 col-md-6">
-                    <p className="text_blank">{this.state.emptyProject}</p>
+                <div className="row justify-content-center">
+                  <div className="col-md-6">
+                    {this.state.emptyProject &&
+                      <p className="text_blank">{this.state.emptyProject}</p>
+                    }
                     <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                     <div className="accordion" id="projectaccordion">
                       <div className="crd-wrap">

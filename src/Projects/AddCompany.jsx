@@ -13,7 +13,7 @@ export default class AddCompany extends Component {
       const data = {
         Id: 0,
         Name: values.companyName,
-        ModifiedBy: localStorage.getItem('userID')
+        ModifiedBy: parseInt(localStorage.getItem('userID'))
       }
       saveCompany(data).then(response => {
         if (response.data && response.data.message === "OK") {

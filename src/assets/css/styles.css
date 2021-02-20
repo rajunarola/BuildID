@@ -755,7 +755,10 @@ section {
 .ticket-block {
     display: flex;
     align-items: center;
-    padding: 12px 15px;
+    margin: 0 0 25px 0;
+    border-radius: 5px;
+    padding: 15px 15px;
+    border: 1px solid #dddddd;
 }
 
 .ticket-block .ticket-img {
@@ -1894,3 +1897,35 @@ ul.ticket-list.overlay-scroll {
     border: 1px solid #ddd;
     border-radius: 10px;
 }
+
+/* New Page Start Design */
+
+.newpage_section.com-padding {
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.newpage_section .crd-wrap {
+    padding: 10px 20px 10px 20px;
+}
+
+.newpage_section .crd-header {
+    border-bottom: 1px solid #dddddd;
+    margin: 0 0 30px 0;
+}
+
+.newpage_section .crd-header i {
+    color: #ffffff;
+}
+
+.newpage_section .add-btn {
+    width: auto;
+    margin-bottom: 0;
+}
+
+.newpage_section .crd-header h4 {
+    font-size: 24px;
+    flex: inherit;
+}
+
+/* New Page End Design */

@@ -20,34 +20,36 @@ class SideNav extends React.Component {
                     <NavLink to="#" onClick={e => e.preventDefault()} className="logo">BUILD <b>ID</b></NavLink>
                     <div className="user-id">
                         <span> <img src={localStorage.getItem('userImage')} alt="" /></span>
-                        <div onClick={() => this.props.history.push(`/edit-profile`)}> <p>{localStorage.getItem('userName')}</p> </div>
+                        <div onClick={() => this.props.history.push(`/edit-profile`)}>
+                            <p>{localStorage.getItem('userName') !== null ? localStorage.getItem('userName') : <Link>Edit Profile</Link>}</p>
+                        </div>
                     </div>
                     <ul className="main-nav">
-                        <li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/dashboard" className="nav-link" >
                                 <i><img src={require("../assets/images/icon_dashboard.png")} alt="Dashboard" /></i>
                                 <span>Dashboard</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/projects" className="nav-link">
                                 <i><img src={require("../assets/images/icon_projects.png")} alt="Projects" /></i>
                                 <span>Projects</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/tickets" className="nav-link">
                                 <i><img src={require("../assets/images/icon_link.png")} alt="Address" /></i>
                                 <span>Tickets</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <NavLink to="/quiz" className="nav-link">
                                 <i><img src={require("../assets/images/icon_comment.png")} alt="Comment" /></i>
                                 <span>Quiz</span>
                             </NavLink>
                         </li>
-                        <li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <NavLink to="/montages" className="nav-link">
                                 <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
                                 <span>Montage</span>
@@ -55,13 +57,13 @@ class SideNav extends React.Component {
                         </li>
                     </ul>
                     <ul className="lower-menu">
-                        <li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <NavLink to="#" onClick={e => e.preventDefault()}>
                                 <i className="fas fa-cog"></i>
                                 <span>Setting</span>
                             </NavLink>
                         </li>
-                        <li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/" onClick={() => this.onLogout()}>
                                 <i className="fas fa-sign-out-alt"></i>
                                 <span>Logout</span>
