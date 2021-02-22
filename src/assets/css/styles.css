@@ -708,9 +708,9 @@ section {
 
 .pro-details {
     display: flex;
-    padding: 12px 0;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 12px;
+    padding: 0px 0 10px 0;
+    border-bottom: 0;
+    margin-bottom: 0;
 }
 
 .pro-details .wrap {
@@ -787,7 +787,7 @@ section {
 }
 
 .ticket-detail h4 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
 }
 
@@ -915,8 +915,11 @@ section {
 
 .timeline-sec {
     position: relative;
-    height: 250px;
+    max-height: 500px;
     overflow: auto;
+    padding: 20px 0px 20px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
 }
 
 .timeline-sec li::before {
@@ -1768,8 +1771,9 @@ ul.ticket-list.overlay-scroll {
 }
 
 .playlist_sec {
-    padding: 14px 14px 14px 14px;
-    margin: 10px 0 7px 0;
+    padding: 15px 15px 15px 15px;
+    margin: 0 0 20px 0;
+    border-radius: 5px;
     border: 1px solid #dddddd;
 }
 
@@ -1928,4 +1932,20 @@ ul.ticket-list.overlay-scroll {
     flex: inherit;
 }
 
+.slider-main {
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+}
+
+.question_one{
+    padding: 0 !important;
+}
+
+.form_c_button{
+    padding: 0 0 20px 0 !important;
+}
+
+.form_c_button button{
+    margin: 0 10px 0px 0 !important;
+}
 /* New Page End Design */

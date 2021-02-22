@@ -97,23 +97,31 @@ export default class SideNavMontage extends React.Component {
                     <main className="index-main">
                         <section className="index-sec">
                             <div className="edit-sec"><h1>Montages</h1></div>
-                            <div className="com-padding">
+                            <div className="com-padding newpage_section">
                                 <div className="row">
-                                    <div className="col-lg-4 col-md-6">
+                                    <div className="col-md-12">
                                         <div className="accordion montages_sec">
                                             <div className="crd-wrap">
-                                                <Link className="add-btn btn-blue" to="/add-montage"><i className="fas fa-plus-circle"></i> Add Montage</Link>
+                                                <div className="crd-header">
+                                                    <h4>List of Montages</h4>
+                                                    <Link className="add-btn btn-blue" to="/add-montage"><i className="fas fa-plus-circle"></i> Add Montage</Link>
+                                                </div>
                                                 {this.state.userMontages.length > 0 &&
                                                     <>
-                                                        <div> <h4 className="k-card-title">List of Montages</h4> </div>
-                                                        {userMontages.map(data => (
-                                                            <div className="playlist_sec">
-                                                                <h4>{data.name}</h4>
-                                                                <button className="btn btn-blue" onClick={() => this.editMontage(data.id)}><i className="fa fa-edit"></i></button>
-                                                                <button className="btn btn-danger" onClick={() => this.deleteOneMontage(data.id)}><i className="fa fa-trash"></i></button>
-                                                                <button className="btn btn-dark fa fa-play" onClick={() => this.montagePreview(data.id)}></button>
-                                                            </div>
-                                                        ))}
+                                                        {/* <div> <h4 className="k-card-title">List of Montages</h4> </div> */}
+                                                        <div className="row">
+                                                            {userMontages.map(data => (
+                                                                <div className="col-lg-3">
+                                                                    <div className="playlist_sec">
+                                                                        <h4>{data.name}</h4>
+                                                                        <button className="btn btn-blue" onClick={() => this.editMontage(data.id)}><i className="fa fa-edit"></i></button>
+                                                                        <button className="btn btn-danger" onClick={() => this.deleteOneMontage(data.id)}><i className="fa fa-trash"></i></button>
+                                                                        <button className="btn btn-dark fa fa-play" onClick={() => this.montagePreview(data.id)}></button>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+
                                                     </>
                                                 }
                                             </div>
