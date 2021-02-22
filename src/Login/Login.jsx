@@ -29,23 +29,24 @@ export default class Login extends React.Component {
                                 description: 'You have successfully logged in!'
                             });
                         });
-                        return
-                    } else if (response.response.status === 400) {
+                    }
+                }).catch(err => {
+                    if (err.response.status === 400) {
                         this.setState({ loading: false }, () => {
                             notification.error({
                                 message: 'Error',
-                                description: `${response.response.data.message}`
+                                description: `${err.response.data.message}`
                             });
                             return
                         });
-                    }
-                }).catch(err => {
-                    this.setState({ loading: false }, () => {
-                        notification.error({
-                            message: 'Error',
-                            description: `Something went wrong! Please try again later!`
+                    } else {
+                        this.setState({ loading: false }, () => {
+                            notification.error({
+                                message: 'Error',
+                                description: `Something went wrong! Please try again later!`
+                            });
                         });
-                    });
+                    }
                 });
             });
         }
