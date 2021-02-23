@@ -189,7 +189,7 @@ class EditExperience extends Component {
 
                   <div className="container-fluid">
                     <div className="addticketform row">
-                      <div className="col-md-12">
+                      <div className="col-md-12 p-0">
                         <Form className="card-body row" onFinish={updateExperience} ref={this.formRef}>
                           <div className="form-group col-md-3">
                             <label>Company</label>

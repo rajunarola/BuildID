@@ -144,7 +144,7 @@ export default class AddExperience extends Component {
                   </div>
                   <div className="container-fluid">
                     <div className="addticketform row">
-                      <div className="col-md-12">
+                      <div className="col-md-12 p-0">
                         <Form className="card-body row" onFinish={addExperienceTicket} ref={this.formRef}>
                           <div className="form-group col-md-3">
                             <label>Company</label>
@@ -215,7 +215,7 @@ export default class AddExperience extends Component {
                           <div className="form-group col-md-2 d-flex align-items-center">
                             <Checkbox className="mt-4" onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
                           </div>
-                          <div className="form-group col-md-12">
+                          <div className="form-group col-md-12 d-flex mb-3 justify-content-end">
                             <button type="submit" className="btn btn-blue btnManufacturer">Add Experience </button>
                           </div>
                         </Form>

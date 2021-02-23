@@ -1412,7 +1412,12 @@ ul.ticket-list.overlay-scroll {
 }
 
 .manufacture-form.manufacture-content.pt-3 {
-    padding: 0 20px 20px;
+    padding: 0px 0px 0px 0px;
+    margin: 20px 0 20px 0;
+}
+
+.manufacture-form.manufacture-content {
+
 }
 
 .btn-orange-search {
@@ -1947,5 +1952,15 @@ ul.ticket-list.overlay-scroll {
 
 .form_c_button button{
     margin: 0 10px 0px 0 !important;
+}
+
+.w_worn {
+    text-align: center;
+}
+
+.w_worn span{
+    font-size: 24px;
+    margin: 50px 0 0px 0;
+    display: block;
 }
 /* New Page End Design */

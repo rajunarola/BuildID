@@ -127,90 +127,97 @@ export default class SearchProjects extends Component {
           <main className="index-main">
             <section className="index-sec">
               <div className="edit-sec">
+                <h1>Search Project</h1>
                 {/* <div className="editprofile">Sa Project</div> */}
               </div>
-              <div className="addticketform com-padding">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="form-border crd-wrp">
-                      <div className="proj-timeline">
-                        <h4 className="k-card-title">Search Projects</h4>
-                        <div className="manufacture-form manufacture-content seaerchForms pt-3">
-                          <p className="note_infor">Can't find your project ? <Link to="/add-project" className="color-danger"> Click here to add new project </Link>
+              <div className="addticketform com-padding newpage_section">
+                <div className="crd-wrap">
+                  <div className="crd-header" id="ticketOne">
+                    <h4>Search Projects</h4>
+                  </div>
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-12">
+                        <div className="form-border crd-wrp">
+                          <div className="proj-timeline">
+                            <div className="manufacture-form manufacture-content seaerchForms pt-3">
+                              <p className="note_infor">Can't find your project ? <Link to="/add-project" className="color-danger"> Click here to add new project </Link>
                           or come back later as hundreds of projects are getting added everyday.
                           </p>
-                          <Form onFinish={fetchProjectBySearch}>
-                            <div className="row">
-                              <div className="col-12 col-lg-3">
-                                <Form.Item name="projectName">
-                                  <Input placeholder="Enter Project Name" />
-                                </Form.Item>
-                              </div>
-                              <div className="col-12 col-lg-3">
-                                <div className="suggestion-input">
-                                  <GooglePlacesAutocomplete
-                                    className="select-bx"
-                                    apiKey={this.state.googleAPIKey}
-                                    selectProps={{
-                                      placeholder: 'Enter City, State, Country',
-                                      onChange: (result) => this.onLocationSelect(result),
-                                    }} />
-                                </div>
-                              </div>
-                              <div className="col-12 col-lg-3">
-                                <Form.Item name="buildingType">
-                                  <Select
-                                    className="select-bx"
-                                    showSearch
-                                    labelInValue
-                                    placeholder="Search by building type"
-                                    notFoundContent={fetching ? <Spin size="small" /> : ""}
-                                    filterOption={false}
-                                    onSearch={(e) => this.fetchBuildingType(e, 'buildingType')}
-                                    onChange={(e) => this.handleChange(e, 'buildingType')}>
-                                    {data.map(d => (
-                                      <Select.Option key={d.value}>{d.text}</Select.Option>
-                                    ))}
-                                  </Select>
-                                </Form.Item>
-                              </div>
-                              <div className="col-12 col-lg-3">
-                                <Form.Item name="projectSearch">
-                                  <Select
-                                    className="select-bx"
-                                    showSearch
-                                    labelInValue
-                                    placeholder="Search for a contractor"
-                                    notFoundContent={fetching1 ? <Spin size="small" /> : ""}
-                                    filterOption={false}
-                                    onSearch={(e) => this.fetchBuildingType(e, 'contractor')}
-                                    onChange={(e) => this.handleChange(e, 'contractor')}>
-                                    {data1.map(d => (
-                                      <Select.Option key={d.value}>{d.text}</Select.Option>
-                                    ))}
-                                  </Select>
-                                </Form.Item>
-                              </div>
-                              <div className="col-12 text-center">
-                                <button className="add-btn btn-Search" type="submit">Search</button>
-                              </div>
-                            </div>
-                          </Form>
-                          {this.state.resultofSearchedProject && this.state.resultofSearchedProject.length > 0 &&
-                            <>
-                              <div className="search-list-sec">
-                                <h4 className="mb-4">Search Result</h4>
+                              <Form onFinish={fetchProjectBySearch}>
                                 <div className="row">
-                                  {this.state.resultofSearchedProject.map(res => (
-                                    <div className="col-12 col-md-6 col-lg-3">
-                                      <p className="sls-list" onClick={() => this.fetchProjectId(res)}>{res.name}</p>
+                                  <div className="col-12 col-lg-3">
+                                    <Form.Item name="projectName">
+                                      <Input placeholder="Enter Project Name" />
+                                    </Form.Item>
+                                  </div>
+                                  <div className="col-12 col-lg-3">
+                                    <div className="suggestion-input">
+                                      <GooglePlacesAutocomplete
+                                        className="select-bx"
+                                        apiKey={this.state.googleAPIKey}
+                                        selectProps={{
+                                          placeholder: 'Enter City, State, Country',
+                                          onChange: (result) => this.onLocationSelect(result),
+                                        }} />
                                     </div>
-                                  ))}
+                                  </div>
+                                  <div className="col-12 col-lg-3">
+                                    <Form.Item name="buildingType">
+                                      <Select
+                                        className="select-bx"
+                                        showSearch
+                                        labelInValue
+                                        placeholder="Search by building type"
+                                        notFoundContent={fetching ? <Spin size="small" /> : ""}
+                                        filterOption={false}
+                                        onSearch={(e) => this.fetchBuildingType(e, 'buildingType')}
+                                        onChange={(e) => this.handleChange(e, 'buildingType')}>
+                                        {data.map(d => (
+                                          <Select.Option key={d.value}>{d.text}</Select.Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </div>
+                                  <div className="col-12 col-lg-3">
+                                    <Form.Item name="projectSearch">
+                                      <Select
+                                        className="select-bx"
+                                        showSearch
+                                        labelInValue
+                                        placeholder="Search for a contractor"
+                                        notFoundContent={fetching1 ? <Spin size="small" /> : ""}
+                                        filterOption={false}
+                                        onSearch={(e) => this.fetchBuildingType(e, 'contractor')}
+                                        onChange={(e) => this.handleChange(e, 'contractor')}>
+                                        {data1.map(d => (
+                                          <Select.Option key={d.value}>{d.text}</Select.Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </div>
+                                  <div className="col-12 text-center">
+                                    <button className="add-btn btn-Search" type="submit">Search</button>
+                                  </div>
                                 </div>
-                              </div>
-                            </>
-                          }
-                          {this.state.emptySearchResult}
+                              </Form>
+                              {this.state.resultofSearchedProject && this.state.resultofSearchedProject.length > 0 &&
+                                <>
+                                  <div className="search-list-sec">
+                                    <h4 className="mb-4">Search Result</h4>
+                                    <div className="row">
+                                      {this.state.resultofSearchedProject.map(res => (
+                                        <div className="col-12 col-md-6 col-lg-3">
+                                          <p className="sls-list" onClick={() => this.fetchProjectId(res)}>{res.name}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </>
+                              }
+                              {this.state.emptySearchResult}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

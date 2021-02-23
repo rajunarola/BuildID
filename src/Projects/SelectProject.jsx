@@ -130,91 +130,91 @@ class SelectProject extends Component {
         <main className="index-main">
           <section className="index-sec">
             <div className="edit-sec">
-              <div className="editprofile">Add Project Details</div>
+              <h1>Add Project Details</h1>
             </div>
-            <div className="addticketform com-padding">
-              <div className="row">
-                <div className="col-lg-4 col-md-6 col-12">
-                  <div className="form-border crd-wrp">
-                    <div className="proj-timeline">
-                      <h4 className="k-card-title">{localStorage.getItem('projectName')}</h4>
-                      <div className="manufacture-form manufacture-content pt-3">
-                        <Form onFinish={saveWorkHistory}>
-                          <div className="form-group">
-                            <label>Start Date</label>
-                            <Form.Item name="StartDate" rules={[{ required: true, message: 'Please select a start date!' }]}>
-                              <DatePicker className="w-100 inputstyle" />
-                            </Form.Item>
-                          </div>
-                          <div className="form-group">
-                            <label>End Date</label>
-                            <Form.Item name="EndDate" rules={[{ required: true, message: 'Please select an end date!' }]}>
-                              <DatePicker className="w-100 inputstyle" />
-                            </Form.Item>
-                          </div>
-                          <div className="form-group">
-                            <Checkbox onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} >Present</Checkbox>
-                          </div>
-                          <div className="form-group">
-                            <label>Trade</label>
-                            <Form.Item name="tradeName" rules={[{ required: true, message: 'Please select a trade!' }]}>
-                              <Select
-                                showSearch
-                                labelInValue
-                                placeholder="Search Trades"
-                                notFoundContent={fetching ? <Spin size="small" /> : null}
-                                filterOption={false}
-                                onSearch={(e) => this.fetchSelectData(e, 'trade')}
-                                style={{ width: '100%' }}>
-                                {data.map(d => (
-                                  <Select.Option key={d.value}>{d.text}</Select.Option>
-                                ))}
-                              </Select>
-                            </Form.Item>
-                          </div>
-                          <div className="form-group">
-                            <label>Role</label>
-                            <Form.Item name="roleName" rules={[{ required: true, message: 'Please select a trade!' }]}>
-                              <Select
-                                showSearch
-                                labelInValue
-                                placeholder="Search Roles"
-                                notFoundContent={fetching1 ? <Spin size="small" /> : null}
-                                filterOption={false}
-                                onSearch={(e) => this.fetchSelectData(e, 'role')}
-                                style={{ width: '100%' }}>
-                                {data1.map(d => (
-                                  <Select.Option key={d.value}>{d.text}</Select.Option>
-                                ))}
-                              </Select>
-                            </Form.Item>
-                          </div>
-                          <div className="form-group">
-                            <label>Company</label>
-                            <Form.Item name="companyName" rules={[{ required: true, message: 'Please select a company!' }]}>
-                              <Select
-                                showSearch
-                                labelInValue
-                                placeholder="Search Companies"
-                                notFoundContent={fetching2 ? <Spin size="small" /> : null}
-                                filterOption={false}
-                                onSearch={(e) => this.fetchSelectData(e, 'company')}
-                                style={{ width: '100%' }}>
-                                {data2.map(d => (
-                                  <Select.Option key={d.value}>{d.text}</Select.Option>
-                                ))}
-                              </Select>
-                            </Form.Item>
-                          </div>
-                          <div className="form-group">
-                            <Form.Item name="IncludeInResume">
-                              <Checkbox onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
-                            </Form.Item>
-                          </div>
+            <div className="com-padding newpage_section">
+              <div className="crd-wrap">
+                <div div className="crd-header" id="ticketOne">
+                  <h4>Add Project Details</h4>
+                </div>
+                <div className="addticketform container-fluid">
+                  <div className="row">
+                    <div className="col-md-12 p-0">
+                      <Form className="card-body row" onFinish={saveWorkHistory}>
+                        <div className="form-group col-md-3">
+                          <label>Start Date</label>
+                          <Form.Item className="m-0" name="StartDate" rules={[{ required: true, message: 'Please select a start date!' }]}>
+                            <DatePicker className="w-100 inputstyle" />
+                          </Form.Item>
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label>End Date</label>
+                          <Form.Item className="m-0" name="EndDate" rules={[{ required: true, message: 'Please select an end date!' }]}>
+                            <DatePicker className="w-100 inputstyle" />
+                          </Form.Item>
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label>Trade</label>
+                          <Form.Item className="m-0" name="tradeName" rules={[{ required: true, message: 'Please select a trade!' }]}>
+                            <Select
+                              showSearch
+                              labelInValue
+                              placeholder="Search Trades"
+                              notFoundContent={fetching ? <Spin size="small" /> : null}
+                              filterOption={false}
+                              onSearch={(e) => this.fetchSelectData(e, 'trade')}
+                              style={{ width: '100%' }}>
+                              {data.map(d => (
+                                <Select.Option key={d.value}>{d.text}</Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label>Role</label>
+                          <Form.Item className="m-0" name="roleName" rules={[{ required: true, message: 'Please select a trade!' }]}>
+                            <Select
+                              showSearch
+                              labelInValue
+                              placeholder="Search Roles"
+                              notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                              filterOption={false}
+                              onSearch={(e) => this.fetchSelectData(e, 'role')}
+                              style={{ width: '100%' }}>
+                              {data1.map(d => (
+                                <Select.Option key={d.value}>{d.text}</Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label>Company</label>
+                          <Form.Item className="m-0" name="companyName" rules={[{ required: true, message: 'Please select a company!' }]}>
+                            <Select
+                              showSearch
+                              labelInValue
+                              placeholder="Search Companies"
+                              notFoundContent={fetching2 ? <Spin size="small" /> : null}
+                              filterOption={false}
+                              onSearch={(e) => this.fetchSelectData(e, 'company')}
+                              style={{ width: '100%' }}>
+                              {data2.map(d => (
+                                <Select.Option key={d.value}>{d.text}</Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </div>
+                        <div className="form-group col-md-2 d-flex align-items-center">
+                          <Checkbox className="mt-4" onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
+                        </div>
+                        <div className="form-group col-md-2 d-flex align-items-center">
+                          <Checkbox className="mt-4" onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} >Present</Checkbox>
+                        </div>
+                        <div className="form-group col-md-12 d-flex justify-content-end">
                           <button className="btn btn-blue mr-3" type="submit">Add Project To Timeline</button>
                           <button className="btn btn-danger" onClick={() => this.props.history.push(`/search-project`)}>Cancel</button>
-                        </Form>
-                      </div>
+                        </div>
+                      </Form>
                     </div>
                   </div>
                 </div>

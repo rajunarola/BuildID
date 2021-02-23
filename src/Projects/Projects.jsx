@@ -95,12 +95,12 @@ export default class Projects extends React.Component {
                                 <div className="row">
                                   <div className="col-md-6">
                                     <div className="pro-details">
-                                      <span className="close-proj"><i className="fas fa-times-circle"></i></span>
+                                      {/* <span className="close-proj"><i className="fas fa-times-circle"></i></span> */}
                                       <div className="wrap">
                                         <h4>{this.state.projectArray[0] && this.state.projectArray[0].projectName}</h4>
                                         <span>{this.state.projectArray[0] && this.state.projectArray[0].companyName}</span>
                                       </div>
-                                      <span className="approve-proj"><i className="fas fa-check-circle"></i></span>
+                                      {/* <span className="approve-proj"><i className="fas fa-check-circle"></i></span> */}
                                     </div>
                                     <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
                                       <Carousel autoPlay key="carousel">
