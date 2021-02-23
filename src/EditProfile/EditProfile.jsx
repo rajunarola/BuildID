@@ -17,7 +17,9 @@ export default class EditProfile extends Component {
     experienceArray: [],
     Phones: [],
     RideShareInterested: false,
-    loading: false
+    loading: false,
+    FrontPictureUrl: '',
+    file: ''
   }
 
   componentDidMount() {
@@ -166,6 +168,10 @@ export default class EditProfile extends Component {
     this.setState({ Phones: this.state.Phones })
   }
 
+  fileChangedHandler = (event) => {
+    this.setState({ FrontPictureUrl: event.target.files, file: URL.createObjectURL(event.target.files[0]) })
+  }
+
   render() {
 
     const updateUserProfile = (values) => {
@@ -174,6 +180,7 @@ export default class EditProfile extends Component {
           var numbers = [...this.state.Phones, ...values.sights];
         }
         const formData = new FormData()
+        formData.append('Id', 0);
         formData.append('UserId', parseInt(localStorage.getItem('userID')));
         formData.append('FirstName', values.FirstName);
         formData.append('LastName', values.LastName);
@@ -182,6 +189,7 @@ export default class EditProfile extends Component {
         formData.append('DateModified', moment(new Date()).format());
         formData.append('CreatedBy', parseInt(localStorage.getItem('userID')));
         formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
+        formData.append('PictureUrl', this.state.FrontPictureUrl[0]);
         formData.append('RideShareInterested', this.state.RideShareInterested);
         editUserProfile(formData).then(res => {
           this.setState({ loading: false }, () => {
@@ -221,7 +229,7 @@ export default class EditProfile extends Component {
               message: 'Error',
               description: 'There was an error while updating user data!'
             });
-          })
+          });
         });
       });
     }
@@ -293,6 +301,11 @@ export default class EditProfile extends Component {
                     <div className="crd-wrap mb-4">
                       <div className="inner-wrap-card">
                         <Form onFinish={updateUserProfile} ref={this.formRef}>
+                          <button type="button" className="add-btn btn-blue mb-4">
+                            <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
+                          </button>
+                          <input type="file" id="file" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.fileChangedHandler(e)} style={{ 'display': 'none' }} />
+                          <img src={this.state.file} alt="" />
                           <Form.Item label="First Name" name="FirstName">
                             <Input />
                           </Form.Item>
