@@ -135,7 +135,7 @@ export default class Projects extends React.Component {
                                     <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
                                       {noImageAvailable &&
                                         <div className="w_worn text-danger text-uppercase">
-                                          <span>No Image Available For This Project</span>
+                                          <span className="mb-5">No Image Available For This Project</span>
                                         </div>
                                       }
                                       <Carousel autoPlay key="carousel">

@@ -122,91 +122,102 @@ export default class AddNewTickets extends React.Component {
       <>
         {this.state.loading ? <Loader /> :
           <div className="index-main">
-            <div className="edit-sec"><h2>Add Ticket</h2></div>
-            <div className="container-fluid">
-              <div className="addticketform row">
-                <div className="form-border col-lg-5 col-md-8 mt-4 ml-md-4 pt-4">
-                  <Form className="card-body" onFinish={sendNewTicket} ref={this.formRef}>
-                    <div className="form-group">
-                      <label className="form-label formlabel">Ticket Type</label>
-                      <Form.Item name="TicketTypeId" rules={[{ required: true, message: 'Please select a ticket type!' }]}>
-                        <Select
-                          key="TicketTypeId"
-                          showSearch
-                          labelInValue
-                          value={value1}
-                          placeholder="Search ticket type"
-                          notFoundContent={fetching1 ? <Spin size="small" /> : null}
-                          filterOption={false}
-                          onSearch={(e) => this.fetchTicketType(e)}
-                          style={{ width: '100%' }}>
-                          {data1.map(d => (
-                            <Select.Option key={d.value}>{d.text}</Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </div>
-                    <div className="form-group">
-                      <label className="formlabel">Issued On</label>
-                      <Form.Item name="IssuedOn" rules={[{ required: true, message: 'Please select an issued on date!' }]}>
-                        <DatePicker className="w-100 inputstyle" />
-                      </Form.Item>
-                    </div>
-                    <div className="form-group">
-                      <label className="formlabel">Expiry Date</label>
-                      <Form.Item name="Expiry" rules={[{ required: true, message: 'Please select an expiry date!' }]}>
-                        <DatePicker className="w-100 inputstyle" />
-                      </Form.Item>
-                    </div>
-                    <div className="form-group">
-                      <label className="formlabel">Ticket Name</label>
-                      <Form.Item name="TicketId" rules={[{ required: true, message: "Please enter ticket name!" }]}>
-                        <Input className="w-100 inputstyle" />
-                      </Form.Item>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-lg-12">
-                        <label for="issuedby">Issued By</label>
-                        <Form.Item name="IssuedBy" rules={[{ required: true, message: "Please enter your issued type!" }]}>
-                          <Select
-                            key="IssuedBy"
-                            showSearch
-                            labelInValue
-                            value={value}
-                            placeholder="Search issued by"
-                            notFoundContent={fetching ? <Spin size="small" /> : null}
-                            filterOption={false}
-                            onSearch={(e) => this.fetchCompany(e)}
-                            style={{ width: '100%' }}>
-                            {data.map(d => (
-                              <Select.Option key={d.value}>{d.text}</Select.Option>
-                            ))}
-                          </Select>
-                        </Form.Item>
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-lg-6 img-upload-btn">
-                        <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span>  Front Picture
+            <section className="index-sec">
+              <div className="edit-sec"><h1>Add Ticket</h1></div>
+              <div className="com-padding newpage_section">
+                <div className="crd-wrap">
+                  <div className="crd-header">
+                    <h4>Add New Experience</h4>
+                  </div>
+                  <div className="container-fluid">
+                    <div className="addticketform row">
+                      <div className="col-md-12 p-0">
+                        <Form className="card-body row" onFinish={sendNewTicket} ref={this.formRef}>
+                          <div className="form-group col-md-3">
+                            <label className="form-label formlabel">Ticket Type</label>
+                            <Form.Item name="TicketTypeId" rules={[{ required: true, message: 'Please select a ticket type!' }]}>
+                              <Select
+                                key="TicketTypeId"
+                                showSearch
+                                labelInValue
+                                value={value1}
+                                placeholder="Search ticket type"
+                                notFoundContent={fetching1 ? <Spin size="small" /> : null}
+                                filterOption={false}
+                                onSearch={(e) => this.fetchTicketType(e)}
+                                style={{ width: '100%' }}>
+                                {data1.map(d => (
+                                  <Select.Option key={d.value}>{d.text}</Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-3">
+                            <label className="formlabel">Issued On</label>
+                            <Form.Item name="IssuedOn" rules={[{ required: true, message: 'Please select an issued on date!' }]}>
+                              <DatePicker className="w-100 inputstyle" />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-3">
+                            <label className="formlabel">Expiry Date</label>
+                            <Form.Item name="Expiry" rules={[{ required: true, message: 'Please select an expiry date!' }]}>
+                              <DatePicker className="w-100 inputstyle" />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-3">
+                            <label className="formlabel">Ticket Name</label>
+                            <Form.Item name="TicketId" rules={[{ required: true, message: "Please enter ticket name!" }]}>
+                              <Input className="w-100 inputstyle" />
+                            </Form.Item>
+                          </div>
+                          <div className="form-row col-md-3">
+                            <div className="form-group col-lg-12">
+                              <label for="issuedby">Issued By</label>
+                              <Form.Item name="IssuedBy" rules={[{ required: true, message: "Please enter your issued type!" }]}>
+                                <Select
+                                  key="IssuedBy"
+                                  showSearch
+                                  labelInValue
+                                  value={value}
+                                  placeholder="Search issued by"
+                                  notFoundContent={fetching ? <Spin size="small" /> : null}
+                                  filterOption={false}
+                                  onSearch={(e) => this.fetchCompany(e)}
+                                  style={{ width: '100%' }}>
+                                  {data.map(d => (
+                                    <Select.Option key={d.value}>{d.text}</Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </div>
+                          </div>
+                          <div className="form-group col-md-2 d-flex align-items-center">
+                            <Checkbox onChange={(e) => this.onChange(e)}>Public Ticket</Checkbox>
+                          </div>
+                          <div className="form-row col-md-12">
+                            <div className="form-group col-lg-3 img-upload-btn">
+                              <label for="img"><span className="mr-2"><i className="fas fa-upload"></i></span>  Front Picture
                           <input type="file" id="img" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.fileChangedHandler(e, 'front_picture')} />
-                          <img src={this.state.file} alt="" />
-                        </label>
-                      </div>
-                      <div className="form-group col-lg-6 img-upload-btn">
-                        <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture
+                                <img src={this.state.file} alt="" />
+                              </label>
+                            </div>
+                            <div className="form-group col-lg-3 img-upload-btn">
+                              <label for="img2"><span className="mr-2"><i className="fas fa-upload"></i></span> Back Picture
                        <input type="file" id="img2" name="img2" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.fileChangedHandler(e, 'back_picture')} />
-                          <img src={this.state.file2} alt="" />
-                        </label>
+                                <img src={this.state.file2} alt="" />
+                              </label>
+                            </div>
+                          </div>
+                          <div className="form-group col-md-12 d-flex mb-3 justify-content-end">
+                            <button type="submit" className="btn btn-blue btnManufacturer">Add New Ticket</button>
+                          </div>
+                        </Form>
                       </div>
                     </div>
-                    <div className="form-check">
-                      <Checkbox onChange={(e) => this.onChange(e)}>Public Ticket</Checkbox>
-                    </div>
-                    <button type="submit" className="btn btn-blue btnManufacturer mt-3 mb-3">Add New Ticket</button>
-                  </Form>
+                  </div>
                 </div>
               </div>
-            </div>
+            </section>
           </div>
         }
       </>

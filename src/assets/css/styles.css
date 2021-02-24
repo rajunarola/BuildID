@@ -1964,3 +1964,12 @@ ul.ticket-list.overlay-scroll {
     display: block;
 }
 /* New Page End Design */
+
+.phone_type{
+    margin-right: 0;
+    width: 100px;
+}
+
+.phone_number{
+    
+}
