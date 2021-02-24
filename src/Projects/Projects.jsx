@@ -11,8 +11,11 @@ export default class Projects extends React.Component {
   state = {
     loading: false,
     projectArray: [],
-    pictureList: [],
-    emptyProject: ''
+    pictureList: '',
+    emptyProject: '',
+    projectName: '',
+    companyName: '',
+    noImageAvailable: ''
   }
 
   componentDidMount() {
@@ -20,13 +23,25 @@ export default class Projects extends React.Component {
       userWorkHistory().then((values) => {
         if (values && values.status === 200) {
           this.setState({
-            projectArray: values.data.data
+            projectArray: values.data.data.sort().reverse(),
+            projectName: values.data.data && values.data.data[0].projectName,
+            companyName: values.data.data && values.data.data[0].companyName
           }, () => {
             if (values.data.data.length > 0) {
               const firstData = values.data.data[0].projectId;
               userProjects(firstData).then(response => {
-                const pictureList = response.data.data.pictureList;
-                this.setState({ pictureList: pictureList, loading: false });
+                if (response.data.data && response.data.data.pictureList.length > 0) {
+                  this.setState({
+                    loading: false,
+                    pictureList: response.data.data && response.data.data.pictureList,
+                  });
+                } else {
+                  this.setState({
+                    loading: false,
+                    noImageAvailable: 'No Image Available for this Project!',
+                    pictureList: []
+                  })
+                }
               });
             } else {
               this.setState({ loading: false, emptyProject: 'Start adding some projects' })
@@ -59,7 +74,29 @@ export default class Projects extends React.Component {
     this.props.history.push(`/edit-project/${data.id}`)
   }
 
+  changePicInCarousel = (data) => {
+    userProjects(data.projectId).then(response => {
+      if (response.data.data && response.data.data.pictureList.length > 0) {
+        this.setState({
+          pictureList: response.data.data && response.data.data.pictureList,
+          projectName: data.projectName,
+          companyName: data.companyName,
+          noImageAvailable: ''
+        });
+      } else {
+        this.setState({
+          pictureList: [],
+          projectName: data.projectName,
+          companyName: data.companyName,
+          noImageAvailable: 'No Image Available for this Project!'
+        });
+      }
+    });
+  }
+
   render() {
+
+    const { noImageAvailable } = this.state;
 
     const userName = localStorage.getItem('userName');
 
@@ -70,7 +107,6 @@ export default class Projects extends React.Component {
             <section className="index-sec">
               <div className="edit-sec">
                 <h1 className="p-0">{userName}</h1>
-                {/* <Link to="/edit-profile" className="editprofile"><i className="fas fa-cog"></i> Edit Profile</Link> */}
               </div>
               <div className="com-padding newpage_section">
                 <div className="row">
@@ -78,31 +114,30 @@ export default class Projects extends React.Component {
                     {this.state.emptyProject &&
                       <p className="text_blank">{this.state.emptyProject}</p>
                     }
-                    {/* <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link> */}
                     <div className="accordion" id="projectaccordion">
                       <div className="crd-wrap">
-
                         {this.state.projectArray && this.state.projectArray.length > 0 &&
                           <>
                             <div className="crd-header" id="projectOne">
                               <h4>Projects</h4>
                               <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
-                              {/* <i className="far fa-chevron-up" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></i> */}
                             </div>
-
                             <div id="collapseOne" className="collapse show" aria-labelledby="projectOne" data-parent="#projectaccordion">
                               <div className="crd-body slider-pad">
                                 <div className="row">
                                   <div className="col-md-6">
                                     <div className="pro-details">
-                                      {/* <span className="close-proj"><i className="fas fa-times-circle"></i></span> */}
                                       <div className="wrap">
-                                        <h4>{this.state.projectArray[0] && this.state.projectArray[0].projectName}</h4>
-                                        <span>{this.state.projectArray[0] && this.state.projectArray[0].companyName}</span>
+                                        <h4>{this.state.projectName}</h4>
+                                        <span>{this.state.companyName}</span>
                                       </div>
-                                      {/* <span className="approve-proj"><i className="fas fa-check-circle"></i></span> */}
                                     </div>
                                     <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
+                                      {noImageAvailable &&
+                                        <div className="w_worn text-danger text-uppercase">
+                                          <span>No Image Available For This Project</span>
+                                        </div>
+                                      }
                                       <Carousel autoPlay key="carousel">
                                         {this.state.pictureList && this.state.pictureList.map((data, index) => (
                                           <img src={data.imageUrl} alt="" />
@@ -115,7 +150,7 @@ export default class Projects extends React.Component {
                                       <h4>My Projects</h4>
                                       <ul className="timeline-sec">
                                         {this.state.projectArray.map((data, index) => (
-                                          <li>
+                                          <li style={{ cursor: 'pointer' }} onClick={() => this.changePicInCarousel(data)}>
                                             <h4 className="year">{moment(data.endDate).format('YYYY')}</h4>
                                             <div className="timeline-block">
                                               <h4>{data.projectName}</h4>
