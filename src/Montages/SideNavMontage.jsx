@@ -111,7 +111,7 @@ export default class SideNavMontage extends React.Component {
                                                         {/* <div> <h4 className="k-card-title">List of Montages</h4> </div> */}
                                                         <div className="row">
                                                             {userMontages.map(data => (
-                                                                <div className="col-lg-3">
+                                                                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                                                                     <div className="playlist_sec">
                                                                         <h4>{data.name}</h4>
                                                                         <button className="btn btn-blue" onClick={() => this.editMontage(data.id)}><i className="fa fa-edit"></i></button>

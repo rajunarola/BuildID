@@ -146,7 +146,8 @@ export default class AddExperience extends Component {
                     <div className="addticketform row">
                       <div className="col-md-12 p-0">
                         <Form className="card-body row" onFinish={addExperienceTicket} ref={this.formRef}>
-                          <div className="form-group col-md-3">
+
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label>Company</label>
                             <Form.Item className="m-0" name="companyName" rules={[{ required: true, message: 'Please select a company!' }]}>
                               <Select
@@ -163,19 +164,19 @@ export default class AddExperience extends Component {
                               </Select>
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label>Start Date</label>
                             <Form.Item className="m-0" name="StartDate" rules={[{ required: true, message: 'Please select a start date!' }]}>
                               <DatePicker className="w-100 inputstyle" />
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label>End Date</label>
                             <Form.Item className="m-0" name="EndDate" rules={[{ required: true, message: 'Please select an end date!' }]}>
                               <DatePicker className="w-100 inputstyle" />
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label>Trade</label>
                             <Form.Item className="m-0" name="tradeName" rules={[{ required: true, message: 'Please select a trade!' }]}>
                               <Select
@@ -192,7 +193,7 @@ export default class AddExperience extends Component {
                               </Select>
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label>Role</label>
                             <Form.Item className="m-0" name="roleName" rules={[{ required: true, message: 'Please select a trade!' }]}>
                               <Select
@@ -209,11 +210,11 @@ export default class AddExperience extends Component {
                               </Select>
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-2 d-flex align-items-center">
-                            <Checkbox className="mt-4" onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} >I currently work here</Checkbox>
+                          <div className="form-group col-lg-2 col-md-4 col-sm-6 d-flex align-items-center">
+                            <Checkbox className="mt-sm-4" onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)} >I currently work here</Checkbox>
                           </div>
-                          <div className="form-group col-md-2 d-flex align-items-center">
-                            <Checkbox className="mt-4" onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
+                          <div className="form-group col-lg-2 col-md-4 col-sm-6 d-flex align-items-center">
+                            <Checkbox className="mt-sm-4" onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume</Checkbox>
                           </div>
                           <div className="form-group col-md-12 d-flex mb-3 justify-content-end">
                             <button type="submit" className="btn btn-blue btnManufacturer">Add Experience </button>

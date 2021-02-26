@@ -498,6 +498,12 @@ section {
     transition: all 0.5s;
 }
 
+.user-id span img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .sidebar:hover .user-id span {
     width: 55px;
     height: 55px;
@@ -1412,7 +1418,7 @@ ul.ticket-list.overlay-scroll {
 }
 
 .manufacture-form.manufacture-content.pt-3 {
-    padding: 0px 0px 0px 0px;
+    padding: 0px 20px 0px 20px;
     margin: 20px 0 20px 0;
 }
 
@@ -1751,7 +1757,7 @@ ul.ticket-list.overlay-scroll {
 
 .gallary_bg_hn {
     pointer-events: none;
-    width: 150px;
+    width: 100%;
     height: 150px;
     background-position: center;
     background-size: contain;
@@ -1821,6 +1827,10 @@ ul.ticket-list.overlay-scroll {
     height: 30px !important;
 }
 
+
+.gallary_section_s label{
+    width: 100%;
+}
 .gallary_name_sec {
     display: flex;
     align-items: center;
@@ -1840,7 +1850,7 @@ ul.ticket-list.overlay-scroll {
     -webkit-line-clamp: 1;
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
-    width: 130px;
+    width: 100%;
 }
 
 .mon_p {

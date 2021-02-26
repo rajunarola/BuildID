@@ -79,7 +79,7 @@ export default class TicketPreview extends Component {
                           <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#ticketaccordion">
                             <div className="ticket-list overlay-scroll row">
                               {this.state.ticketArray.map((data, index) => (
-                                <div className="col-lg-4">
+                                <div className="col-xl-4 col-lg-6 col-md-12">
                                   <div onClick={() => this.onModalPopUp(data.id)} className="ticket-block li-position" style={moment(data.expiry).isBefore(new Date()) ? { 'backgroundColor': "#fcecc3" } : { 'backgroundColor': "white" }}>
                                     <div className="ticket-img"><img src={data.backPictureUrl || data.frontPictureUrl} alt="" /></div>
                                     <div className="ticket-detail">

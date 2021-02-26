@@ -133,7 +133,7 @@ export default class AddNewTickets extends React.Component {
                     <div className="addticketform row">
                       <div className="col-md-12 p-0">
                         <Form className="card-body row" onFinish={sendNewTicket} ref={this.formRef}>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label className="form-label formlabel">Ticket Type</label>
                             <Form.Item name="TicketTypeId" rules={[{ required: true, message: 'Please select a ticket type!' }]}>
                               <Select
@@ -152,25 +152,25 @@ export default class AddNewTickets extends React.Component {
                               </Select>
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label className="formlabel">Issued On</label>
                             <Form.Item name="IssuedOn" rules={[{ required: true, message: 'Please select an issued on date!' }]}>
                               <DatePicker className="w-100 inputstyle" />
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label className="formlabel">Expiry Date</label>
                             <Form.Item name="Expiry" rules={[{ required: true, message: 'Please select an expiry date!' }]}>
                               <DatePicker className="w-100 inputstyle" />
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-lg-3 col-md-4 col-sm-6">
                             <label className="formlabel">Ticket Name</label>
                             <Form.Item name="TicketId" rules={[{ required: true, message: "Please enter ticket name!" }]}>
                               <Input className="w-100 inputstyle" />
                             </Form.Item>
                           </div>
-                          <div className="form-row col-md-3">
+                          <div className="form-row col-lg-3 col-md-4 col-sm-6">
                             <div className="form-group col-lg-12">
                               <label for="issuedby">Issued By</label>
                               <Form.Item name="IssuedBy" rules={[{ required: true, message: "Please enter your issued type!" }]}>

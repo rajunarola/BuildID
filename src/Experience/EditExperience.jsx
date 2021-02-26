@@ -191,7 +191,7 @@ class EditExperience extends Component {
                     <div className="addticketform row">
                       <div className="col-md-12 p-0">
                         <Form className="card-body row" onFinish={updateExperience} ref={this.formRef}>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
                             <label>Company</label>
                             <div className="d-flex justify-content-between select-add-btn m-0">
                               <Form.Item name="companyName" className="w-100 mb-0">
@@ -216,20 +216,20 @@ class EditExperience extends Component {
                               </button>
                             </div>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
                             <label>Start Date</label>
                             <Form.Item name="StartDate" className="m-0">
                               <DatePicker className="w-100 inputstyle" />
                             </Form.Item>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
                             <label>End Date</label>
                             <Form.Item name="EndDate" className="m-0">
                               <DatePicker className="w-100 inputstyle" />
                             </Form.Item>
                           </div>
 
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
                             <label>Trade</label>
                             <div className="d-flex justify-content-between select-add-btn">
                               <Form.Item name="tradeName" className="w-100 mb-0">
@@ -254,7 +254,7 @@ class EditExperience extends Component {
                               </button>
                             </div>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
                             <label>Role</label>
                             <div className="d-flex justify-content-between select-add-btn">
 
@@ -280,12 +280,12 @@ class EditExperience extends Component {
                               </button>
                             </div>
                           </div>
-                          <div className="form-group col-md-2 d-flex align-items-center">
-                            <Checkbox className="mt-4" checked={this.state.CurrentCompany}
+                          <div className="form-group col-lg-2 col-md-4 col-sm-6 d-flex align-items-center">
+                            <Checkbox className="mt-sm-4" checked={this.state.CurrentCompany}
                               onChange={(e) => this.getCheckBoxValue('CurrentCompany', e.target.checked)}>I currently work here </Checkbox>
                           </div>
-                          <div className="form-group col-md-2 d-flex align-items-center">
-                            <Checkbox className="mt-4" checked={this.state.IncludeInResume}
+                          <div className="form-group col-lg-2 col-md-4 col-sm-6 d-flex align-items-center">
+                            <Checkbox className="mt-sm-4" checked={this.state.IncludeInResume}
                               onChange={(e) => this.getCheckBoxValue('IncludeInResume', e.target.checked)}>Include In Resume </Checkbox>
                           </div>
                           <div className="col-md-12 d-flex mb-3 justify-content-end">

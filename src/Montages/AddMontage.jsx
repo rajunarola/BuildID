@@ -151,58 +151,77 @@ export default class AddMontage extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="addticketform com-padding mt-4">
-                <div className="row">
-                  <div className="col-12 col-md-6 offset-md-3">
-                    <div className="form-border crd-wrp">
-                      <div className="proj-timeline">
-                        <h4 className="k-card-title mb-0 text-uppercase"> Add Montage</h4>
-                        <div className="manufacture-content p-4">
-                          <Form onFinish={onFinish} ref={this.formRef}>
-                            <div className="form-group">
-                              <h4 className="formlabel">Montage Name</h4>
-                              <Form.Item name="montageName" rules={[{ required: true, message: 'Please enter montage name!' }]}>
-                                <Input placeholder="Montage Name" />
-                              </Form.Item>
-                            </div>
-                            {musicFiles.map((files, index) => (
-                              <div className="music_file_section">
-                                <div className="music_name_f">
-                                  <label>
-                                    <input type="radio" name="radio" id={index + 1} value={index + 1} onChange={() => this.selectMusicFile(files.fileUrl)}></input>
-                                    Music File - {index + 1}
-                                  </label>
+              <div className="edit-sec"><h1>Edit Ticket</h1></div>
+              <div className="com-padding newpage_section">
+                <div className="crd-wrap">
+                  <div className="crd-header">
+                    <h4>Edit Ticket</h4>
+                  </div>
+                  <div className="addticketform container-fluid">
+                    <div className="row">
+                      <div className="col-md-12 p-0">
+                        <div className="crd-wrp">
+                          <div className="proj-timeline">
+                            <div className="">
+                              <Form className="row" onFinish={onFinish} ref={this.formRef}>
+                                <div className="form-group col-md-12">
+                                  <Form.Item name="montageName" rules={[{ required: true, message: 'Please enter montage name!' }]}>
+                                    <Input placeholder="Montage Name" />
+                                  </Form.Item>
                                 </div>
-                                <div className="plays_buttons">
-                                  <button type="button" className="btn btn-blue" onClick={(e) => this.playAudio(e, files.fileUrl, 'play')}> <i className="fa fa-play" aria-hidden="true"></i></button>
-                                  <button type="button" className="btn btn-dark" onClick={(e) => this.playAudio(e, files.fileUrl, 'pause')}> <i className="fa fa-pause" aria-hidden="true"></i></button>
-                                </div>
-                              </div>
-                            ))}
-                            <div className="gallary_section_s row">
-                              {userPictures.map((data, index) => (
-                                <div className="col-md-3">
-                                  <div className="preview" key={index}>
-                                    <label>
-                                      <div className="gallary_name_sec">
-                                        <input type="checkbox" onChange={(e) => this.selectedImages(e, data, data.projectId)} />
-                                        <p>{data.projectName}</p>
+                                <div className="col-md-12">
+                                  <div className="row">
+                                    {musicFiles.map((files, index) => (
+                                      <div className="col-xl-4 col-lg-6 col-md-6">
+                                        <div className="music_file_section">
+                                          <div className="music_name_f">
+                                            <label>
+                                              <input type="radio" name="radio" id={index + 1} value={index + 1} onChange={() => this.selectMusicFile(files.fileUrl)}></input>
+                                          Music File - {index + 1}
+                                            </label>
+                                          </div>
+                                          <div className="plays_buttons">
+                                            <button type="button" className="btn btn-blue" onClick={(e) => this.playAudio(e, files.fileUrl, 'play')}> <i className="fa fa-play" aria-hidden="true"></i></button>
+                                            <button type="button" className="btn btn-dark" onClick={(e) => this.playAudio(e, files.fileUrl, 'pause')}> <i className="fa fa-pause" aria-hidden="true"></i></button>
+                                          </div>
+                                        </div>
                                       </div>
-                                      <div className="gallary_bg_hn" htmlFor="gallery" style={{ backgroundImage: `url(${data.imageUrl})`, pointerEvents: 'none' }}>
-                                      </div>
-                                    </label>
+                                    ))}
                                   </div>
                                 </div>
-                              ))}
+                                <div className="col-md-12">
+                                  <div className="row">
+                                    {userPictures.map((data, index) => (
+                                      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="gallary_section_s">
+                                          <div className="preview" key={index}>
+                                            <label>
+                                              <div className="gallary_name_sec">
+                                                <input type="checkbox" onChange={(e) => this.selectedImages(e, data, data.projectId)} />
+                                                <p>{data.projectName}</p>
+                                              </div>
+                                              <div className="gallary_bg_hn" htmlFor="gallery" style={{ backgroundImage: `url(${data.imageUrl})`, pointerEvents: 'none' }}>
+                                              </div>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div className="form-group col-md-12 d-flex mb-3 justify-content-end">
+                                  <button type="submit" className="btn btn-blue">Submit</button>
+                                </div>
+                              </Form>
                             </div>
-                            <button type="submit" className="btn btn-blue">Submit</button>
-                          </Form>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </section>
           </main>
         }

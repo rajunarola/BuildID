@@ -103,6 +103,12 @@
         height: 45px;
     }
     /***  Login Page  ***/
+    .newpage_section .crd-wrap {
+        padding: 10px 10px 10px 10px;
+    }
+    .crd-wrap .crd-header {
+        padding: 10px 15px 10px 15px;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -120,7 +126,19 @@
     /***  Login Page  ***/
 }
 
-@media only screen and (max-width: 575px) {}
+@media only screen and (max-width: 575px) {
+
+    .newpage_section .crd-header h4 {
+        font-size: 18px;
+    }
+    .index-sec h1 {
+        font-size: 24px;
+    }
+    .edit-sec {
+        padding: 15px 15px;
+    }
+
+}
 
 @media only screen and (max-width: 480px) {
     /***  Login Page  ***/
