@@ -30,7 +30,8 @@ export default class EditProfile extends Component {
             loading: false,
             RideShareInterested: values[0].data.data !== null ? values[0].data.data.rideShareInterested : false,
             Phones: values[0].data.data !== null ? values[0].data.data.phones : [],
-            experienceArray: values[2].data.data
+            experienceArray: values[2].data.data,
+            file: values[0].data.data.pictureUrl
           }, () => {
             if (values[0].data.data !== null) {
               this.formRef.current.setFieldsValue({
@@ -185,9 +186,6 @@ export default class EditProfile extends Component {
         formData.append('FirstName', values.FirstName);
         formData.append('LastName', values.LastName);
         formData.append('Phones', JSON.stringify({ Phones: numbers ? numbers : this.state.Phones }));
-        formData.append('DateCreated', moment(new Date()).format());
-        formData.append('DateModified', moment(new Date()).format());
-        formData.append('CreatedBy', parseInt(localStorage.getItem('userID')));
         formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
         formData.append('PictureUrl', this.state.FrontPictureUrl[0]);
         formData.append('RideShareInterested', this.state.RideShareInterested);
@@ -304,7 +302,8 @@ export default class EditProfile extends Component {
                           <button type="button" className="add-btn btn-blue mb-4">
                             <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
                           </button>
-                          <input type="file" id="file" name="img" accept="image/*" className="img-upload manu_upload" onChange={(e) => this.fileChangedHandler(e)} style={{ 'display': 'none' }} />
+                          <input type="file" id="file" name="img" accept="image/*" className="img-upload manu_upload"
+                            onChange={(e) => this.fileChangedHandler(e)} style={{ 'display': 'none' }} />
                           <img src={this.state.file} alt="" />
                           <Form.Item label="First Name" name="FirstName">
                             <Input />

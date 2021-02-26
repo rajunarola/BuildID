@@ -31,6 +31,9 @@ const SaveBuildingType = lazy(() => import("./Experience/AddBuildingType"));
 const Quiz = lazy(() => import("./Quiz/Quiz"));
 const Montage = lazy(() => import("./Montages/SideNavMontage"));
 const TicketPreview = lazy(() => import("./Tickets/TicketPreview"));
+const Store = lazy(() => import("./Store/Store"));
+const PurchaseHistory = lazy(() => import("./Store/PurchaseHistory"));
+const ShoppingCart = lazy(() => import("./Store/ShoppingCart"));
 
 export const routesCode = [
     { path: "/dashboard", exact: true, component: Dashboard },
@@ -56,9 +59,11 @@ export const routesCode = [
     { path: "/preview-montage/:id", exact: true, component: PreviewOfMontage },
     { path: "/add-trade", exact: true, component: SaveTrade },
     { path: "/add-role", exact: true, component: SaveRole },
-    { path: "/add-building-type", exact: true, component: SaveBuildingType }
+    { path: "/add-building-type", exact: true, component: SaveBuildingType },
+    { path: "/store", exact: true, component: Store },
+    { path: "/purchase-history", exact: true, component: PurchaseHistory },
+    { path: "/shopping-cart", exact: true, component: ShoppingCart }
 ];
-
 class Routes extends React.PureComponent {
     render() {
         return (

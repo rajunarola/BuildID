@@ -44,24 +44,30 @@ class SideNav extends React.Component {
                             </Link>
                         </li>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
-                            <NavLink to="/quiz" className="nav-link">
+                            <Link to="/quiz" className="nav-link">
                                 <i><img src={require("../assets/images/icon_comment.png")} alt="Comment" /></i>
                                 <span>Quiz</span>
-                            </NavLink>
+                            </Link>
                         </li>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
-                            <NavLink to="/montages" className="nav-link">
+                            <Link to="/montages" className="nav-link">
                                 <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
                                 <span>Montage</span>
-                            </NavLink>
+                            </Link>
+                        </li>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
+                            <Link to="/store" className="nav-link">
+                                <i><img src={require("../assets/images/icon_projects.png")} alt="Store" /></i>
+                                <span>Store</span>
+                            </Link>
                         </li>
                     </ul>
                     <ul className="lower-menu">
                         <li onClick={() => this.setState({ open: !this.state.open })}>
-                            <NavLink to="#" onClick={e => e.preventDefault()}>
+                            <Link to="#" onClick={e => e.preventDefault()}>
                                 <i className="fas fa-cog"></i>
                                 <span>Setting</span>
-                            </NavLink>
+                            </Link>
                         </li>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/" onClick={() => this.onLogout()}>

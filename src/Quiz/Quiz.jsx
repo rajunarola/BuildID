@@ -263,7 +263,6 @@ export default class Quiz extends Component {
                         <div className="crd-header" id="ticketOne">
                           <h4>Quiz Question</h4>
                         </div>
-
                         <div className="row">
                           <div className="col-md-5">
                             <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#qaaccordion">
