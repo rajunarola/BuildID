@@ -1,138 +1,207 @@
-import React, { Component } from 'react'
-import { getUserShoppingCart, saveUserPurchase, getNrItemsShoppingCart } from '../Services/Store';
+import React, { Component } from 'react';
 import { notification } from 'antd';
-
+import { getStoreItems, getUserShoppingCart, saveUserPurchase } from '../Services/Store';
+import Loader from '../Loader/Loader';
 export default class ShoppingCart extends Component {
 
   state = {
-    shoppingItems: [],
-    cartItems: ''
+    loading: false,
+    cartItem: []
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
+    this.setState({ loading: true }, () => {
+      getUserShoppingCart().then(res => {
+        if (res.data.status === true) {
+          res.data.data.map(data => {
+            const obj = {
+              fileUrl: data.fileUrl,
+              id: 0,
+              userId: data.userId,
+              itemId: 0,
+              itemName: data.itemName,
+              storeItemId: 0,
+              statusId: 0,
+              price: data.price,
+              qty: data.qty,
+              currentAvaQty: 0
+            }
+            getStoreItems(data.itemId).then(value => {
+              obj.id = value.data.data[0].id;
+              obj.itemId = value.data.data[0].itemId;
+              obj.storeItemId = value.data.data[0].id;
+              obj.currentAvaQty = value.data.data[0].qty;
+              this.setState({
+                loading: false,
+                cartItem: this.state.cartItem.concat(obj)
+              });
+            });
 
-  apiCall() {
-    Promise.all([getUserShoppingCart(), getNrItemsShoppingCart()]).then(values => {
-      console.log('values => ', values);
-      if (values[0] && values[1] && values[0].data.status === true && values[1].data.status === true) {
-        this.setState({
-          shoppingItems: values[0].data.data,
-          cartItems: values[1].data.data
-        });
-      }
-    });
-  }
-
-  addRemoveQty = (items, type, index) => {
-    console.log('items => ', items);
-    const { shoppingItems } = this.state;
-    const data = {
-      Id: 0,
-      UserId: parseInt(localStorage.getItem('userID')),
-      ItemId: items.itemId,
-      StoreItemId: items.id,
-      StatusId: 4,
-      Price: items.price,
-      ModifiedBy: parseInt(localStorage.getItem('userID'))
-    }
-    if (type === 'add') {
-      shoppingItems[index].qty = (items.qty + 1)
-      this.setState({ shoppingItems: shoppingItems })
-    } else if (type === 'remove') {
-      if (shoppingItems[index].qty <= 0) {
-        console.log('here');
-        shoppingItems[index].qty = 0;
-        this.setState({ shoppingItems: shoppingItems })
-      } else {
-        shoppingItems[index].qty = (items.qty - 1)
-        this.setState({ shoppingItems: shoppingItems })
-      }
-    } else if (type === 'delete') {
-      data.qty = 0;
-      console.log('data => ', data);
-      this.deleteOrPurchaseCart(data, 'deleted')
-    } else if (type === 'purchase') {
-      data.qty = shoppingItems[index].qty;
-      console.log('purchasedata => ', data);
-      this.deleteOrPurchaseCart(data, 'purchased')
-    }
-  }
-
-  deleteOrPurchaseCart = (data, type) => {
-    saveUserPurchase(data).then(res => {
-      if (res.data.status === true) {
-        this.apiCall();
-        notification.success({
-          message: 'Success',
-          description: `Item successfully ${type} from the cart!`
-        });
-      } else {
+          });
+        }
+      }).catch(err => {
         notification.error({
           message: 'Error',
-          description: `There was an error while ${type === 'deleted' ? 'deleting' : 'purchasing'} items from the cart!`
+          description: 'There was an error while fetching data!'
         });
-      }
-    }).catch(err => {
-      notification.error({
-        message: 'Error',
-        description: `There was an error while ${type === 'deleted' ? 'deleting' : 'purchasing'} items from the cart!`
       });
     });
   }
 
-  getInputValue = (e, index) => {
-    console.log('e.target.value => ', e.target.value);
-    const { shoppingItems } = this.state;
-    shoppingItems[index].qty = parseInt(e.target.value)
-    this.setState({ shoppingItems: shoppingItems })
+  increaseQty(i) {
+    let item = [...this.state.cartItem];
+    item[i].qty = (isNaN(item[i].qty)) ? 0 : parseInt(item[i].qty) + 1;
+    this.setState({ cartItem: item });
+  }
+
+  decreaseQty(i) {
+    let item = [...this.state.cartItem];
+    item[i].qty = (isNaN(item[i].qty)) ? 0 : parseInt(item[i].qty) - 1;
+    this.setState({ cartItem: item });
+  }
+
+  saveUserPurchaseItem(isDelete, item) {
+    const data = {
+      Id: 0,
+      UserId: parseInt(localStorage.getItem("userID")),
+      ItemId: item.id,
+      StoreItemId: item.itemId,
+      StatusId: 4,
+      Price: item.price,
+      Qty: isDelete ? 0 : item.qty,
+      ModifiedBy: parseInt(localStorage.getItem("userID"))
+    }
+    console.log('data => ', data);
+
+    saveUserPurchase(data).then(res => {
+      if (res.data.status === true) {
+        this.setState({ loading: false }, () => {
+          notification.success({
+            message: 'Success',
+            description: `Item successfully ${isDelete ? 'deleted' : 'purchased'}  from your cart!`
+          });
+          getUserShoppingCart().then(res => {
+            this.setState({
+              loading: false,
+              cartItem: res.data.data
+            });
+          });
+        });
+      }
+      else {
+        this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: `Item successfully ${isDelete ? 'deleting' : 'purchasing'}  from your cart!`
+          });
+        });
+      }
+    }).catch(err => {
+      this.setState({ loading: false }, () => {
+        notification.error({
+          message: 'Error',
+          description: `Item successfully ${isDelete ? 'deleting' : 'purchasing'}  from your cart!`
+        });
+      });
+    });
+  }
+
+  handleQty(e, i) {
+    let item = [...this.state.cartItem];
+    if (e) {
+      item[i].qty = parseInt(e);
+      this.setState({ cartItem: item });
+    } else {
+      item[i].qty = 0;
+      this.setState({ cartItem: item });
+    }
+  }
+
+  validate = (evt) => {
+    var theEvent = evt || window.event;
+    // Handle paste
+    if (theEvent.type === 'paste') {
+      key = evt.clipboardData.getData('text/plain');
+    } else {
+      // Handle key press
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if (!regex.test(key)) {
+      theEvent.returnValue = false;
+      if (theEvent.preventDefault) theEvent.preventDefault();
+    }
   }
 
   render() {
 
-    const { shoppingItems, cartItems } = this.state;
-
+    const { cartItem } = this.state
     return (
       <>
         <div className="index-main">
-          <section className="index-sec">
-            <div className="edit-sec"><h1>Shopping Cart</h1></div>
-            <button className="btn btn-blue">{cartItems}<i className="fa fa-shopping-cart"></i></button>
-            <div className="com-padding newpage_section">
-              <div className="crd-wrap">
-                <div className="crd-header" id="ticketOne">
-                  <table className="table table-bordered">
-                    <tr>
-                      <th>Image</th>
-                      <th>Item Name</th>
-                      <th>Quantity</th>
-                      <th>Price</th>
-                      <th>Action</th>
-                    </tr>
-                    {shoppingItems.map((items, index) => (
-                      <tr>
-                        <td><img src={items.fileUrl} width={10} height={10} /></td>
-                        <td>{items.itemName}</td>
-                        <td>
-                          <button className="btn btn-blue" onClick={() => this.addRemoveQty(items, 'add', index)}><i className="fa fa-plus-circle"></i></button>
-                          <input value={items.qty} type="number" onChange={(e) => this.getInputValue(e, index)} />
-                          <button className="btn btn-danger" onClick={() => this.addRemoveQty(items, 'remove', index)}><i className="fa fa-minus-circle"></i></button>
-                        </td>
-                        <td>${items.price}</td>
-                        <td style={{ cursor: 'pointer' }} onClick={() => this.addRemoveQty(items, 'delete', index)}>
-                          <button className="btn btn-danger">Delete</button>
-                        </td>
-                        <td style={{ cursor: 'pointer' }} onClick={() => this.addRemoveQty(items, 'purchase', index)}>
-                          <button className="btn btn-danger">Purchase</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </table>
+          {this.state.loading ? <Loader /> :
+            <section className="index-sec">
+              <div className="edit-sec"><h1>Shopping Cart</h1></div>
+              {/* <button className="btn btn-blue">{cartItems}<i className="fa fa-shopping-cart"></i></button> */}
+              <div className="com-padding newpage_section">
+                <div className="crd-wrap">
+                  <div className="crd-header" id="ticketOne">
+                    <h4>Shopping Cart</h4>
+                  </div>
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-md-12 p-0">
+                        <div className="cart_tables_d table-responsive">
+                          <table className="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Image</th>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th colSpan="2" className="text-center">Action</th>
+                              </tr>
+                            </thead>
+                            {cartItem.length > 0 ?
+                              cartItem.map((data, i) => (
+                                <>
+                                  <tr>
+                                    <td><img src={data.fileUrl} alt=""></img></td>
+                                    <td>{data.itemName}</td>
+                                    <td>
+                                      <div className="d-flex">
+                                        <button type="button" className="btn-blue" onClick={() => this.increaseQty(i)}>
+                                          <i className="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                        <input className="cart_input_num" type="text" value={data.qty} onChange={(e) => this.handleQty(e.target.value, i)}
+                                          onKeyPress={() => this.validate()} />
+                                        <div className="text-danger">
+                                          {data.qty > data.currentAvaQty ? `There are only ${data.currentAvaQty} quantities of this item in store!` : ''}
+                                        </div>
+                                        <button type="button" className="btn-danger" onClick={() => this.decreaseQty(i)} disabled={data.qty <= 0}>
+                                          <i className="fa fa-minus" aria-hidden="true"></i>
+                                        </button>
+                                      </div>
+                                    </td>
+                                    <td>{data.price}</td>
+                                    <td className="text-center">
+                                      <button className="btn btn-danger mr-2" onClick={() => this.saveUserPurchaseItem(true, data)}>Delete</button>
+                                      <button className="btn btn-dark" onClick={() => this.saveUserPurchaseItem(false, data)}>Purchase</button>
+                                    </td>
+                                  </tr>
+                                </>
+                              )) : <tr><td colSpan="4">No item found</td></tr>
+                            }
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          }
         </div>
       </>
     )

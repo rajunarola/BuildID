@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Loader from '../Loader/Loader';
-import { getUserRewardAmount, getStoreItems, searchStoreItems, saveUserPurchase } from '../Services/Store'
-import swal from 'sweetalert';
+import { getUserRewardAmount, getStoreItems, searchStoreItems, saveUserPurchase, getNrItemsShoppingCart } from '../Services/Store'
 import { notification } from 'antd';
 import { Modal, Image, Col } from 'react-bootstrap';
-
 export default class Store extends React.Component {
 
   state = {
@@ -14,29 +12,38 @@ export default class Store extends React.Component {
     storeItems: [],
     emptySearchResult: '',
     modalShow: false,
-    singleItem: []
+    singleItem: [],
+    originalQuantity: '',
+    cartItems: '',
+    newTemp: 1
   }
 
   componentDidMount() {
-    Promise.all([getUserRewardAmount(), getStoreItems()]).then(values => {
-      console.log('values => ', values);
-      if (values[0] && values[1] && values[0].data.status === true && values[1].data.status === true) {
-        this.setState({
-          storeBucks: values[0].data.data && values[0].data.data.bucks,
-          storeItems: values[1].data.data
+    this.setState({ loading: true }, () => {
+      Promise.all([getUserRewardAmount(), getStoreItems(), getNrItemsShoppingCart()]).then(values => {
+        if (values[0] && values[1] && values[0].data.status === true && values[1].data.status === true && values[2].data.status === true) {
+          this.setState({
+            storeBucks: values[0].data.data && values[0].data.data.bucks,
+            storeItems: values[1].data.data,
+            originalQuantity: values[1].data.data,
+            cartItems: values[2].data.data,
+            loading: false
+          })
+        }
+      }).catch(Err => {
+        this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while fetching data!'
+          });
         })
-      }
-    }).catch(Err => {
-      console.log('Err => ', Err);
-
+      });
     })
   }
 
   searchForItems = (e) => {
-    console.log('e.target.value => ', e.target.value);
     if (e.target.value) {
       searchStoreItems(e.target.value).then(res => {
-        console.log('res => ', res);
         if (res.data.status === true) {
           if (res.data.data.length > 0) {
             this.setState({ storeItems: res.data.data, emptySearchResult: '' })
@@ -45,11 +52,12 @@ export default class Store extends React.Component {
           }
         }
       }).catch(Err => {
-        console.log('Err => ', Err);
-
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while fetching data!'
+        });
       })
     } else {
-      console.log('in else');
       getStoreItems().then(res => {
         if (res.data.status === true) {
           this.setState({ storeItems: res.data.data })
@@ -59,11 +67,10 @@ export default class Store extends React.Component {
   }
 
   addToShoppingCart = (items, type) => {
-    console.log('items => ', items);
+    const { newTemp } = this.state;
     if (type === 'view') {
       this.setState({ singleItem: items, modalShow: true })
     } else if (type === 'cart') {
-      console.log('here');
       const data = {
         Id: 0,
         UserId: parseInt(localStorage.getItem('userID')),
@@ -71,13 +78,17 @@ export default class Store extends React.Component {
         StoreItemId: items.id,
         StatusId: 1,
         Price: items.price,
-        Qty: 1,
+        Qty: newTemp,
         ModifiedBy: parseInt(localStorage.getItem('userID'))
       }
       saveUserPurchase(data).then(res => {
-        console.log('saveUserPurchase res => ', res);
         if (res.data.status === true) {
           this.setState({ modalShow: false }, () => {
+            getNrItemsShoppingCart().then(res => {
+              if (res.data.status === true) {
+                this.setState({ cartItems: res.data.data })
+              }
+            }).catch(err => { })
             notification.success({
               message: 'Success',
               description: 'Item successfully added to the cart!'
@@ -98,9 +109,45 @@ export default class Store extends React.Component {
     }
   }
 
+  addRemoveQty = (items, type, e) => {
+    const { newTemp } = this.state;
+    if (type === 'add') {
+      this.setState({ newTemp: (newTemp + 1) })
+    } else if (type === 'remove') {
+      if (newTemp <= 0) {
+        this.setState({ newTemp: newTemp - 1 })
+      } else {
+        this.setState({ newTemp: newTemp - 1 })
+      }
+    } else if (type === 'input') {
+      if (e.target.value) {
+        this.setState({ newTemp: e.target.value })
+      } else {
+        this.setState({ newTemp: 1 })
+      }
+    }
+  }
+
+  validate = (evt) => {
+    var theEvent = evt || window.event;
+    // Handle paste
+    if (theEvent.type === 'paste') {
+      key = evt.clipboardData.getData('text/plain');
+    } else {
+      // Handle key press
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if (!regex.test(key)) {
+      theEvent.returnValue = false;
+      if (theEvent.preventDefault) theEvent.preventDefault();
+    }
+  }
+
   render() {
 
-    const { storeBucks, storeItems, emptySearchResult, singleItem } = this.state;
+    const { storeBucks, storeItems, emptySearchResult, singleItem, cartItems, newTemp } = this.state;
 
     return (
       <>
@@ -112,9 +159,16 @@ export default class Store extends React.Component {
                 <div className="crd-wrap">
                   <div className="crd-header" id="ticketOne">
                     <h4>You currently have <b>{storeBucks}</b> bucks!</h4>
-                    <Link className="btn btn-blue" to={`/purchase-history`}>Order History</Link>
+                    <div className="stor_buttons">
+                      <button className="btn btn-blue cart_iteams" onClick={() => this.props.history.push(`/shopping-cart`)}>
+                        <i className="fa fa-shopping-cart"></i>
+                        <span>{cartItems}</span>
+                      </button>
+                      <Link className="btn btn-blue" to={`/purchase-history`}>Order History</Link>
+                    </div>
                   </div>
-                  <div className="mb-2">
+                  <div className="title_search_panel">
+                    <h4>Items For Sale</h4>
                     <input className="form-control" placeholder="Search for an Item" onChange={(e) => this.searchForItems(e)} />
                   </div>
                   {emptySearchResult && <p>{emptySearchResult}</p>}
@@ -122,25 +176,32 @@ export default class Store extends React.Component {
                     <div className="container-fluid">
                       <div className="addticketform row">
                         <div className="col-md-12 p-0">
-                          <h4>Items For Sale</h4>
-                          <table className="table table-bordered">
-                            <tr>
-                              <th>Image</th>
-                              <th>Item Name</th>
-                              <th>Quantity</th>
-                              <th>Price</th>
-                              <th>Action</th>
-                            </tr>
-                            {storeItems.map(items => (
-                              <tr>
-                                <td><img src={items.fileUrl} width={10} height={10} /></td>
-                                <td>{items.itemName}</td>
-                                <td>{items.qty}</td>
-                                <td>${items.price}</td>
-                                <td style={{ cursor: 'pointer' }} onClick={() => this.addToShoppingCart(items, 'view')}>View Details</td>
-                              </tr>
-                            ))}
-                          </table>
+                          <div className="cart_tables_d table-responsive">
+                            <table className="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Image</th>
+                                  <th>Item Name</th>
+                                  <th>Quantity</th>
+                                  <th>Price</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {storeItems.map(items => (
+                                  <tr>
+                                    <td><img src={items.fileUrl} width={10} height={10} alt="table_img" className="tables_imgs" /></td>
+                                    <td>{items.itemName}</td>
+                                    <td>{items.qty}</td>
+                                    <td>${items.price}</td>
+                                    <td>
+                                      <Link className="btn btn-blue" onClick={() => this.addToShoppingCart(items, 'view')}>View Details</Link>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>}
@@ -162,12 +223,20 @@ export default class Store extends React.Component {
             {singleItem.price &&
               <p className="stage-detail">
                 <span className="stage-label">Price:</span> <span>{singleItem.price}</span>
-              </p>}
-            {singleItem.qty &&
-              <p className="stage-detail">
-                <span className="stage-label">Quantity:</span> <span>{singleItem.qty}</span>
-              </p>}
-            <button className="btn btn-blue" onClick={() => this.addToShoppingCart(singleItem, 'cart')}>Add To Cart</button>
+              </p>
+            }
+            <p className="stage-detail">
+              <button className="btn btn-blue" onClick={(e) => this.addRemoveQty(singleItem, 'add', e)}><i className="fa fa-plus-circle"></i></button>
+              <input value={newTemp} type="text" onChange={(e) => this.addRemoveQty(singleItem, 'input', e)}
+                onKeyPress={() => this.validate()} />
+              <div className="text-danger">
+                {newTemp > singleItem.qty ? `There are ${singleItem.qty} much quantity of the store` : ''}
+              </div>
+              <button className="btn btn-danger" onClick={(e) => this.addRemoveQty(singleItem, 'remove', e)}><i className="fa fa-minus-circle"></i></button>
+            </p>
+            <div className="model_buttons">
+              <button className="btn btn-blue" onClick={() => this.addToShoppingCart(singleItem, 'cart')}>Add To Cart</button>
+            </div>
           </Modal.Body>
         </Modal>
       </>

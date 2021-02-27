@@ -4,9 +4,13 @@ export function getUserRewardAmount() {
     return axios.get(process.env.REACT_APP_API_URL + `api/users/GetUserRewardAmount/${localStorage.getItem('userID')}`);
 }
 
-export function getStoreItems() {
-    return axios.get(process.env.REACT_APP_API_URL + `api/store/getstoreitems`);
+export function getStoreItems(itemId) {
+    if (itemId !== undefined)
+        return axios.get(process.env.REACT_APP_API_URL + `api/store/GetStoreItems/${itemId}`);
+    else
+        return axios.get(process.env.REACT_APP_API_URL + `api/store/GetStoreItems`);
 }
+
 
 export function searchStoreItems(searchString) {
     return axios.get(process.env.REACT_APP_API_URL + `api/store/SearchStoreItems/${searchString}`);

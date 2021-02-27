@@ -56,7 +56,7 @@ class SideNav extends React.Component {
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
                                     <div className="custom_nav">
                                         <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
-                                        <span>XYZ</span>
+                                        <span>Rewards</span>
                                     </div>
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
