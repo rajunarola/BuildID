@@ -237,78 +237,99 @@ export default class EditMontage extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="addticketform com-padding mt-4">
-                <div className="row">
-                  <div className="col-12 col-md-6 offset-md-3">
-                    <div className="form-border crd-wrp">
-                      <div className="proj-timeline">
-                        <h4 className="k-card-title mb-0 text-uppercase">Edit Montage</h4>
-                        <div className="manufacture-content p-4">
-                          <Form className="card-body" ref={this.formRef} onFinish={editMontage}>
-                            <div className="form-group">
-                              <h4 className="formlabel">Montage Name</h4>
-                              <Form.Item name="montageName">
-                                <Input />
-                              </Form.Item>
-                            </div>
-                            {this.state.selectedMusicFile &&
-                              <div className="music_file_section">
-                                <div>{this.state.selectedMusicFile}</div>
-                                <div className="plays_buttons">
-                                  <button type="button" className="btn btn-danger fa fa-trash" onClick={() => this.removeMusicUrl()}></button>
-                                  <div className="btn btn-blue" onClick={() => this.playPauseMusic("Play")}><i className="fa fa-play" aria-hidden="true"></i></div>
-                                  <div className="btn btn-dark" onClick={() => this.playPauseMusic("Pause")}><i className="fa fa-pause" aria-hidden="true"></i></div>
+              <div className="edit-sec"><h1>Edit Montage</h1></div>
+              <div className="com-padding newpage_section">
+                <div className="crd-wrap">
+                  <div className="crd-header">
+                    <h4>Edit Montage</h4>
+                  </div>
+                  <div className="addticketform container-fluid">
+                    <div className="row">
+                      <div className="col-12 p-0">
+                        <div className="crd-wrp">
+                          <div className="proj-timeline">
+                            <div className="">
+                              <Form className="row" ref={this.formRef} onFinish={editMontage}>
+                                <div className="form-group col-md-12">
+                                  <Form.Item name="montageName">
+                                    <Input />
+                                  </Form.Item>
                                 </div>
-                              </div>
-                            }
-                            {musicFiles.map((files, index) => (
-                              <div className="music_file_section">
-                                <div className="music_name_f">
-                                  <label>
-                                    <input type="radio" name="radio" id={index + 1} value={index + 1} onChange={() => this.selectMusicFile(files.fileUrl)}></input>
-                                 Music File - {index + 1}
-                                  </label>
+                                <div className="col-md-12">
+                                  {this.state.selectedMusicFile &&
+                                    <div className="music_file_section">
+                                      <div>{this.state.selectedMusicFile}</div>
+                                      <div className="plays_buttons">
+                                        <button type="button" className="btn btn-danger fa fa-trash" onClick={() => this.removeMusicUrl()}></button>
+                                        <div className="btn btn-blue" onClick={() => this.playPauseMusic("Play")}><i className="fa fa-play" aria-hidden="true"></i></div>
+                                        <div className="btn btn-dark" onClick={() => this.playPauseMusic("Pause")}><i className="fa fa-pause" aria-hidden="true"></i></div>
+                                      </div>
+                                    </div>
+                                  }
                                 </div>
-                                <div className="plays_buttons">
-                                  <button type="button" className="btn btn-blue" onClick={(e) => this.playAudio(e, files.fileUrl, 'play')}><i className="fa fa-play" aria-hidden="true"></i></button>
-                                  <button type="button" className="btn btn-dark" onClick={(e) => this.playAudio(e, files.fileUrl, 'pause')}><i className="fa fa-pause" aria-hidden="true"></i></button>
-                                </div>
-                              </div>
-                            ))}
-                            <div className="gallary_section_s row">
-                              {images.map((data, index) => (
-                                <div className="col-md-3">
-                                  <div className="preview" key={index}>
-                                    <div className="gallary_bg_hn" htmlFor="gallery"
-                                      style={{ backgroundImage: `url(${data.fileUrl ? data.fileUrl : data.imageUrl})`, pointerEvents: 'none' }}>
-                                      <div className="removeImage" onClick={() => this.removeImage(index, data)}>
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="white" xmlns="http://www.w3.org/2000/svg" >
-                                          <path d="M1 9L5 5M9 1L5 5M5 5L1 1L9 9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
+
+                                {musicFiles.map((files, index) => (
+                                  <div className="col-xl-4 col-lg-6 col-md-6">
+                                    <div className="music_file_section">
+                                      <div className="music_name_f">
+                                        <label>
+                                          <input type="radio" name="radio" id={index + 1} value={index + 1} onChange={() => this.selectMusicFile(files.fileUrl)}></input>
+                                    Music File - {index + 1}
+                                        </label>
+                                      </div>
+                                      <div className="plays_buttons">
+                                        <button type="button" className="btn btn-blue" onClick={(e) => this.playAudio(e, files.fileUrl, 'play')}><i className="fa fa-play" aria-hidden="true"></i></button>
+                                        <button type="button" className="btn btn-dark" onClick={(e) => this.playAudio(e, files.fileUrl, 'pause')}><i className="fa fa-pause" aria-hidden="true"></i></button>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              ))}
-                            </div>
-                            <div className="gallary_section_s row">
-                              {userPictures.map((data, index) => (
-                                <div className="col-md-3">
-                                  <div className="preview" key={index}>
-                                    <label>
-                                      <div className="gallary_name_sec">
-                                        <input type="checkbox" onChange={(e) => this.selectedImages(e, data, data.projectId)} />
-                                        <p>{data.projectName}</p>
+                                ))}
+
+                                <div className="col-md-12">
+                                  <div className="gallary_section_s row">
+                                    {images.map((data, index) => (
+                                      <div className="col-xl-4 col-lg-6 col-md-6">
+                                        <div className="preview" key={index}>
+                                          <div className="gallary_bg_hn" htmlFor="gallery"
+                                            style={{ backgroundImage: `url(${data.fileUrl ? data.fileUrl : data.imageUrl})`, pointerEvents: 'none' }}>
+                                            <div className="removeImage" onClick={() => this.removeImage(index, data)}>
+                                              <svg width="10" height="10" viewBox="0 0 10 10" fill="white" xmlns="http://www.w3.org/2000/svg" >
+                                                <path d="M1 9L5 5M9 1L5 5M5 5L1 1L9 9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                              </svg>
+                                            </div>
+                                          </div>
+                                        </div>
                                       </div>
-                                      <div className="gallary_bg_hn" htmlFor="gallery" style={{ backgroundImage: `url(${data.imageUrl})`, pointerEvents: 'none' }}>
-                                      </div>
-                                    </label>
+                                    ))}
                                   </div>
                                 </div>
-                              ))}
+
+                                <div className="col-md-12">
+                                  <div className="gallary_section_s row">
+                                    {userPictures.map((data, index) => (
+                                      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                        <div className="preview" key={index}>
+                                          <label>
+                                            <div className="gallary_name_sec">
+                                              <input type="checkbox" onChange={(e) => this.selectedImages(e, data, data.projectId)} />
+                                              <p>{data.projectName}</p>
+                                            </div>
+                                            <div className="gallary_bg_hn" htmlFor="gallery" style={{ backgroundImage: `url(${data.imageUrl})`, pointerEvents: 'none' }}>
+                                            </div>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                <div className="form-group col-md-12 d-flex mb-3 justify-content-end">
+                                  <button className="btn btn-blue" type="submit">Edit Montage</button>
+                                </div>
+
+                              </Form>
                             </div>
-                            <button className="btn btn-blue" type="submit">Edit Montage</button>
-                          </Form>
+                          </div>
                         </div>
                       </div>
                     </div>

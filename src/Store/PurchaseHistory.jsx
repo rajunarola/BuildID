@@ -34,27 +34,35 @@ export default class PurchaseHistory extends Component {
                         <div className="com-padding newpage_section">
                             <div className="crd-wrap">
                                 <div className="crd-header" id="ticketOne">
-                                    <button className="btn btn-blue" onClick={() => this.props.history.push(`/shopping-cart`)}>
-                                        <i className="fa fa-shopping-cart"></i>
-                                    </button>
-                                    <div>
-                                        <table className="table table-bordered">
-                                            <tr>
-                                                <th>Image</th>
-                                                <th>Item Name</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                            </tr>
-                                            {purchaseHistory.map((items, index) => (
-                                                <tr>
-                                                    <td><img src={items.fileUrl} width={10} height={10} /></td>
-                                                    <td>{items.itemName}</td>
-                                                    <td>{items.qty}
-                                                    </td>
-                                                    <td>${items.price}</td>
-                                                </tr>
-                                            ))}
-                                        </table>
+                                    <h4>Your Order History</h4>
+                                </div>
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-md-12 p-0">
+                                            <div className="cart_tables_d table-responsive">
+                                                <table className="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Image</th>
+                                                            <th>Item Name</th>
+                                                            <th>Quantity</th>
+                                                            <th>Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {purchaseHistory.map((items, index) => (
+                                                            <tr>
+                                                                <td><img src={items.fileUrl} alt="table_img" className="tables_imgs" /></td>
+                                                                <td>{items.itemName}</td>
+                                                                <td>{items.qty}
+                                                                </td>
+                                                                <td>${items.price}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

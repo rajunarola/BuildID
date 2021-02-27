@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Card, Accordion } from 'react-bootstrap';
 class SideNav extends React.Component {
 
     state = {
@@ -44,23 +45,34 @@ class SideNav extends React.Component {
                             </Link>
                         </li>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
-                            <Link to="/quiz" className="nav-link">
-                                <i><img src={require("../assets/images/icon_comment.png")} alt="Comment" /></i>
-                                <span>Quiz</span>
-                            </Link>
-                        </li>
-                        <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/montages" className="nav-link">
                                 <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
                                 <span>Montage</span>
                             </Link>
                         </li>
-                        <li onClick={() => this.setState({ open: !this.state.open })}>
-                            <Link to="/store" className="nav-link">
-                                <i><img src={require("../assets/images/icon_projects.png")} alt="Store" /></i>
-                                <span>Store</span>
-                            </Link>
-                        </li>
+
+                        <Accordion>
+                            <Card>
+                                <Accordion.Toggle as={Card.Header} eventKey="0">
+                                    <div className="custom_nav">
+                                        <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
+                                        <span>XYZ</span>
+                                    </div>
+                                </Accordion.Toggle>
+                                <Accordion.Collapse eventKey="0">
+                                    <Card.Body>
+                                        <Link to="/store" className="nav-link" onClick={() => this.setState({ open: !this.state.open })}>
+                                            <i><img src={require("../assets/images/icon_projects.png")} alt="Store" /></i>
+                                            <span>Store</span>
+                                        </Link>
+                                        <Link to="/quiz" className="nav-link" onClick={() => this.setState({ open: !this.state.open })}>
+                                            <i><img src={require("../assets/images/icon_comment.png")} alt="Comment" /></i>
+                                            <span>Quiz</span>
+                                        </Link>
+                                    </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                        </Accordion>
                     </ul>
                     <ul className="lower-menu">
                         <li onClick={() => this.setState({ open: !this.state.open })}>
