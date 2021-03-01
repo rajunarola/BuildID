@@ -12,14 +12,19 @@ export default class TicketPreview extends Component {
     ticketArray: [],
     singleTicketDetail: [],
     modalShow: false,
-    loading: false
+    loading: false,
+    emptyTickets: ''
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
       getTicketsByUserId().then(Res => {
         if (Res.status === 200) {
-          this.setState({ ticketArray: Res.data.data, loading: false })
+          if (Res.data.data && Res.data.data.length > 0) {
+            this.setState({ ticketArray: Res.data.data, loading: false })
+          } else {
+            this.setState({ emptyTickets: 'Start Adding Some Tickets!', loading: false })
+          }
         } else {
           this.setState({ loading: false }, () => {
             notification.error({
@@ -66,16 +71,14 @@ export default class TicketPreview extends Component {
               <div className="com-padding newpage_section">
                 <div className="row">
                   <div className="col-md-12">
-
+                    <Link className="add-btn btn-blue" to="/add-ticket"><i className="fas fa-plus-circle"></i> Add Ticket</Link>
+                    {this.state.emptyTickets && <p className="text_blank">{this.state.emptyTickets}</p>}
                     {this.state.ticketArray.length > 0 &&
                       <div className="accordion" id="ticketaccordion">
                         <div className="crd-wrap">
-
                           <div className="crd-header" id="ticketOne">
                             <h4>Tickets</h4>
-                            <Link className="add-btn btn-blue" to="/add-ticket"><i className="fas fa-plus-circle"></i> Add Ticket</Link>
                           </div>
-
                           <div id="collapseOne" className="collapse show" aria-labelledby="ticketOne" data-parent="#ticketaccordion">
                             <div className="ticket-list overlay-scroll row">
                               {this.state.ticketArray.map((data, index) => (

@@ -21,13 +21,13 @@ export default class Projects extends React.Component {
   componentDidMount() {
     this.setState({ loading: true }, () => {
       userWorkHistory().then((values) => {
-        if (values && values.status === 200) {
-          this.setState({
-            projectArray: values.data.data.sort().reverse(),
-            projectName: values.data.data && values.data.data[0].projectName,
-            companyName: values.data.data && values.data.data[0].companyName
-          }, () => {
-            if (values.data.data.length > 0) {
+        if (values && values.status === 200 && values.data.data && values.data.data !== []) {
+          if (values.data.data.length > 0) {
+            this.setState({
+              projectArray: values.data.data.sort().reverse(),
+              projectName: values.data.data && values.data.data[0].projectName,
+              companyName: values.data.data && values.data.data[0].companyName
+            }, () => {
               const firstData = values.data.data[0].projectId;
               userProjects(firstData).then(response => {
                 if (response.data.data && response.data.data.pictureList.length > 0) {
@@ -43,10 +43,10 @@ export default class Projects extends React.Component {
                   })
                 }
               });
-            } else {
-              this.setState({ loading: false, emptyProject: 'Start adding some projects' })
-            }
-          });
+            });
+          } else {
+            this.setState({ loading: false, emptyProject: 'Start adding some projects' })
+          }
         } else {
           this.setState({ loading: false }, () => {
             notification.error({
@@ -114,13 +114,13 @@ export default class Projects extends React.Component {
                     {this.state.emptyProject &&
                       <p className="text_blank">{this.state.emptyProject}</p>
                     }
+                    <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                     <div className="accordion" id="projectaccordion">
-                      <div className="crd-wrap">
-                        {this.state.projectArray && this.state.projectArray.length > 0 &&
+                      {this.state.projectArray && this.state.projectArray.length > 0 &&
+                        <div className="crd-wrap">
                           <>
                             <div className="crd-header" id="projectOne">
                               <h4>Projects</h4>
-                              <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                             </div>
                             <div id="collapseOne" className="collapse show" aria-labelledby="projectOne" data-parent="#projectaccordion">
                               <div className="crd-body slider-pad">
@@ -170,8 +170,8 @@ export default class Projects extends React.Component {
                               </div>
                             </div>
                           </>
-                        }
-                      </div>
+                        </div>
+                      }
                     </div>
                   </div>
                 </div>

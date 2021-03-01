@@ -31,7 +31,7 @@ export default class EditProfile extends Component {
             RideShareInterested: values[0].data.data !== null ? values[0].data.data.rideShareInterested : false,
             Phones: values[0].data.data !== null ? values[0].data.data.phones : [],
             experienceArray: values[2].data.data,
-            file: values[0].data.data.pictureUrl
+            file: values[0].data.data !== null ? values[0].data.data.pictureUrl : ''
           }, () => {
             if (values[0].data.data !== null) {
               this.formRef.current.setFieldsValue({
@@ -54,6 +54,8 @@ export default class EditProfile extends Component {
           this.setState({ loading: false })
         }
       }).catch(err => {
+        console.log('err => ', err);
+
         this.setState({ loading: false }, () => {
           notification.error({
             message: 'Error',

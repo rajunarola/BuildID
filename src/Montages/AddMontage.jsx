@@ -124,8 +124,15 @@ export default class AddMontage extends Component {
         }
         saveMontage(data).then(Res => {
           if (Res.status === 201) {
-            this.setState({ montageId: Res.data.data }, () => {
-              this.saveMontageFiles();
+            this.setState({ montageId: Res.data.data, loading: false }, () => {
+              if (this.state.selectedFiles.length > 0) {
+                this.saveMontageFiles();
+              } else {
+                notification.success({
+                  message: 'Success',
+                  description: 'A new montage has been successfully added!'
+                });
+              }
             });
           } else {
             this.setState({ loading: false }, () => {

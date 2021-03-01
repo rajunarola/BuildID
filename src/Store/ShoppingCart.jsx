@@ -6,38 +6,15 @@ export default class ShoppingCart extends Component {
 
   state = {
     loading: false,
-    cartItem: []
+    cartItem: '',
+    originalQty: ''
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
       getUserShoppingCart().then(res => {
         if (res.data.status === true) {
-          res.data.data.map(data => {
-            const obj = {
-              fileUrl: data.fileUrl,
-              id: 0,
-              userId: data.userId,
-              itemId: 0,
-              itemName: data.itemName,
-              storeItemId: 0,
-              statusId: 0,
-              price: data.price,
-              qty: data.qty,
-              currentAvaQty: 0
-            }
-            getStoreItems(data.itemId).then(value => {
-              obj.id = value.data.data[0].id;
-              obj.itemId = value.data.data[0].itemId;
-              obj.storeItemId = value.data.data[0].id;
-              obj.currentAvaQty = value.data.data[0].qty;
-              this.setState({
-                loading: false,
-                cartItem: this.state.cartItem.concat(obj)
-              });
-            });
-
-          });
+          this.setState({ cartItem: res.data.data, loading: false })
         }
       }).catch(err => {
         notification.error({
@@ -48,10 +25,14 @@ export default class ShoppingCart extends Component {
     });
   }
 
-  increaseQty(i) {
-    let item = [...this.state.cartItem];
-    item[i].qty = (isNaN(item[i].qty)) ? 0 : parseInt(item[i].qty) + 1;
-    this.setState({ cartItem: item });
+  increaseQty(data, i) {
+    getStoreItems(data.itemId).then(value => {
+      this.setState({ originaQty: value.data.data && value.data.data[0].qty }, () => {
+        let item = [...this.state.cartItem];
+        item[i].qty = (isNaN(item[i].qty)) ? 0 : parseInt(item[i].qty) + 1;
+        this.setState({ cartItem: item });
+      });
+    });
   }
 
   decreaseQty(i) {
@@ -61,21 +42,26 @@ export default class ShoppingCart extends Component {
   }
 
   saveUserPurchaseItem(isDelete, item) {
-    const data = {
-      Id: 0,
-      UserId: parseInt(localStorage.getItem("userID")),
-      ItemId: item.id,
-      StoreItemId: item.itemId,
-      StatusId: 4,
-      Price: item.price,
-      Qty: isDelete ? 0 : item.qty,
-      ModifiedBy: parseInt(localStorage.getItem("userID"))
-    }
-    console.log('data => ', data);
-
-    saveUserPurchase(data).then(res => {
-      if (res.data.status === true) {
-        this.setState({ loading: false }, () => {
+    this.setState({ loading: true }, () => {
+      const data = {
+        Id: item.id,
+        UserId: parseInt(localStorage.getItem("userID")),
+        ItemId: item.itemId,
+        StoreItemId: item.storeItemId,
+        StatusId: 4,
+        Price: item.price,
+        Qty: isDelete ? 0 : item.qty,
+        ModifiedBy: parseInt(localStorage.getItem("userID"))
+      }
+      saveUserPurchase(data).then(res => {
+        if (res.data.message !== "OK") {
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: `${res.data.message}`
+            });
+          });
+        } else if (res.data.message === "OK") {
           notification.success({
             message: 'Success',
             description: `Item successfully ${isDelete ? 'deleted' : 'purchased'}  from your cart!`
@@ -86,24 +72,24 @@ export default class ShoppingCart extends Component {
               cartItem: res.data.data
             });
           });
-        });
-      }
-      else {
+        }
+        else {
+          this.setState({ loading: false }, () => {
+            notification.error({
+              message: 'Error',
+              description: `There was an error while ${isDelete ? 'deleting' : 'purchasing'} from your cart!`
+            });
+          });
+        }
+      }).catch(err => {
         this.setState({ loading: false }, () => {
           notification.error({
             message: 'Error',
-            description: `Item successfully ${isDelete ? 'deleting' : 'purchasing'}  from your cart!`
+            description: `There was an error while ${isDelete ? 'deleting' : 'purchasing'} from your cart!`
           });
         });
-      }
-    }).catch(err => {
-      this.setState({ loading: false }, () => {
-        notification.error({
-          message: 'Error',
-          description: `Item successfully ${isDelete ? 'deleting' : 'purchasing'}  from your cart!`
-        });
       });
-    });
+    })
   }
 
   handleQty(e, i) {
@@ -136,23 +122,24 @@ export default class ShoppingCart extends Component {
 
   render() {
 
-    const { cartItem } = this.state
+    const { cartItem, originaQty } = this.state
+
     return (
       <>
         <div className="index-main">
-          {this.state.loading ? <Loader /> :
-            <section className="index-sec">
-              <div className="edit-sec"><h1>Shopping Cart</h1></div>
-              {/* <button className="btn btn-blue">{cartItems}<i className="fa fa-shopping-cart"></i></button> */}
-              <div className="com-padding newpage_section">
-                <div className="crd-wrap">
-                  <div className="crd-header" id="ticketOne">
-                    <h4>Shopping Cart</h4>
-                  </div>
-                  <div className="container-fluid">
-                    <div className="row">
-                      <div className="col-md-12 p-0">
-                        <div className="cart_tables_d table-responsive">
+          <section className="index-sec">
+            <div className="edit-sec"><h1>Shopping Cart</h1></div>
+            {/* <button className="btn btn-blue">{cartItems}<i className="fa fa-shopping-cart"></i></button> */}
+            <div className="com-padding newpage_section">
+              <div className="crd-wrap">
+                <div className="crd-header" id="ticketOne">
+                  <h4>Shopping Cart</h4>
+                </div>
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-md-12 p-0">
+                      <div className="cart_tables_d table-responsive">
+                        {this.state.loading ? <Loader /> :
                           <table className="table table-bordered">
                             <thead>
                               <tr>
@@ -171,13 +158,13 @@ export default class ShoppingCart extends Component {
                                     <td>{data.itemName}</td>
                                     <td>
                                       <div className="d-flex">
-                                        <button type="button" className="btn-blue" onClick={() => this.increaseQty(i)}>
+                                        <button type="button" className="btn-blue" onClick={() => this.increaseQty(data, i)}>
                                           <i className="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                         <input className="cart_input_num" type="text" value={data.qty} onChange={(e) => this.handleQty(e.target.value, i)}
                                           onKeyPress={() => this.validate()} />
                                         <div className="text-danger">
-                                          {data.qty > data.currentAvaQty ? `There are only ${data.currentAvaQty} quantities of this item in store!` : ''}
+                                          {data.qty > originaQty ? `There are only ${originaQty} quantities of this item in store!` : ''}
                                         </div>
                                         <button type="button" className="btn-danger" onClick={() => this.decreaseQty(i)} disabled={data.qty <= 0}>
                                           <i className="fa fa-minus" aria-hidden="true"></i>
@@ -194,14 +181,14 @@ export default class ShoppingCart extends Component {
                               )) : <tr><td colSpan="4">No item found</td></tr>
                             }
                           </table>
-                        </div>
+                        }
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </section>
-          }
+            </div>
+          </section>
         </div>
       </>
     )
