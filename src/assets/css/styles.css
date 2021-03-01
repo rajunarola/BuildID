@@ -549,6 +549,8 @@ section {
 }
 .sidebar .custom_nav{
     display: flex;
+    justify-content: space-between;
+    align-items: center;
 } 
 .sidebar .card-header{
     background-color: #ffffff;
@@ -2135,6 +2137,18 @@ table thead th{
     margin: 0px 0 0 0;
     padding: 15px 0 0 0;
     border-top: 1px solid #dddddd;
+}
+.no_data_f{
+    text-align: center;
+    font-size: 18px;
+}
+.custom_error_e{
+    width: 100%;
+    text-align: center;
+}
+.stage_det {
+    flex-wrap: wrap;
+    justify-content: center;
 }
 /* Shopping Page End */
 
