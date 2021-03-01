@@ -230,7 +230,7 @@ export default class Store extends React.Component {
               <input value={newTemp} type="text" onChange={(e) => this.addRemoveQty(singleItem, 'input', e)}
                 onKeyPress={() => this.validate()} />
               <div className="text-danger">
-                {newTemp > singleItem.qty ? `There are ${singleItem.qty} much quantity of the store` : ''}
+                {newTemp > singleItem.qty ? `There are only ${singleItem.qty} quantities of this item in store!` : ''}
               </div>
               <button className="btn btn-danger" onClick={(e) => this.addRemoveQty(singleItem, 'remove', e)}><i className="fa fa-minus-circle"></i></button>
             </p>
