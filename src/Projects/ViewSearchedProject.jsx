@@ -75,9 +75,9 @@ export default class ViewSearchedProject extends Component {
                                                             <p className="stage-detail">
                                                                 <span className="stage-label">Name:</span> <span>{this.state.projectDetails.name}</span>
                                                             </p>
-                                                            <p className="stage-detail">
+                                                            <div className="stage-detai">
                                                                 <span className="stage-label">Address:</span> <span>{this.state.projectDetails.address}</span>
-                                                            </p>
+                                                            </div>
                                                         </>
                                                         <div className="atfc-bottom d-flex mt-3 align-items-center justify-content-center">
                                                             <button className="btn btn-blue" onClick={() => this.props.history.push(`/select-project`)}><i className="fa fa-check"></i></button>

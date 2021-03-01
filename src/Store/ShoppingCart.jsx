@@ -157,18 +157,18 @@ export default class ShoppingCart extends Component {
                                     <td><img src={data.fileUrl} alt=""></img></td>
                                     <td>{data.itemName}</td>
                                     <td>
-                                      <div className="d-flex">
+                                      <div className="d-flex stage_det justify-content-start">
                                         <button type="button" className="btn-blue" onClick={() => this.increaseQty(data, i)}>
                                           <i className="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                         <input className="cart_input_num" type="text" value={data.qty} onChange={(e) => this.handleQty(e.target.value, i)}
                                           onKeyPress={() => this.validate()} />
-                                        <div className="text-danger">
-                                          {data.qty > originaQty ? `There are only ${originaQty} quantities of this item in store!` : ''}
-                                        </div>
                                         <button type="button" className="btn-danger" onClick={() => this.decreaseQty(i)} disabled={data.qty <= 0}>
                                           <i className="fa fa-minus" aria-hidden="true"></i>
                                         </button>
+                                        <div className="text-danger custom_error_e text-left">
+                                          {data.qty > originaQty ? `There are only ${originaQty} quantities of this item in store!` : ''}
+                                        </div>
                                       </div>
                                     </td>
                                     <td>{data.price}</td>
@@ -178,7 +178,9 @@ export default class ShoppingCart extends Component {
                                     </td>
                                   </tr>
                                 </>
-                              )) : <tr><td colSpan="4">No item found</td></tr>
+                              )) : <tr><td colSpan="5">
+                                <h4 className="no_data_f">No item found</h4>
+                              </td></tr>
                             }
                           </table>
                         }

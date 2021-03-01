@@ -55,8 +55,11 @@ class SideNav extends React.Component {
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
                                     <div className="custom_nav">
-                                        <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
-                                        <span>Rewards</span>
+                                        <div className="d-flex">
+                                            <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
+                                            <span>Rewards</span>
+                                        </div>
+                                        <i class="fas fa-chevron-down"></i>
                                     </div>
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">

@@ -221,21 +221,21 @@ export default class Store extends React.Component {
           </Col>
           <Modal.Body>
             {singleItem.price &&
-              <p className="stage-detail">
+              <div className="stage-detail align-items-center stage_det">
                 <span className="stage-label">Price:</span> <span>{singleItem.price}</span>
-              </p>
+              </div>
             }
-            <p className="stage-detail">
+            <div className="stage-detail stage_det">
               <button className="btn btn-blue" onClick={(e) => this.addRemoveQty(singleItem, 'add', e)}><i className="fa fa-plus-circle"></i></button>
               <input value={newTemp} type="text" onChange={(e) => this.addRemoveQty(singleItem, 'input', e)}
                 onKeyPress={() => this.validate()} />
-              <div className="text-danger">
+              <button className="btn btn-danger" onClick={(e) => this.addRemoveQty(singleItem, 'remove', e)} disabled={newTemp <= 0}><i className="fa fa-minus-circle"></i></button>
+              <div className="text-danger custom_error_e">
                 {newTemp > singleItem.qty ? `There are only ${singleItem.qty} quantities of this item in store!` : ''}
               </div>
-              <button className="btn btn-danger" onClick={(e) => this.addRemoveQty(singleItem, 'remove', e)}><i className="fa fa-minus-circle"></i></button>
-            </p>
+            </div>
             <div className="model_buttons">
-              <button className="btn btn-blue" onClick={() => this.addToShoppingCart(singleItem, 'cart')}>Add To Cart</button>
+              <button className="btn btn-blue" onClick={() => this.addToShoppingCart(singleItem, 'cart')} disabled={newTemp > singleItem.qty}>Add To Cart</button>
             </div>
           </Modal.Body>
         </Modal>
