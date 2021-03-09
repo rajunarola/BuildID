@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Loader from '../Loader/Loader';
-import { getNewQuestionForTheUser, saveUserQuestion } from '../Services/CommonAPI';
+import Loader from '../../Loader/Loader';
+import { getNewQuestionForTheUser, saveUserQuestion } from '../../Services/CommonAPI';
 import { Form, Input, Select, Spin, notification } from 'antd';
 import debounce from 'lodash/debounce';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { notification } from 'antd';
-import { getStoreItems, getUserShoppingCart, saveUserPurchase } from '../Services/Store';
-import Loader from '../Loader/Loader';
+import { getStoreItems, getUserShoppingCart, saveUserPurchase } from '../../Services/Store';
+import Loader from '../../Loader/Loader';
 export default class ShoppingCart extends Component {
 
   state = {

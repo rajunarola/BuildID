@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import React, { Component } from 'react'
-import Loader from '../Loader/Loader';
-import { getUserPurchases } from '../Services/Store';
+import Loader from '../../Loader/Loader';
+import { getUserPurchases } from '../../Services/Store';
 export default class PurchaseHistory extends Component {
 
     state = {

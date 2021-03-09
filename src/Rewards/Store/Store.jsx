@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Loader from '../Loader/Loader';
-import { getUserRewardAmount, getStoreItems, searchStoreItems, saveUserPurchase, getNrItemsShoppingCart } from '../Services/Store'
+import Loader from '../../Loader/Loader';
+import { getUserRewardAmount, getStoreItems, searchStoreItems, saveUserPurchase, getNrItemsShoppingCart } from '../../Services/Store'
 import { notification } from 'antd';
 import { Modal, Image, Col } from 'react-bootstrap';
 export default class Store extends React.Component {
@@ -132,7 +132,7 @@ export default class Store extends React.Component {
     var theEvent = evt || window.event;
     // Handle paste
     if (theEvent.type === 'paste') {
-      key = evt.clipboardData.getData('text/plain');
+      var key = evt.clipboardData.getData('text/plain');
     } else {
       // Handle key press
       var key = theEvent.keyCode || theEvent.which;
@@ -171,7 +171,7 @@ export default class Store extends React.Component {
                     <h4>Items For Sale</h4>
                     <input className="form-control" placeholder="Search for an Item" onChange={(e) => this.searchForItems(e)} />
                   </div>
-                  {emptySearchResult && <p>{emptySearchResult}</p>}
+                  {emptySearchResult && <p className="text-center">{emptySearchResult}</p>}
                   {storeItems.length > 0 &&
                     <div className="container-fluid">
                       <div className="addticketform row">
