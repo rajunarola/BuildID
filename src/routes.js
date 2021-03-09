@@ -28,12 +28,19 @@ const PreviewOfMontage = lazy(() => import("./Montages/MontagePreview"));
 const SaveTrade = lazy(() => import("./Experience/AddGlobalTrade"));
 const SaveRole = lazy(() => import("./Experience/AddGlobalRole"));
 const SaveBuildingType = lazy(() => import("./Experience/AddBuildingType"));
-const Quiz = lazy(() => import("./Quiz/Quiz"));
+const Quiz = lazy(() => import("./Rewards/Quiz/Quiz"));
 const Montage = lazy(() => import("./Montages/SideNavMontage"));
 const TicketPreview = lazy(() => import("./Tickets/TicketPreview"));
-const Store = lazy(() => import("./Store/Store"));
-const PurchaseHistory = lazy(() => import("./Store/PurchaseHistory"));
-const ShoppingCart = lazy(() => import("./Store/ShoppingCart"));
+const Store = lazy(() => import("./Rewards/Store/Store"));
+const PurchaseHistory = lazy(() => import("./Rewards/Store/PurchaseHistory"));
+const ShoppingCart = lazy(() => import("./Rewards/Store/ShoppingCart"));
+const BuySell = lazy(() => import("./BuySell/BuySell"));
+const ItemDetail = lazy(() => import("./BuySell/ItemDetail"));
+const WishList = lazy(() => import("./BuySell/WishList"));
+const MyItems = lazy(() => import("./BuySell/MyItems"));
+const AddItem = lazy(() => import("./BuySell/AddItem"));
+const EditItem = lazy(() => import("./BuySell/EditItem"));
+const ItemHistory = lazy(() => import("./BuySell/ItemHistory"));
 
 export const routesCode = [
     { path: "/dashboard", exact: true, component: Dashboard },
@@ -62,7 +69,14 @@ export const routesCode = [
     { path: "/add-building-type", exact: true, component: SaveBuildingType },
     { path: "/store", exact: true, component: Store },
     { path: "/purchase-history", exact: true, component: PurchaseHistory },
-    { path: "/shopping-cart", exact: true, component: ShoppingCart }
+    { path: "/shopping-cart", exact: true, component: ShoppingCart },
+    { path: "/buy-sell", exact: true, component: BuySell },
+    { path: "/item-detail/:itemId", exact: true, component: ItemDetail},
+    { path: "/wish-list/", exact: true, component: WishList},
+    { path: "/my-items/", exact: true, component: MyItems},
+    { path: "/add-item/", exact: true, component: AddItem},
+    { path: "/edit-item/:id", exact: true, component: EditItem},
+    { path: "/item-history", exact: true, component: ItemHistory}
 ];
 class Routes extends React.PureComponent {
     render() {
