@@ -158,11 +158,11 @@ export default class AddMontage extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Edit Ticket</h1></div>
+              <div className="edit-sec"><h1>Add Montage</h1></div>
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header">
-                    <h4>Edit Ticket</h4>
+                    <h4>Add Montage</h4>
                   </div>
                   <div className="addticketform container-fluid">
                     <div className="row">

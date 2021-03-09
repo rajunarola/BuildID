@@ -59,7 +59,7 @@ class SideNav extends React.Component {
                                             <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
                                             <span>Rewards</span>
                                         </div>
-                                        <i class="fas fa-chevron-down"></i>
+                                        <i className="fas fa-chevron-down"></i>
                                     </div>
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
@@ -76,6 +76,12 @@ class SideNav extends React.Component {
                                 </Accordion.Collapse>
                             </Card>
                         </Accordion>
+                        <li onClick={() => this.setState({ open: !this.state.open })}>
+                            <Link to="/buy-sell" className="nav-link">
+                                <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
+                                <span>Buy Sell</span>
+                            </Link>
+                        </li>
                     </ul>
                     <ul className="lower-menu">
                         <li onClick={() => this.setState({ open: !this.state.open })}>
