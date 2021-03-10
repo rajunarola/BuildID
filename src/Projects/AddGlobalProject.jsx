@@ -225,124 +225,126 @@ export default class AddGlobalProject extends Component {
           <main className="index-main">
             <section className="index-sec">
               <div className="edit-sec"> <h1> Add Global Project </h1></div>
-              <div className="addticketform com-padding">
-                <div className="row">
-                  <div className="col-lg-4 col-md-6 col-12">
-                    <div className="form-border crd-wrp">
-                      <div className="proj-timeline">
-                        <div className="manufacture-form manufacture-content pt-3">
-                          <Form ref={this.formRef} onFinish={addProject}>
-                            <div className="form-group">
-                              <label>Project Name</label>
-                              <Form.Item name="projectName" rules={[{ required: true, message: 'Please enter Project Name!' }]}>
-                                <Input />
-                              </Form.Item>
-                            </div>
-                            <div className="form-group">
-                              <label> Search Project Address</label>
-                              <div className="project_address_l">
-                                <div className="w-100">
-                                  <GooglePlacesAutocomplete className="select-bx w-100" apiKey={this.state.googleAPIKey}
-                                    selectProps={{
-                                      placeholder: 'Enter City, State, Country',
-                                      onChange: (value) => this.onLocationSelect(value),
-                                      value: newValue
-                                    }} />
-                                </div>
-                                <span className="delete-icon">
-                                  <i className="fa fa-close" onClick={() => this.removeAddress()} style={{ cursor: "pointer" }}></i>
-                                </span>
+              <div className="newpage_section com-padding">
+                <div className="crd-wrap">
+                  <div className="crd-header">
+                    <h4>Add Global Project </h4>
+                  </div>
+                  <div className="container-fluid">
+                    <div className="addticketform row">
+                      <div className="col-md-12 p-0">
+                        <Form className="card-body row" ref={this.formRef} onFinish={addProject}>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel">Project Name</label>
+                            <Form.Item name="projectName" rules={[{ required: true, message: 'Please enter Project Name!' }]}>
+                              <Input />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel"> Search Project Address</label>
+                            <div className="project_address_l">
+                              <div className="w-100">
+                                <GooglePlacesAutocomplete className="select-bx w-100" apiKey={this.state.googleAPIKey}
+                                  selectProps={{
+                                    placeholder: 'Enter City, State, Country',
+                                    onChange: (value) => this.onLocationSelect(value),
+                                    value: newValue
+                                  }} />
                               </div>
+                              <span className="delete-icon">
+                                <i className="fa fa-close" onClick={() => this.removeAddress()} style={{ cursor: "pointer" }}></i>
+                              </span>
                             </div>
-                            <div className="form-group">
-                              <label> Address</label>
-                              <Form.Item name="address" rules={[{ required: true, message: 'Please enter your address!' }]}>
-                                <Input />
-                              </Form.Item>
-                            </div>
-                            <div className="form-group">
-                              <label> City</label>
-                              <Form.Item name="city" rules={[{ required: true, message: 'Please enter your city!' }]}>
-                                <Input />
-                              </Form.Item>
-                            </div>
-                            <div className="form-group">
-                              <label> Province</label>
-                              <Form.Item name="province" rules={[{ required: true, message: 'Please enter your Province!' }]}>
-                                <Input />
-                              </Form.Item>
-                            </div>
-                            <div className="form-group">
-                              <label> Postal Code</label>
-                              <Form.Item name="postalCode" rules={[{ required: true, message: 'Please enter your Postal Code!' }]}>
-                                <Input />
-                              </Form.Item>
-                            </div>
-                            <div className="form-group">
-                              <label> Country</label>
-                              <Form.Item name="country" rules={[{ required: true, message: 'Please enter your Country!' }]}>
-                                <Input />
-                              </Form.Item>
-                            </div>
-                            <div className="form-group">
-                              <label>Building Type</label>
-                              <Form.Item name="buildingType" rules={[{ required: true, message: 'Please select Building Type!' }]}>
-                                <Select
-                                  className="select-bx"
-                                  showSearch
-                                  labelInValue
-                                  placeholder="Search by building type"
-                                  notFoundContent={fetching ? <Spin size="small" /> : ""}
-                                  filterOption={false}
-                                  onSearch={(e) => this.fetchSearchedData(e, 'buildingType')}
-                                  onChange={(e) => this.handleChange(e, 'buildingType')}>
-                                  {data.map(d => (
-                                    <Select.Option key={d.value}>{d.text}</Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                            </div>
-                            <div className="form-group">
-                              <label>Contractor Name</label>
-                              <Form.Item name="contractor" rules={[{ required: true, message: 'Please select Contractor Name!' }]}>
-                                <Select
-                                  className="select-bx"
-                                  showSearch
-                                  labelInValue
-                                  placeholder="Search for a contractor"
-                                  notFoundContent={fetching1 ? <Spin size="small" /> : ""}
-                                  filterOption={false}
-                                  onSearch={(e) => this.fetchSearchedData(e, 'contractor')}
-                                  onChange={(e) => this.handleChange(e, 'contractor')}>
-                                  {data1.map(d => (
-                                    <Select.Option key={d.value}>{d.text}</Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                            </div>
-                            <button type="button" className="add-btn btn-blue mb-4">
-                              <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
-                            </button>
-                            <input type="file" id="file" style={{ 'display': 'none' }} onChange={this.handleFile} multiple />
-                            <div className="gallery-content">
-                              {this.state.gallery.map((res, e) => (
-                                <div className="preview" key={res}>
-                                  <div className="gallary_bg_hn" htmlFor="gallery" style={{ backgroundImage: `url(${res})`, pointerEvents: 'none' }}>
-                                    <div className="removeImage" onClick={() => this.removeImage(e)}>
-                                      <svg width="10" height="10" viewBox="0 0 10 10" fill="white" xmlns="http://www.w3.org/2000/svg" >
-                                        <path d="M1 9L5 5M9 1L5 5M5 5L1 1L9 9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                      </svg>
-                                    </div>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel"> Address</label>
+                            <Form.Item name="address" rules={[{ required: true, message: 'Please enter your address!' }]}>
+                              <Input />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel"> City</label>
+                            <Form.Item name="city" rules={[{ required: true, message: 'Please enter your city!' }]}>
+                              <Input />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel"> Province</label>
+                            <Form.Item name="province" rules={[{ required: true, message: 'Please enter your Province!' }]}>
+                              <Input />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel"> Postal Code</label>
+                            <Form.Item name="postalCode" rules={[{ required: true, message: 'Please enter your Postal Code!' }]}>
+                              <Input />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel"> Country</label>
+                            <Form.Item name="country" rules={[{ required: true, message: 'Please enter your Country!' }]}>
+                              <Input />
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel">Building Type</label>
+                            <Form.Item name="buildingType" rules={[{ required: true, message: 'Please select Building Type!' }]}>
+                              <Select
+                                className="select-bx"
+                                showSearch
+                                labelInValue
+                                placeholder="Search by building type"
+                                notFoundContent={fetching ? <Spin size="small" /> : ""}
+                                filterOption={false}
+                                onSearch={(e) => this.fetchSearchedData(e, 'buildingType')}
+                                onChange={(e) => this.handleChange(e, 'buildingType')}>
+                                {data.map(d => (
+                                  <Select.Option key={d.value}>{d.text}</Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+                          <div className="form-group col-md-4 col-sm-6">
+                            <label className="form-label formlabel">Contractor Name</label>
+                            <Form.Item name="contractor" rules={[{ required: true, message: 'Please select Contractor Name!' }]}>
+                              <Select
+                                className="select-bx"
+                                showSearch
+                                labelInValue
+                                placeholder="Search for a contractor"
+                                notFoundContent={fetching1 ? <Spin size="small" /> : ""}
+                                filterOption={false}
+                                onSearch={(e) => this.fetchSearchedData(e, 'contractor')}
+                                onChange={(e) => this.handleChange(e, 'contractor')}>
+                                {data1.map(d => (
+                                  <Select.Option key={d.value}>{d.text}</Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+
+                          <input type="file" id="file" style={{ 'display': 'none' }} onChange={this.handleFile} multiple />
+                          <div className="gallery-content">
+                            {this.state.gallery.map((res, e) => (
+                              <div className="preview" key={res}>
+                                <div className="gallary_bg_hn" htmlFor="gallery" style={{ backgroundImage: `url(${res})`, pointerEvents: 'none' }}>
+                                  <div className="removeImage" onClick={() => this.removeImage(e)}>
+                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="white" xmlns="http://www.w3.org/2000/svg" >
+                                      <path d="M1 9L5 5M9 1L5 5M5 5L1 1L9 9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
                                   </div>
                                 </div>
-                              ))}
-                            </div>
-                            <div className="d-flex mt-3 mb-4">
-                              <button className="btn btn-blue mr-3" type="submit">Add Project</button>
-                              <button className="btn btn-danger" onClick={() => this.props.history.push(`/search-project`)}>Cancel</button>
-                            </div>
-                          </Form>
-                        </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="form-group col-md-12 d-flex mb-3 justify-content-end">
+                            <button type="button" className="add-btn btn-blue mr-3">
+                              <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
+                            </button>
+                            <button className="btn btn-blue mr-3" type="submit">Add Project</button>
+                            <button className="btn btn-danger" onClick={() => this.props.history.push(`/search-project`)}>Cancel</button>
+                          </div>
+                        </Form>
                       </div>
                     </div>
                   </div>
