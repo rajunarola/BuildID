@@ -370,6 +370,10 @@ li:after,
     border-color: #093cb9;
 }
 
+.btn-blue:hover i {
+    color: #093cb9 !important;
+}
+
 
 /*********************  Common-Css Close  *******************/
 
@@ -2291,3 +2295,65 @@ table thead th {
 
 
 /* Shopping Page End */
+
+.ant-switch-checked {
+    background-color: #093cb9 !important;
+}
+
+.check_cust_switch {
+    display: flex;
+    align-items: center;
+}
+
+.check_cust_switch label {
+    margin: 0 0 0 0;
+    font-size: 20px;
+    padding: 0 10px 0px 10px;
+}
+
+.not_found {
+    font-size: 22px;
+    padding: 30px 10px;
+}
+
+.swal-button {
+    background-color: #093cb9 !important;
+    border-radius: 0 !important;
+}
+
+.swal-button--cancel {
+    color: #555;
+    background-color: #efefef !important;
+}
+
+.swal-icon--info:after,
+.swal-icon--info:before {
+    background-color: #093cb9;
+}
+
+.swal-icon--info {
+    border-color: #093cb9;
+}
+
+.swal-title {
+    font-size: 20px;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #093cb9 !important;
+    border-color: #093cb9 !important;
+}
+
+.ant-picker-panel-container {
+    width: 65% !important;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+    background: #093cb9 !important;
+}
+
+.ant-picker-header-view button:hover {
+    color: #093cb9 !important;
+}

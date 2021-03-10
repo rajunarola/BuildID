@@ -68,8 +68,10 @@ export default class BuySell extends React.Component {
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header" id="ticketOne">
-                    <div className="mb-3 text-center">
-                      <b>Project</b> <Switch checked={typeProCit} onChange={() => this.handleDisabledChange()} /> <b>City</b>
+                    <div className="text-center check_cust_switch">
+                        <label>Project</label> 
+                        <Switch checked={typeProCit} onChange={() => this.handleDisabledChange()} /> 
+                        <label>City</label>
                     </div>
                     <div className="stor_buttons">
                       <button className="btn btn-blue mr-3" onClick={() => this.props.history.push(`/wish-list`)}>
@@ -85,7 +87,7 @@ export default class BuySell extends React.Component {
                     <h4>Items For Sale</h4>
                     <input className="form-control" placeholder="Search for an Item" onChange={(e) => this.searchForItems(e)} />
                   </div>
-                  {emptyStoreItemResult && <p className="text-center">{emptyStoreItemResult}</p>}
+                  {emptyStoreItemResult && <p className="text-center not_found">{emptyStoreItemResult}</p>}
                   {storeItems.length > 0 &&
                     <>
                       <div className="container-fluid">

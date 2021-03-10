@@ -38,8 +38,7 @@ const BuySell = lazy(() => import("./BuySell/BuySell"));
 const ItemDetail = lazy(() => import("./BuySell/ItemDetail"));
 const WishList = lazy(() => import("./BuySell/WishList"));
 const MyItems = lazy(() => import("./BuySell/MyItems"));
-const AddItem = lazy(() => import("./BuySell/AddItem"));
-const EditItem = lazy(() => import("./BuySell/EditItem"));
+const AddEditItem = lazy(() => import("./BuySell/AddEditItem"));
 const ItemHistory = lazy(() => import("./BuySell/ItemHistory"));
 
 export const routesCode = [
@@ -72,12 +71,12 @@ export const routesCode = [
     { path: "/shopping-cart", exact: true, component: ShoppingCart },
     { path: "/buy-sell", exact: true, component: BuySell },
     { path: "/item-detail/:itemId", exact: true, component: ItemDetail},
-    { path: "/wish-list/", exact: true, component: WishList},
-    { path: "/my-items/", exact: true, component: MyItems},
-    { path: "/add-item/", exact: true, component: AddItem},
-    { path: "/edit-item/:id", exact: true, component: EditItem},
+    { path: "/wish-list", exact: true, component: WishList},
+    { path: "/my-items", exact: true, component: MyItems},
+    { path: "/(add|edit)-item/:id?", exact: true, component: AddEditItem},
     { path: "/item-history", exact: true, component: ItemHistory}
 ];
+
 class Routes extends React.PureComponent {
     render() {
         return (
