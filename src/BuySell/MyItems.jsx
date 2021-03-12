@@ -22,8 +22,7 @@ export default class MyItems extends Component {
         if (values[0] && values[0].data.status === true && values[1] && values[1].data.status === true) {
           if (values[0].data.data && values[0].data.data.length > 0) {
             this.setState({ loading: false, storeItems: values[0].data.data, emptyStoreItemResult: '' });
-          }
-          if (values[1].data) {
+          } if (values[1].data) {
             this.setState({ loading: false, statusList: values[1].data.data });
           } else {
             this.setState({ loading: false, storeItems: [], emptyStoreItemResult: 'No Results Found' });
@@ -82,8 +81,8 @@ export default class MyItems extends Component {
                                     {storeItems.map(items => (
                                       <tr>
                                         <td>
-                                          {storeItems.buySellUserItemPictures && storeItems.buySellUserItemPictures.length > 0 ?
-                                            <img src={storeItems.buySellUserItemPictures && storeItems.buySellUserItemPictures[0].thumbUrl} width={10} height={10} alt="table_img" className="tables_imgs" />
+                                          {items.buySellUserItemPictures && items.buySellUserItemPictures.length > 0 ?
+                                            <img src={items.buySellUserItemPictures && items.buySellUserItemPictures[0].thumbUrl} width={10} height={10} alt="table_img" className="tables_imgs" />
                                             : '-'}
                                         </td>
                                         <td>{items.title}</td>

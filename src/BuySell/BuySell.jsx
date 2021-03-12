@@ -18,22 +18,20 @@ export default class BuySell extends React.Component {
     localStorage.setItem("CurrentPage", "buySell");
   }
 
-  currentPage() {
-    this.setState({ loading: true }, () => {
-      getStoreItemsForSale((this.state.typeProCit === true) ? "project" : "city").then((value) => {
-        if (value.data.status === true) {
-          if (value.data.data.length > 0) {
-            this.setState({ loading: false, storeItems: value.data.data, emptyStoreItemResult: '' });
-          } else {
-            this.setState({ loading: false, storeItems: [], emptyStoreItemResult: 'No Results Found' });
-          }
+  currentPage(searchString) {
+    getStoreItemsForSale((this.state.typeProCit === true) ? "project" : "city", searchString ? searchString : '').then((value) => {
+      if (value.data.status === true) {
+        if (value.data.data.length > 0) {
+          this.setState({ loading: false, storeItems: value.data.data, emptyStoreItemResult: '' });
+        } else {
+          this.setState({ loading: false, storeItems: [], emptyStoreItemResult: 'No Results Found' });
         }
-      }).catch(Err => {
-        this.setState({ loading: false }, () => {
-          notification.error({
-            message: 'Error',
-            description: 'There was an error while fetching data!'
-          });
+      }
+    }).catch(Err => {
+      this.setState({ loading: false }, () => {
+        notification.error({
+          message: 'Error',
+          description: 'There was an error while fetching data!'
         });
       });
     });
@@ -42,7 +40,9 @@ export default class BuySell extends React.Component {
 
   searchForItems = (e) => {
     if (e.target.value) {
-      console.log('e => ', e);
+      this.currentPage(e.target.value);
+    } else {
+      this.currentPage();
     }
   }
 
@@ -52,7 +52,9 @@ export default class BuySell extends React.Component {
     } else {
       this.setState({ typeProCit: true });
     }
-    this.currentPage();
+    this.setState({ loading: true }, () => {
+      this.currentPage();
+    });
   }
 
   render() {
@@ -69,9 +71,9 @@ export default class BuySell extends React.Component {
                 <div className="crd-wrap">
                   <div className="crd-header" id="ticketOne">
                     <div className="text-center check_cust_switch">
-                        <label>Project</label> 
-                        <Switch checked={typeProCit} onChange={() => this.handleDisabledChange()} /> 
-                        <label>City</label>
+                      <label>Project</label>
+                      <Switch checked={typeProCit} onChange={() => this.handleDisabledChange()} />
+                      <label>City</label>
                     </div>
                     <div className="stor_buttons">
                       <button className="btn btn-blue mr-3" onClick={() => this.props.history.push(`/wish-list`)}>

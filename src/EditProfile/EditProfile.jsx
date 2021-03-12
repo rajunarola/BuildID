@@ -54,8 +54,6 @@ export default class EditProfile extends Component {
           this.setState({ loading: false })
         }
       }).catch(err => {
-        console.log('err => ', err);
-
         this.setState({ loading: false }, () => {
           notification.error({
             message: 'Error',

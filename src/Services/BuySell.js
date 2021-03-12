@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export function getStoreItemsForSale(type) {
-    return axios.get(process.env.REACT_APP_API_URL + `api/buysell/GetStoreItemsForSale/${parseInt(localStorage.getItem('userID'))}/${type}`);
+export function getStoreItemsForSale(type, searchString) {
+    return axios.get(process.env.REACT_APP_API_URL + `api/buysell/GetStoreItemsForSale/${parseInt(localStorage.getItem('userID'))}/${type}/${searchString}`);
 }
 
 export function getStoreItemsForSaleByItemId(itemId) {
@@ -38,4 +38,17 @@ export function getUserItem(itemId) {
 
 export function getUserItemsHistory() {
     return axios.get(process.env.REACT_APP_API_URL + `api/buysell/GetUserItemsHistory/${parseInt(localStorage.getItem('userID'))}`);
+}
+
+export function saveUserItemPicture2(data) {
+    return axios.post(process.env.REACT_APP_API_URL + `api/buysell/SaveUserItemPicture2`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "Accept": "application/json"
+        }
+    });
+}
+
+export function deleteUserItemPicture(id, buyselluseritemid) {
+    return axios.delete(process.env.REACT_APP_API_URL + `api/buysell/DeleteUserItemPicture/${id}/${buyselluseritemid}/${parseInt(localStorage.getItem('userID'))}`);
 }
