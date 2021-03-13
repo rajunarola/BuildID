@@ -1,11 +1,18 @@
 import React from 'react';
-import { userProjects, userWorkHistory } from '../Services/CommonAPI';
+import { userProjects, userWorkHistory, getGoogleAPIKey } from '../Services/CommonAPI';
 import * as moment from "moment";
 import Loader from '../Loader/Loader';
 import { Link } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { notification } from 'antd';
+import {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+} from "react-google-maps";
+
 export default class Projects extends React.Component {
 
   state = {
@@ -15,20 +22,26 @@ export default class Projects extends React.Component {
     emptyProject: '',
     projectName: '',
     companyName: '',
-    noImageAvailable: ''
+    noImageAvailable: '',
+    latitude: 0,
+    longitude: 0,
+    googleAPIKey: '',
   }
 
   componentDidMount() {
     this.setState({ loading: true }, () => {
-      userWorkHistory().then((values) => {
-        if (values && values.status === 200 && values.data.data && values.data.data !== []) {
-          if (values.data.data.length > 0) {
+      Promise.all([userWorkHistory(), getGoogleAPIKey()]).then((values) => {
+        if (values[0] && values[0].status === 200 && values[0].data.data && values[0].data.data !== [] && values[1] && values[1].status === 200) {
+          if (values[0].data.data.length > 0) {
             this.setState({
-              projectArray: values.data.data.sort().reverse(),
-              projectName: values.data.data && values.data.data[0].projectName,
-              companyName: values.data.data && values.data.data[0].companyName
+              projectArray: values[0].data.data.sort().reverse(),
+              projectName: values[0].data.data && values[0].data.data[0].projectName,
+              companyName: values[0].data.data && values[0].data.data[0].companyName,
+              latitude: values[0].data.data && values[0].data.data[0].latitude,
+              longitude: values[0].data.data && values[0].data.data[0].longitude,
+              googleAPIKey: `https://maps.googleapis.com/maps/api/js?key=${values[1].data.data}&v=3.exp&libraries=geometry,drawing,places`
             }, () => {
-              const firstData = values.data.data[0].projectId;
+              const firstData = values[0].data.data[0].projectId;
               userProjects(firstData).then(response => {
                 if (response.data.data && response.data.data.pictureList.length > 0) {
                   this.setState({
@@ -81,14 +94,18 @@ export default class Projects extends React.Component {
           pictureList: response.data.data && response.data.data.pictureList,
           projectName: data.projectName,
           companyName: data.companyName,
-          noImageAvailable: ''
+          noImageAvailable: '',
+          latitude: response.data.data.project.latitude,
+          longitude: response.data.data.project.longitude
         });
       } else {
         this.setState({
           pictureList: [],
           projectName: data.projectName,
           companyName: data.companyName,
-          noImageAvailable: 'No Image Available for this Project!'
+          noImageAvailable: 'No Image Available for this Project!',
+          latitude: response.data.data.project.latitude,
+          longitude: response.data.data.project.longitude
         });
       }
     });
@@ -97,8 +114,12 @@ export default class Projects extends React.Component {
   render() {
 
     const { noImageAvailable } = this.state;
-
     const userName = localStorage.getItem('userName');
+    const MapWithAMarker = withScriptjs(withGoogleMap(props =>
+      <GoogleMap defaultZoom={8} defaultCenter={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }} >
+        <Marker position={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }} />
+      </GoogleMap>
+    ));
 
     return (
       <>
@@ -125,27 +146,7 @@ export default class Projects extends React.Component {
                             <div id="collapseOne" className="collapse show" aria-labelledby="projectOne" data-parent="#projectaccordion">
                               <div className="crd-body slider-pad">
                                 <div className="row">
-                                  <div className="col-md-6">
-                                    <div className="pro-details">
-                                      <div className="wrap">
-                                        <h4>{this.state.projectName}</h4>
-                                        <span>{this.state.companyName}</span>
-                                      </div>
-                                    </div>
-                                    <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
-                                      {noImageAvailable &&
-                                        <div className="w_worn text-danger text-uppercase">
-                                          <span className="mb-5">No Image Available For This Project</span>
-                                        </div>
-                                      }
-                                      <Carousel autoPlay key="carousel">
-                                        {this.state.pictureList && this.state.pictureList.map((data, index) => (
-                                          <img src={data.imageUrl} alt="" />
-                                        ))}
-                                      </Carousel>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-6">
+                                  <div className="col-md-4">
                                     <div className="proj-timeline">
                                       <h4>My Projects</h4>
                                       <ul className="timeline-sec">
@@ -166,6 +167,43 @@ export default class Projects extends React.Component {
                                       </ul>
                                     </div>
                                   </div>
+                                  <div className="col-md-4">
+                                    <div className="pro-details">
+                                      <div className="wrap">
+                                        <h4>{this.state.projectName}</h4>
+                                        <span>{this.state.companyName}</span>
+                                      </div>
+                                    </div>
+                                    <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
+                                      <MapWithAMarker
+                                        googleMapURL={this.state.googleAPIKey}
+                                        loadingElement={<div style={{ height: `100%` }} />}
+                                        containerElement={<div style={{ height: `400px` }} />}
+                                        mapElement={<div style={{ height: `100%` }} />}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="pro-details">
+                                      <div className="wrap">
+                                        <h4>{this.state.projectName}</h4>
+                                        <span>{this.state.companyName}</span>
+                                      </div>
+                                    </div>
+                                    <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
+                                      {noImageAvailable &&
+                                        <div className="w_worn text-danger text-uppercase">
+                                          <span className="mb-5">No Image Available For This Project</span>
+                                        </div>
+                                      }
+                                      <Carousel autoPlay key="carousel">
+                                        {this.state.pictureList && this.state.pictureList.map((data, index) => (
+                                          <img src={data.imageUrl} alt="" />
+                                        ))}
+                                      </Carousel>
+                                    </div>
+                                  </div>
+
                                 </div>
                               </div>
                             </div>

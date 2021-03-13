@@ -75,7 +75,7 @@ export default class ViewSearchedProject extends Component {
                                                             <p className="stage-detail">
                                                                 <span className="stage-label">Name:</span> <span>{this.state.projectDetails.name}</span>
                                                             </p>
-                                                            <div className="stage-detai">
+                                                            <div className="stage-detail">
                                                                 <span className="stage-label">Address:</span> <span>{this.state.projectDetails.address}</span>
                                                             </div>
                                                         </>

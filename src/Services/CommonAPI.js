@@ -61,3 +61,7 @@ export function checkIfValidCode(email, code) {
 export function saveNewPassword(data) {
     return axios.post(process.env.REACT_APP_API_URL + `api/users/SaveNewPassword`, data);
 }
+
+export function getGoogleAPIKey() {
+    return axios.get(process.env.REACT_APP_API_URL + `api/misc/GetGoogleSearchCode`);
+}
