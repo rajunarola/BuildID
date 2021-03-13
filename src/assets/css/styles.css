@@ -16,15 +16,7 @@ input[type="file"]::-o-file-upload-button {
     cursor: pointer;
 }
 
-input[type="file"],
-a[href],
-input[type='submit'],
-input[type='button'],
-input[type='image'],
-label[for],
-select,
-button,
-.pointer {
+input[type="file"], a[href], input[type='submit'], input[type='button'], input[type='image'], label[for], select, button, .pointer {
     cursor: pointer;
 }
 
@@ -93,11 +85,7 @@ html body {
     color: #191509;
 }
 
-a,
-div a:hover,
-div a:active,
-div a:focus,
-button {
+a, div a:hover, div a:active, div a:focus, button {
     text-decoration: none;
     -webkit-transition: all 0.5s ease 0s;
     -moz-transition: all 0.5s ease 0s;
@@ -106,17 +94,11 @@ button {
     transition: all 0.5s ease 0s;
 }
 
-a,
-span,
-div a:hover,
-div a:active,
-button {
+a, span, div a:hover, div a:active, button {
     text-decoration: none;
 }
 
-*::after,
-*::before,
-* {
+*::after, *::before, * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
@@ -124,24 +106,11 @@ button {
     box-sizing: border-box;
 }
 
-.no-list li,
-.no-list ul,
-.no-list ol,
-footer li,
-footer ul,
-footer ol,
-header li,
-header ul,
-header ol {
+.no-list li, .no-list ul, .no-list ol, footer li, footer ul, footer ol, header li, header ul, header ol {
     list-style: inside none none;
 }
 
-.no-list ul,
-.no-list ol,
-footer ul,
-footer ol,
-header ul,
-header ol {
+.no-list ul, .no-list ol, footer ul, footer ol, header ul, header ol {
     margin: 0;
     padding: 0;
 }
@@ -155,8 +124,7 @@ a:hover {
     color: #000;
 }
 
-body .clearfix,
-body .clear {
+body .clearfix, body .clear {
     clear: both;
     line-height: 100%;
 }
@@ -174,30 +142,17 @@ table {
     border-spacing: 0;
 }
 
-ul:after,
-li:after,
-.clr:after,
-.clearfix:after,
-.container:after,
-.grve-container:after {
+ul:after, li:after, .clr:after, .clearfix:after, .container:after, .grve-container:after {
     clear: both;
     display: block;
     content: "";
 }
 
-div input,
-div select,
-div textarea,
-div button {
+div input, div select, div textarea, div button {
     font-family: 'Oswald', sans-serif;
 }
 
-body h1,
-body h2,
-body h3,
-body h4,
-body h5,
-body h6 {
+body h1, body h2, body h3, body h4, body h5, body h6 {
     font-family: 'Oswald', sans-serif;
     line-height: 120%;
     color: #191509;
@@ -209,12 +164,7 @@ body h4 {
     font-size: 18px;
 }
 
-body h1:last-child,
-body h2:last-child,
-body h3:last-child,
-body h4:last-child,
-body h5:last-child,
-body h6:last-child {
+body h1:last-child, body h2:last-child, body h3:last-child, body h4:last-child, body h5:last-child, body h6:last-child {
     margin-bottom: 0;
 }
 
@@ -289,7 +239,6 @@ body .container .container {
     max-width: 100%;
 }
 
-
 /*********************  scroll Hide  *********************/
 
 html.show-menu {
@@ -305,9 +254,7 @@ html.show-menu body {
     display: none;
 }
 
-
 /*********************  Default-CSS close  *********************/
-
 
 /*********************  Gapping  *********************/
 
@@ -316,27 +263,19 @@ section {
     padding-top: 60px;
 }
 
-
 /*********************  Gapping close  *********************/
-
 
 /*********************  Default-CSS  *********************/
 
-
 /*********************  Common-Css  *******************/
 
-.clr:after,
-ul:after,
-.clearfix:after,
-li:after,
-.grve-container:after {
+.clr:after, ul:after, .clearfix:after, li:after, .grve-container:after {
     clear: both;
     display: block;
     content: "";
 }
 
-.btn.focus,
-.btn:focus {
+.btn.focus, .btn:focus {
     box-shadow: none !important;
 }
 
@@ -374,30 +313,21 @@ li:after,
     color: #093cb9 !important;
 }
 
-
 /*********************  Common-Css Close  *******************/
-
 
 /*********************  Header  *******************/
 
-
 /*********************  Header Close  *******************/
-
 
 /*********************  Header-Fixed  *******************/
 
-
 /*********************  Header-Fixed Close  *******************/
-
 
 /*********************  Footer  *******************/
 
-
 /*********************  Footer Close  *******************/
 
-
 /*********************  Inner-Pages  *******************/
-
 
 /***  Login Page  ***/
 
@@ -520,9 +450,7 @@ li:after,
     padding-right: 45px;
 }
 
-
 /***  Login Page  ***/
-
 
 /***  Sidebar  ***/
 
@@ -594,9 +522,7 @@ li:after,
     display: none;
 }
 
-.sidebar:hover .user-id>div,
-.sidebar:hover .main-nav a span,
-.sidebar:hover .lower-menu a span {
+.sidebar:hover .user-id>div, .sidebar:hover .main-nav a span, .sidebar:hover .lower-menu a span {
     opacity: 1;
     transform: translate(0px);
     visibility: visible;
@@ -733,8 +659,7 @@ li:after,
     width: 35px;
 }
 
-.main-nav a span,
-.lower-menu a span {
+.main-nav a span, .lower-menu a span {
     transition: all 0.5s;
     position: relative;
     display: inline-block;
@@ -770,9 +695,7 @@ li:after,
     color: #ffb900;
 }
 
-
 /***  Sidebar  ***/
-
 
 /***  Index  ***/
 
@@ -865,8 +788,7 @@ li:after,
     text-align: center;
 }
 
-.pro-details .close-proj,
-.pro-details .approve-proj {
+.pro-details .close-proj, .pro-details .approve-proj {
     font-size: 30px;
 }
 
@@ -1090,15 +1012,11 @@ li:after,
     left: 53px;
 }
 
-
 /***  Index  ***/
-
 
 /*********************  Inner-Pages Close  *******************/
 
-
 /*********************  Owl  *******************/
-
 
 /*********************  Owl Close  *******************/
 
@@ -1106,9 +1024,7 @@ li:after,
     display: none !important;
 }
 
-
 /*********************  Fancy-box  *******************/
-
 
 /*********************  Fancy-box Close  *******************/
 
@@ -1126,11 +1042,9 @@ li:after,
     align-items: center;
 }
 
-
 /* .slider-main .slider-wrapper ul.slider .slide {
     margin-left: -1px;
 } */
-
 
 /* Modal css  */
 
@@ -1171,7 +1085,6 @@ li:after,
     top: 5px !important;
     position: relative;
 }
-
 
 /* Sneha CSS */
 
@@ -1298,7 +1211,6 @@ li:after,
     padding: 0 10px;
 }
 
-
 /* Add-ticket page css  */
 
 .formlabel {
@@ -1368,7 +1280,6 @@ li:after,
     border-top-right-radius: 2px !important;
     border-bottom-right-radius: 2px;
 }
-
 
 /* .img-upload-btn .img-upload {
     display: none !important;
@@ -1449,8 +1360,7 @@ ul.ticket-list.overlay-scroll {
     margin-bottom: 10px;
 }
 
-.inner-wrap-card .ant-btn-submit,
-.inner-wrap-card .ant-btn-primary {
+.inner-wrap-card .ant-btn-submit, .inner-wrap-card .ant-btn-primary {
     padding: 8px 15px;
     color: #fff;
     background: #093cb9;
@@ -1459,8 +1369,7 @@ ul.ticket-list.overlay-scroll {
     font-size: 16px;
 }
 
-.inner-wrap-card .ant-btn-submit:hover,
-.inner-wrap-card .ant-btn-primary:hover {
+.inner-wrap-card .ant-btn-submit:hover, .inner-wrap-card .ant-btn-primary:hover {
     background: #fff;
     border-color: #093cb9;
     color: #093cb9;
@@ -1654,7 +1563,6 @@ ul.ticket-list.overlay-scroll {
     line-height: normal;
 }
 
-
 /*btn-Search*/
 
 .btn-Search {
@@ -1666,23 +1574,16 @@ ul.ticket-list.overlay-scroll {
     height: 48px;
 }
 
-
 /*seaerchForms*/
 
-.seaerchForms .ant-input,
-.seaerchForms .suggestion-input,
-.seaerchForms .suggestion-input .css-yk16xz-control,
-.seaerchForms .select-bx .ant-select-selector,
-.seaerchForms .select-bx .ant-select-selection-search-input {
+.seaerchForms .ant-input, .seaerchForms .suggestion-input, .seaerchForms .suggestion-input .css-yk16xz-control, .seaerchForms .select-bx .ant-select-selector, .seaerchForms .select-bx .ant-select-selection-search-input {
     min-height: 48px;
     height: 48px !important;
 }
 
-.seaerchForms .ant-select-single .ant-select-selector .ant-select-selection-item,
-.seaerchForms .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+.seaerchForms .ant-select-single .ant-select-selector .ant-select-selection-item, .seaerchForms .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
     line-height: 48px;
 }
-
 
 /*search-list-sec*/
 
@@ -1719,7 +1620,6 @@ ul.ticket-list.overlay-scroll {
     color: #083db8;
     font-weight: 600;
 }
-
 
 /*atf-card*/
 
@@ -1834,7 +1734,6 @@ ul.ticket-list.overlay-scroll {
     cursor: pointer;
 }
 
-
 /* .gallary-bg .gallery-content .preview */
 
 .removeImage {
@@ -1858,8 +1757,7 @@ ul.ticket-list.overlay-scroll {
     transform: rotate(90deg);
 }
 
-.gallary-bg .gallery-content .browser-from input+label,
-.gallary-bg .gallery-content .preview label {
+.gallary-bg .gallery-content .browser-from input+label, .gallary-bg .gallery-content .preview label {
     position: relative;
     display: flex;
     flex-wrap: wrap;
@@ -1896,8 +1794,7 @@ ul.ticket-list.overlay-scroll {
     width: calc(100% - 230px);
 }
 
-.gallary-bg .extra-span span,
-.viewactivities-bg .extra-span span {
+.gallary-bg .extra-span span, .viewactivities-bg .extra-span span {
     background: #fff;
     border-radius: 20px;
     border: 1px solid #2f80ed;
@@ -2028,7 +1925,6 @@ ul.ticket-list.overlay-scroll {
     align-items: center;
 }
 
-
 /* or */
 
 .or_section {
@@ -2081,7 +1977,6 @@ ul.ticket-list.overlay-scroll {
     border: 1px solid #ddd;
     border-radius: 10px;
 }
-
 
 /* New Page Start Design */
 
@@ -2140,7 +2035,6 @@ ul.ticket-list.overlay-scroll {
     display: block;
 }
 
-
 /* New Page End Design */
 
 .phone_type {
@@ -2149,7 +2043,6 @@ ul.ticket-list.overlay-scroll {
 }
 
 .phone_number {}
-
 
 /* Shopping Page Start */
 
@@ -2226,8 +2119,7 @@ ul.ticket-list.overlay-scroll {
     background-color: rgba(243, 178, 0, 0.3);
 }
 
-.cart_tables_d td,
-.cart_tables_d th {
+.cart_tables_d td, .cart_tables_d th {
     vertical-align: middle;
 }
 
@@ -2293,7 +2185,6 @@ table thead th {
     justify-content: center;
 }
 
-
 /* Shopping Page End */
 
 .ant-switch-checked {
@@ -2326,8 +2217,7 @@ table thead th {
     background-color: #efefef !important;
 }
 
-.swal-icon--info:after,
-.swal-icon--info:before {
+.swal-icon--info:after, .swal-icon--info:before {
     background-color: #093cb9;
 }
 
@@ -2348,12 +2238,17 @@ table thead th {
     width: 65% !important;
 }
 
-.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
-.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
-.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
     background: #093cb9 !important;
 }
 
 .ant-picker-header-view button:hover {
     color: #093cb9 !important;
+}
+
+.customs_loaders {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }

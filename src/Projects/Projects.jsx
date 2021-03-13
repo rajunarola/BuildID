@@ -12,7 +12,6 @@ import {
   GoogleMap,
   Marker,
 } from "react-google-maps";
-
 export default class Projects extends React.Component {
 
   state = {
@@ -26,6 +25,7 @@ export default class Projects extends React.Component {
     latitude: 0,
     longitude: 0,
     googleAPIKey: '',
+    loading1: false
   }
 
   componentDidMount() {
@@ -88,32 +88,36 @@ export default class Projects extends React.Component {
   }
 
   changePicInCarousel = (data) => {
-    userProjects(data.projectId).then(response => {
-      if (response.data.data && response.data.data.pictureList.length > 0) {
-        this.setState({
-          pictureList: response.data.data && response.data.data.pictureList,
-          projectName: data.projectName,
-          companyName: data.companyName,
-          noImageAvailable: '',
-          latitude: response.data.data.project.latitude,
-          longitude: response.data.data.project.longitude
-        });
-      } else {
-        this.setState({
-          pictureList: [],
-          projectName: data.projectName,
-          companyName: data.companyName,
-          noImageAvailable: 'No Image Available for this Project!',
-          latitude: response.data.data.project.latitude,
-          longitude: response.data.data.project.longitude
-        });
-      }
-    });
+    this.setState({ loading1: true }, () => {
+      userProjects(data.projectId).then(response => {
+        if (response.data.data && response.data.data.pictureList.length > 0) {
+          this.setState({
+            pictureList: response.data.data && response.data.data.pictureList,
+            projectName: data.projectName,
+            companyName: data.companyName,
+            noImageAvailable: '',
+            latitude: response.data.data.project.latitude,
+            longitude: response.data.data.project.longitude,
+            loading1: false
+          });
+        } else {
+          this.setState({
+            pictureList: [],
+            projectName: data.projectName,
+            companyName: data.companyName,
+            noImageAvailable: 'No Image Available for this Project!',
+            latitude: response.data.data.project.latitude,
+            longitude: response.data.data.project.longitude,
+            loading1: false
+          });
+        }
+      });
+    })
   }
 
   render() {
 
-    const { noImageAvailable } = this.state;
+    const { noImageAvailable, loading1 } = this.state;
     const userName = localStorage.getItem('userName');
     const MapWithAMarker = withScriptjs(withGoogleMap(props =>
       <GoogleMap defaultZoom={8} defaultCenter={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }} >
@@ -167,43 +171,48 @@ export default class Projects extends React.Component {
                                       </ul>
                                     </div>
                                   </div>
-                                  <div className="col-md-4">
-                                    <div className="pro-details">
-                                      <div className="wrap">
-                                        <h4>{this.state.projectName}</h4>
-                                        <span>{this.state.companyName}</span>
-                                      </div>
-                                    </div>
-                                    <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
-                                      <MapWithAMarker
-                                        googleMapURL={this.state.googleAPIKey}
-                                        loadingElement={<div style={{ height: `100%` }} />}
-                                        containerElement={<div style={{ height: `400px` }} />}
-                                        mapElement={<div style={{ height: `100%` }} />}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="col-md-4">
-                                    <div className="pro-details">
-                                      <div className="wrap">
-                                        <h4>{this.state.projectName}</h4>
-                                        <span>{this.state.companyName}</span>
-                                      </div>
-                                    </div>
-                                    <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
-                                      {noImageAvailable &&
-                                        <div className="w_worn text-danger text-uppercase">
-                                          <span className="mb-5">No Image Available For This Project</span>
+                                  <div className="col-md-8">
+                                    {loading1 ? <Loader /> :
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <div className="pro-details">
+                                            <div className="wrap">
+                                              <h4>{this.state.projectName}</h4>
+                                              <span>{this.state.companyName}</span>
+                                            </div>
+                                          </div>
+                                          <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
+                                            <MapWithAMarker
+                                              googleMapURL={this.state.googleAPIKey}
+                                              loadingElement={<div style={{ height: `100%` }} />}
+                                              containerElement={<div style={{ height: `400px` }} />}
+                                              mapElement={<div style={{ height: `100%` }} />}
+                                            />
+                                          </div>
                                         </div>
-                                      }
-                                      <Carousel autoPlay key="carousel">
-                                        {this.state.pictureList && this.state.pictureList.map((data, index) => (
-                                          <img src={data.imageUrl} alt="" />
-                                        ))}
-                                      </Carousel>
-                                    </div>
+                                        <div className="col-md-6">
+                                          <div className="pro-details">
+                                            <div className="wrap">
+                                              <h4>{this.state.projectName}</h4>
+                                              <span>{this.state.companyName}</span>
+                                            </div>
+                                          </div>
+                                          <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
+                                            {noImageAvailable &&
+                                              <div className="w_worn text-danger text-uppercase">
+                                                <span className="mb-5">No Image Available For This Project</span>
+                                              </div>
+                                            }
+                                            <Carousel autoPlay key="carousel">
+                                              {this.state.pictureList && this.state.pictureList.map((data, index) => (
+                                                <img src={data.imageUrl} alt="" />
+                                              ))}
+                                            </Carousel>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    }
                                   </div>
-
                                 </div>
                               </div>
                             </div>
