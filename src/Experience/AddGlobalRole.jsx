@@ -27,6 +27,7 @@ export default class AddGlobalRole extends Component {
                         message: 'Success',
                         description: 'New Role Data Added!'
                     });
+                    debugger;
                     const parsed = queryString.parse(this.props.location.search);
                     if (parsed.redirect) {
                         this.props.history.push(`${parsed.redirect}`);

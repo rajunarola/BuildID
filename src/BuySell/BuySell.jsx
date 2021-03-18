@@ -76,10 +76,10 @@ export default class BuySell extends React.Component {
                       <label>City</label>
                     </div>
                     <div className="stor_buttons">
-                      <button className="btn btn-blue mr-3" onClick={() => this.props.history.push(`/wish-list`)}>
+                      <button className="btn btn-blue mr-2" onClick={() => this.props.history.push(`/wish-list`)}>
                         <i className="fa fa-heart" title="Wish List"></i>
                       </button>
-                      <button className="btn btn-blue mr-3" onClick={() => this.props.history.push(`/item-history`)}>
+                      <button className="btn btn-blue mr-2" onClick={() => this.props.history.push(`/item-history`)}>
                         <i className="fa fa-history" title="History"></i>
                       </button>
                       <Link className="btn btn-blue" to={`/my-items`}>My Items</Link>
@@ -91,38 +91,28 @@ export default class BuySell extends React.Component {
                   </div>
                   {emptyStoreItemResult && <p className="text-center not_found">{emptyStoreItemResult}</p>}
                   {storeItems.length > 0 &&
-                    <>
-                      <div className="container-fluid">
-                        <div className="addticketform row">
-                          <div className="col-md-12 p-0">
-                            <div className="cart_tables_d table-responsive">
-                              <table className="table table-bordered">
-                                <thead>
-                                  <tr>
-                                    <th>Image</th>
-                                    <th>Title</th>
-                                    <th>Price</th>
-                                    <th>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {storeItems.map(items => (
-                                    <tr>
-                                      <td> {items.uri ? <img src={items.uri} width={10} height={10} alt="table_img" className="tables_imgs" /> : '-'}</td>
-                                      <td>{items.title}</td>
-                                      <td>{items.price}</td>
-                                      <td>
-                                        <button className="btn btn-blue" onClick={() => this.props.history.push(`/item-detail/${items.id}`)}>View Details</button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
+                    <div className="row">
+                      {storeItems.map(items => (
+                        <div className="col-md-2">
+                          <div className="product_section">
+                            <div className="product_images">
+                              <Link className onClick={() => this.props.history.push(`/item-detail/${items.id}`)}>
+                                {items.uri ? <img src={items.uri} alt="table_img" className="product_img" /> : '-'}
+                              </Link>
+                            </div>
+                            <div className="product_texts">
+                              <Link className onClick={() => this.props.history.push(`/item-detail/${items.id}`)}>
+                                <h3 className="item_name"> {items.title} </h3>
+                                <div className="quantity_name">
+                                  <labe>Price : </labe>
+                                  <h5> {items.price}</h5>
+                                </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </>
+                      ))}
+                    </div>
                   }
                 </div>
               </div>

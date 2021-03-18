@@ -139,13 +139,13 @@ export default class Projects extends React.Component {
                     {this.state.emptyProject &&
                       <p className="text_blank">{this.state.emptyProject}</p>
                     }
-                    <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                     <div className="accordion" id="projectaccordion">
                       {this.state.projectArray && this.state.projectArray.length > 0 &&
                         <div className="crd-wrap">
                           <>
                             <div className="crd-header" id="projectOne">
                               <h4>Projects</h4>
+                              <Link className="add-btn btn-blue" to="/search-project"><i className="fas fa-plus-circle"></i> Add Projects</Link>
                             </div>
                             <div id="collapseOne" className="collapse show" aria-labelledby="projectOne" data-parent="#projectaccordion">
                               <div className="crd-body slider-pad">
@@ -162,7 +162,7 @@ export default class Projects extends React.Component {
                                               <span>{moment(data.startDate).format('MMM YYYY')} - {moment(data.endDate).format('MMM YYYY')}</span>
                                               <span>{data.tradeName}</span>
                                               <span>{data.roleName}</span>
-                                              <h5>{data.companyName}</h5>
+                                              <h5 className="timeline_datas">{data.companyName}</h5>
                                               <button onClick={() => this.getProjectDetails(data.projectId)} className="btn btn-blue mr-3">Project Details</button>
                                               <button onClick={() => this.editProject(data)} className="btn btn-dark">Edit Details</button>
                                             </div>
@@ -174,7 +174,7 @@ export default class Projects extends React.Component {
                                   <div className="col-md-8">
                                     {loading1 ? <Loader /> :
                                       <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-md-7">
                                           <div className="pro-details">
                                             <div className="wrap">
                                               <h4>{this.state.projectName}</h4>
@@ -190,7 +190,7 @@ export default class Projects extends React.Component {
                                             />
                                           </div>
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-5">
                                           <div className="pro-details">
                                             <div className="wrap">
                                               <h4>{this.state.projectName}</h4>

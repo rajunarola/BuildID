@@ -87,41 +87,38 @@ export default class ItemDetail extends Component {
           loading ? <Loader /> :
             <main className="index-main">
               <section className="index-sec">
-                <div className="edit-sec">
-                  <h1 className="p-0"> Item Details</h1>
-                </div>
-                <div className="addticketform com-padding">
+                <div className="addticketform com-padding mt-4">
                   <div className="row">
-                    {/*  Item Info  */}
-                    <div className="col-lg-4 col-md-6 col-12">
-                      {/* <button type="button" className="add-btn btn-blue mb-4">
-                      <label htmlFor="file" className="mb-0"><i className="fas fa-plus-circle"></i> Add Picture</label>
-                    </button> */}
-                      <input type="file" id="file" style={{ 'display': 'none' }} onChange={(e) => this.saveImage(e)} multiple />
+                    <div className="col-12 col-md-6 offset-md-3">
                       <div className="form-border crd-wrp">
-                        <div className="pro-img slider-main mb-2 embed-responsive">
-                          <Carousel autoPlay>
-                            {pictureList.map((data, index) => (
-                              (data && data.thumbUrl) ? <img key="image" src={data.thumbUrl} alt="-" /> : "-"
-                            ))}
-                          </Carousel>
-                        </div>
-                        <div className="pro-details">
-                          <div className="wrap">
-                            <h4>{itemDetail && itemDetail.title}</h4>
+                        <div className="proj-timeline">
+                          <h4 className="k-card-title mb-0 text-uppercase"> Item Details</h4>
+                          <div className="manufacture-content p-4">
+                            <div className="pro-img slider-main mb-2 embed-responsive">
+                              <Carousel autoPlay>
+                                {pictureList.map((data, index) => (
+                                  (data && data.thumbUrl) ? <img key="image" src={data.thumbUrl} alt="-" /> : "-"
+                                ))}
+                              </Carousel>
+                            </div>
+                            <div className="pro-details">
+                              <div className="wrap">
+                                <h4>{itemDetail && itemDetail.title}</h4>
+                              </div>
+                            </div>
+                            <div className="proj-timeline project-address-location">
+                              <p className="stage-detail"><span className="stage-label">Price:</span> <span>{itemDetail && itemDetail.price}</span></p>
+                              <p className="stage-detail"><span className="stage-label">Description:</span> <span>{itemDetail && itemDetail.description}</span></p>
+                            </div>
+                            <div className="mb-3 text-center">
+                              <button className="btn btn-blue mr-3" onClick={() => this.addContactSeller()}>Contact Seller</button>
+                              {localStorage.getItem("CurrentPage") !== 'WishList' ?
+                                <button className="btn btn-blue" onClick={() => this.saveUserWishItem()}>Add to Wishlist</button>
+                                :
+                                <div></div>
+                              }
+                            </div>
                           </div>
-                        </div>
-                        <div className="proj-timeline project-address-location">
-                          <p className="stage-detail"><span className="stage-label">Price:</span> <span>{itemDetail && itemDetail.price}</span></p>
-                          <p className="stage-detail"><span className="stage-label">Description:</span> <span>{itemDetail && itemDetail.description}</span></p>
-                        </div>
-                        <div className="mb-3 text-center">
-                          <button className="btn btn-blue mr-3" onClick={() => this.addContactSeller()}>Contact Seller</button>
-                          {localStorage.getItem("CurrentPage") !== 'WishList' ?
-                            <button className="btn btn-blue" onClick={() => this.saveUserWishItem()}>Add to Wishlist</button>
-                            :
-                            <div></div>
-                          }
                         </div>
                       </div>
                     </div>

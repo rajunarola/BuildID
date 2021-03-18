@@ -173,42 +173,37 @@ export default class Store extends React.Component {
                   </div>
                   {emptySearchResult && <p className="text-center">{emptySearchResult}</p>}
                   {storeItems.length > 0 &&
-                    <div className="container-fluid">
-                      <div className="addticketform row">
-                        <div className="col-md-12 p-0">
-                          <div className="cart_tables_d table-responsive">
-                            <table className="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th>Image</th>
-                                  <th>Item Name</th>
-                                  <th>Quantity</th>
-                                  <th>Price</th>
-                                  <th>Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {storeItems.map(items => (
-                                  <tr>
-                                    <td><img src={items.fileUrl} width={10} height={10} alt="table_img" className="tables_imgs" /></td>
-                                    <td>{items.itemName}</td>
-                                    <td>{items.qty}</td>
-                                    <td>${items.price}</td>
-                                    <td>
-                                      <Link className="btn btn-blue" onClick={() => this.addToShoppingCart(items, 'view')}>View Details</Link>
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
+                    <div className="row">
+                      {storeItems.map(items => (
+                        <div className="col-md-2">
+                          <div className="product_section">
+                            <div className="product_images">
+                              <Link className onClick={() => this.addToShoppingCart(items, 'view')}>
+                                <img src={items.fileUrl} alt="table_img" className="product_img" />
+                              </Link>
+                            </div>
+                            <div className="product_texts">
+                              <Link className onClick={() => this.addToShoppingCart(items, 'view')}>
+                                <h3 className="item_name"> {items.itemName} </h3>
+                                <div className="quantity_name">
+                                  <labe>quantity : </labe>
+                                  <h3> {items.qty}</h3>
+                                </div>
+                                <div className="quantity_name">
+                                  <labe>Price : </labe>
+                                  <h5> {items.price}</h5>
+                                </div>
+                              </Link>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>}
+                      ))}
+                    </div>
+                  }
                 </div>
               </div>
             </section>
-          </div>
+          </div >
         }
         <Modal show={this.state.modalShow} onHide={() => this.setState({ modalShow: !this.state.modalShow })}>
           <Modal.Header className="stagehead text-white" closeButton>

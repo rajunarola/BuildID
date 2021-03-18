@@ -10,7 +10,7 @@ class SideNav extends React.Component {
     onLogout = () => { localStorage.clear() }
 
     render() {
-
+        const { REACT_APP_API_VERSION_NO } = process.env;
         return (
 
             <>
@@ -28,25 +28,25 @@ class SideNav extends React.Component {
                     <ul className="main-nav">
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/dashboard" className="nav-link" >
-                                <i><img src={require("../assets/images/icon_dashboard.png")} alt="Dashboard" /></i>
+                                <i className="fas fa-th-large"></i>
                                 <span>Dashboard</span>
                             </Link>
                         </li>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/projects" className="nav-link">
-                                <i><img src={require("../assets/images/icon_projects.png")} alt="Projects" /></i>
+                                <i className="fas fa-project-diagram"></i>
                                 <span>Projects</span>
                             </Link>
                         </li>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/tickets" className="nav-link">
-                                <i><img src={require("../assets/images/icon_link.png")} alt="Address" /></i>
+                                <i className="fas fa-link"></i>
                                 <span>Tickets</span>
                             </Link>
                         </li>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/montages" className="nav-link">
-                                <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
+                                <i className="fas fa-file-alt"></i>
                                 <span>Montage</span>
                             </Link>
                         </li>
@@ -56,7 +56,7 @@ class SideNav extends React.Component {
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
                                     <div className="custom_nav">
                                         <div className="d-flex">
-                                            <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
+                                            <i className="fas fa-dollar-sign"></i>
                                             <span>Rewards</span>
                                         </div>
                                         <i className="fas fa-chevron-down"></i>
@@ -65,11 +65,11 @@ class SideNav extends React.Component {
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
                                         <Link to="/store" className="nav-link" onClick={() => this.setState({ open: !this.state.open })}>
-                                            <i><img src={require("../assets/images/icon_projects.png")} alt="Store" /></i>
+                                            <i className="fas fa-store"></i>
                                             <span>Store</span>
                                         </Link>
                                         <Link to="/quiz" className="nav-link" onClick={() => this.setState({ open: !this.state.open })}>
-                                            <i><img src={require("../assets/images/icon_comment.png")} alt="Comment" /></i>
+                                            <i className="fas fa-question"></i>
                                             <span>Quiz</span>
                                         </Link>
                                     </Card.Body>
@@ -78,7 +78,7 @@ class SideNav extends React.Component {
                         </Accordion>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/buy-sell" className="nav-link">
-                                <i><img src={require("../assets/images/icon_timesheet.png")} alt="Timesheet" /></i>
+                                <i className="fas fa-exchange-alt"></i>
                                 <span>Buy Sell</span>
                             </Link>
                         </li>
@@ -95,6 +95,9 @@ class SideNav extends React.Component {
                                 <i className="fas fa-sign-out-alt"></i>
                                 <span>Logout</span>
                             </Link>
+                        </li>
+                        <li className="text-center">
+                            <label className="mt-3">{REACT_APP_API_VERSION_NO}</label>
                         </li>
                     </ul>
                 </aside>
