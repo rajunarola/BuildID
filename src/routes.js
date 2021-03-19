@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import SideNav from "./SideNav/SideNav";
 import Login from './Login/Login';
 import Register from "./Register/Register";
@@ -70,18 +70,25 @@ export const routesCode = [
     { path: "/purchase-history", exact: true, component: PurchaseHistory },
     { path: "/shopping-cart", exact: true, component: ShoppingCart },
     { path: "/buy-sell", exact: true, component: BuySell },
-    { path: "/item-detail/:itemId", exact: true, component: ItemDetail},
-    { path: "/wish-list", exact: true, component: WishList},
-    { path: "/my-items", exact: true, component: MyItems},
-    { path: "/(add|edit)-item/:id?", exact: true, component: AddEditItem},
-    { path: "/item-history", exact: true, component: ItemHistory}
+    { path: "/item-detail/:itemId", exact: true, component: ItemDetail },
+    { path: "/wish-list", exact: true, component: WishList },
+    { path: "/my-items", exact: true, component: MyItems },
+    { path: "/(add|edit)-item/:id?", exact: true, component: AddEditItem },
+    { path: "/item-history", exact: true, component: ItemHistory }
 ];
 
 class Routes extends React.PureComponent {
+
+    componentDidMount() {
+        if (!localStorage.getItem('userID')) {
+            this.props.history.push('/')
+        }
+    }
+
     render() {
         return (
             <Switch>
-                <Route path="(login)?" exact component={Login} />
+                <Route path="/(login)?" exact component={Login} />
                 <Route path="/register" exact component={Register} />
                 <Route path="/forgot-password" exact component={ForgotPassword} />
                 <Route path="/confirm-code/:email" exact component={ConfirmCode} />
@@ -101,4 +108,4 @@ class Routes extends React.PureComponent {
     }
 }
 
-export default Routes;
+export default withRouter(Routes);
