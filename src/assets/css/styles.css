@@ -2474,3 +2474,31 @@ table thead th {
 .manufacture-content {
     padding: 0 20px;
 }
+
+.add-phoneno-sec .ant-form-item-label>label {
+    height: auto;
+    line-height: 1.5;
+}
+
+
+/*my-trade-certify*/
+
+.timeline-sec.my-trade-certify {
+    padding: 20px 20px 20px 20px;
+}
+
+.timeline-sec.my-trade-certify li .timeline-block {
+    padding: 15px 30px 15px 15px;
+    border-bottom: 1px solid #ddd;
+    margin: 0 0 0px;
+}
+
+.timeline-sec.my-trade-certify li:first-child .timeline-block {
+    padding: 0px 30px 15px 15px;
+}
+
+.timeline-sec.my-trade-certify li::before,
+.timeline-sec.my-trade-certify li::after,
+.timeline-sec.my-trade-certify .timeline-block::before {
+    display: none;
+}

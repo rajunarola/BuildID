@@ -119,9 +119,36 @@ export default class Projects extends React.Component {
 
     const { noImageAvailable, loading1 } = this.state;
     const userName = localStorage.getItem('userName');
+    const labelSize = { width: "auto" };
+    const labelPadding = 8;
+    const {
+      MarkerWithLabel
+    } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
+
     const MapWithAMarker = withScriptjs(withGoogleMap(props =>
-      <GoogleMap defaultZoom={8} defaultCenter={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }} >
-        <Marker position={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }} />
+      <GoogleMap defaultZoom={8} defaultCenter={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }}>
+        {this.state.projectArray.map((data, index) => (
+          <MarkerWithLabel
+            labelStyle={{
+              textAlign: "center",
+              width: labelSize.width + "px",
+              backgroundColor: "#fff",
+              fontSize: "12px",
+              padding: labelPadding + "px",
+              fontWeight: "600",
+              whiteSpace: "nowrap",
+              borderRadius: "5px",
+              boxShadow: "0 0 2px rgba(0,0,0,.2)",
+              "text-transform": "capitalize"
+            }}
+            labelClass="map-label"
+            labelAnchor={{ x: labelSize.width / 2 + labelPadding, y: 80 }} // key={this.state.googleAPIKey}
+            icon={require('../assets/images/MapIcon.png')}
+            position={{ lat: parseFloat(data.latitude), lng: parseFloat(data.longitude) }}
+          >
+            <span>{data.projectName}</span>
+          </MarkerWithLabel>
+        ))}
       </GoogleMap>
     ));
 
@@ -175,11 +202,9 @@ export default class Projects extends React.Component {
                                     {loading1 ? <Loader /> :
                                       <div className="row">
                                         <div className="col-md-7">
-                                          <div className="pro-details">
-                                            <div className="wrap">
-                                              <h4>{this.state.projectName}</h4>
-                                              <span>{this.state.companyName}</span>
-                                            </div>
+                                          <div className="proj-timeline">
+                                            <h4>Project Locations</h4>
+                                            <span></span>
                                           </div>
                                           <div className="pro-img slider-main mb-2 embed-responsive embed-responsive-16by9">
                                             <MapWithAMarker

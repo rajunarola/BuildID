@@ -40,6 +40,7 @@ const WishList = lazy(() => import("./BuySell/WishList"));
 const MyItems = lazy(() => import("./BuySell/MyItems"));
 const AddEditItem = lazy(() => import("./BuySell/AddEditItem"));
 const ItemHistory = lazy(() => import("./BuySell/ItemHistory"));
+const AddEditTradeCert = lazy(() => import("./TradeCertifications/AddEditTradeCertification"));
 
 export const routesCode = [
     { path: "/dashboard", exact: true, component: Dashboard },
@@ -74,7 +75,8 @@ export const routesCode = [
     { path: "/wish-list", exact: true, component: WishList },
     { path: "/my-items", exact: true, component: MyItems },
     { path: "/(add|edit)-item/:id?", exact: true, component: AddEditItem },
-    { path: "/item-history", exact: true, component: ItemHistory }
+    { path: "/item-history", exact: true, component: ItemHistory },
+    { path: "/(add|edit)-trade-certification/:id?", exact: true, component: AddEditTradeCert },
 ];
 
 class Routes extends React.PureComponent {

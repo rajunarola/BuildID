@@ -183,7 +183,7 @@ export default class Quiz extends Component {
         Answer4: this.state.option4A,
         Parameter1: parseInt(this.state.parameter1),
         Parameter2: parseInt(this.state.parameter2),
-        Answered: this.state.notSure === false ? this.state.notSure : true
+        ResponseTypeId: 1
       }
       this.postAnswer(answer);
     }
@@ -197,13 +197,12 @@ export default class Quiz extends Component {
       Answer1: values,
       Parameter1: this.state.parameter1 !== "" ? parseInt(this.state.parameter1) : "",
       Parameter2: this.state.parameter2 !== "" ? parseInt(this.state.parameter2) : "",
-      Answered: this.state.notSure === false ? this.state.notSure : true
+      ResponseTypeId: 1
     }
     this.postAnswer(answer);
   }
 
-
-  skipQuestion = () => {
+  skipQuestion = (val) => {
     const skipped = {
       Id: 0,
       UserId: parseInt(localStorage.getItem('userID')),
@@ -214,7 +213,7 @@ export default class Quiz extends Component {
       Answer4: "",
       Parameter1: parseInt(this.state.parameter1),
       Parameter2: parseInt(this.state.parameter2),
-      Answered: false
+      ResponseTypeId: val
     }
     this.postAnswer(skipped);
   }
@@ -231,7 +230,7 @@ export default class Quiz extends Component {
         Answer1: values.answer !== undefined ? values.answer : "",
         Parameter1: parseInt(this.state.parameter1),
         Parameter2: parseInt(this.state.parameter2),
-        Answered: values.answer !== undefined ? true : false
+        ResponseTypeId: values.answer !== undefined ? 1 : 3
       }
       this.postAnswer(answer);
     }
@@ -244,7 +243,7 @@ export default class Quiz extends Component {
         Answer1: values.companyName !== undefined ? parseInt(values.companyName.value) : "",
         Parameter1: parseInt(this.state.parameter1),
         Parameter2: parseInt(this.state.parameter2),
-        Answered: values.companyName !== undefined ? true : false
+        ResponseTypeId: values.answer !== undefined ? 1 : 3
       }
       this.postAnswer(answer);
     }
@@ -278,7 +277,8 @@ export default class Quiz extends Component {
                                     </Form.Item>
                                     <div className="crd-body form_c_button">
                                       <button className="add-btn btn-blue" type="submit">Submit Answer</button>
-                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
+                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion(2)}>Don’t ask again</button>
+                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion(3)}>Ask Later</button>
                                     </div>
                                   </Form>
                                 }
@@ -303,7 +303,8 @@ export default class Quiz extends Component {
                                     </div>
                                     <div className="crd-body form_c_button">
                                       <button className="add-btn btn-blue" type="submit">Submit Answer</button>
-                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Question</button>
+                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion(2)}>Don’t ask again</button>
+                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion(3)}>Ask Later</button>
                                     </div>
                                   </Form>}
                                 {this.state.type === 'General' &&
@@ -324,7 +325,8 @@ export default class Quiz extends Component {
                                     </Form.Item>
                                     <div className="crd-body form_c_button">
                                       <button className="add-btn btn-blue" type="submit">Submit Answer</button>
-                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion()}>Skip Questions</button>
+                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion(2)}>Don’t ask again</button>
+                                      <button className="add-btn btn-blue" type="reset" onClick={() => this.skipQuestion(3)}>Ask Later</button>
                                     </div>
                                   </Form>
                                 }
@@ -333,7 +335,8 @@ export default class Quiz extends Component {
                                     <div className="crd-body form_c_button">
                                       <button className="btn btn-blue" onClick={() => this.yesNo("YES")}>Yes</button>
                                       <button className="btn btn-danger" onClick={() => this.yesNo("NO")}>No</button>
-                                      <button className="btn btn-dark" onClick={() => this.skipQuestion()}>Not Sure</button>
+                                      <button className="btn btn-blue" onClick={() => this.skipQuestion(2)}>Don’t ask again</button>
+                                      <button className="btn btn-blue" onClick={() => this.skipQuestion(3)}>Ask Later</button>
                                     </div>
                                   </Form>}
                               </div>
