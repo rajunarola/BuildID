@@ -95,6 +95,23 @@ export default class EditProfile extends Component {
   editExperience = (userid, id) => {
     this.props.history.push(`/edit-experience/${userid}/${id}`)
   }
+  validate = (evt) => {
+    var theEvent = evt || window.event;
+    // Handle paste
+    if (theEvent.type === 'paste') {
+        var key = evt.clipboardData.getData('text/plain');
+    } else {
+        // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]/;
+    if (!regex.test(key)) {
+        theEvent.returnValue = false;
+        if (theEvent.preventDefault) theEvent.preventDefault();
+    }
+}
+
 
   deleteExperience = (id) => {
     swal({
@@ -370,7 +387,7 @@ export default class EditProfile extends Component {
                                 </div>
                                 <div className="col-12 col-md-6">
                                   <Form.Item label="Year of Birth" name="YearOfBirth">
-                                    <DatePicker picker="year" format="YYYY" defaultValue={moment(this.state.yearOfBirth, 'YYYY')} onChange={(e)=>{this.handleChange(e)}}
+                                    <DatePicker picker="year" format="YYYY" onClick={(e) => {this.validate(e)}} defaultValue={moment(this.state.yearOfBirth, 'YYYY')} onChange={(e)=>{this.handleChange(e)}}
                                       className="w-100 inputstyle" disabledDate={d => !d || d.isAfter(this.state.currentDate) || d.isSameOrBefore(this.state.previousDate)} />
                                   </Form.Item>
                                 </div>
