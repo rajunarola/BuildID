@@ -3,6 +3,7 @@ import Loader from '../Loader/Loader';
 import { getStoreItemsForSale } from '../Services/BuySell';
 import { Link } from 'react-router-dom';
 import { notification, Switch } from 'antd';
+import Support from '../Support/Support';
 
 export default class BuySell extends React.Component {
 
@@ -66,7 +67,9 @@ export default class BuySell extends React.Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1 className="p-0">Buy Sell</h1></div>
+              <div className="edit-sec"><h1 className="p-0">Buy Sell</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header" id="ticketOne">

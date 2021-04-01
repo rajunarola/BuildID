@@ -4,6 +4,8 @@ import { Form, Input, Select, DatePicker, notification, Spin, Checkbox } from 'a
 import debounce from 'lodash/debounce';
 import * as moment from "moment";
 import Loader from '../Loader/Loader';
+import Support from '../Support/Support';
+
 export default class AddNewTickets extends React.Component {
 
   formRef = React.createRef()
@@ -123,7 +125,9 @@ export default class AddNewTickets extends React.Component {
         {this.state.loading ? <Loader /> :
           <div className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Add Ticket</h1></div>
+              <div className="edit-sec"><h1>Add Ticket</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header">

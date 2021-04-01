@@ -5,6 +5,8 @@ import { Form, Input, Select, DatePicker, notification, Spin, Checkbox, Image } 
 import debounce from 'lodash/debounce';
 import Loader from '../Loader/Loader';
 import { withRouter } from 'react-router-dom';
+import Support from '../Support/Support';
+
 class EditTicketFinal extends Component {
 
   formRef = React.createRef();
@@ -164,7 +166,9 @@ class EditTicketFinal extends Component {
         {this.state.loading ? <Loader /> :
           <div className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Edit Ticket</h1></div>
+              <div className="edit-sec"><h1>Edit Ticket</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header">

@@ -5,6 +5,8 @@ import moment from 'moment';
 import debounce from 'lodash/debounce';
 import Loader from '../Loader/Loader';
 import { postSaveUserWorkHistory } from '../Services/Project';
+import Support from '../Support/Support';
+
 export default class EditProject extends Component {
 
   formRef = React.createRef();
@@ -177,7 +179,8 @@ export default class EditProject extends Component {
           <main className="index-main">
             <section className="index-sec">
               <div className="edit-sec">
-                <div className="editprofile">Edit Project Details</div>
+                <h1>Edit Project Details</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
               </div>
               <div className="addticketform com-padding">
                 <div className="row">

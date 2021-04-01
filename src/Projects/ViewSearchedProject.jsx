@@ -4,6 +4,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { notification } from 'antd';
 import Loader from '../Loader/Loader';
+import Support from '../Support/Support';
+
 export default class ViewSearchedProject extends Component {
 
     state = {
@@ -38,6 +40,7 @@ export default class ViewSearchedProject extends Component {
                         <section className="index-sec">
                             <div className="edit-sec">
                                 <h1>Searched Project</h1>
+                                <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
                             </div>
                             <div className="addticketform newpage_section com-padding">
                                 <div className="crd-wrap">

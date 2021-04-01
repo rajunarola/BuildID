@@ -3,6 +3,8 @@ import Loader from '../Loader/Loader';
 import { getUserItemsHistory } from '../Services/BuySell';
 import { notification } from 'antd';
 import moment from 'moment';
+import Support from '../Support/Support';
+
 export default class ItemHistory extends Component {
     state = {
         loading: false,
@@ -42,7 +44,9 @@ export default class ItemHistory extends Component {
                     this.state.loading ? <Loader /> :
                         <main className="index-main">
                             <section className="index-sec">
-                                <div className="edit-sec"><h1>History</h1></div>
+                                <div className="edit-sec"><h1>History</h1>
+                                <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
+                                </div>
                                 <div className="com-padding newpage_section">
                                     <div className="crd-wrap">
                                         <div className="crd-header" id="ticketOne">

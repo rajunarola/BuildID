@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getTicketDetails, getTicketsByUserId } from '../Services/CommonAPI';
 import { Modal, Image, Col } from 'react-bootstrap';
 import { notification } from 'antd';
+import Support from '../Support/Support';
 
 export default class TicketPreview extends Component {
 
@@ -67,7 +68,9 @@ export default class TicketPreview extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Tickets</h1></div>
+              <div className="edit-sec"><h1>Tickets</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding newpage_section">
                 <div className="row">
                   <div className="col-md-12">

@@ -3,6 +3,7 @@ import { Input, Form, notification, Select, Checkbox } from 'antd'
 import { getUserItemStatuses, saveUserItem, getUserItem, saveUserItemPicture2, deleteUserItemPicture } from '../Services/BuySell';
 import Loader from '../Loader/Loader';
 import { get } from 'lodash';
+import Support from '../Support/Support';
 
 export default class AddEditItem extends Component {
   formRef = React.createRef();
@@ -253,7 +254,9 @@ export default class AddEditItem extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>{this.props.match.params.id ? 'Edit' : 'Add'} Item</h1></div>
+              <div className="edit-sec"><h1>{this.props.match.params.id ? 'Edit' : 'Add'} Item</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="newpage_section com-padding">
                 <div className="crd-wrap">
                   <div className="crd-header">

@@ -12,6 +12,8 @@ import {
   GoogleMap,
   Marker,
 } from "react-google-maps";
+import Support from '../Support/Support';
+
 export default class Projects extends React.Component {
 
   state = {
@@ -159,6 +161,7 @@ export default class Projects extends React.Component {
             <section className="index-sec">
               <div className="edit-sec">
                 <h1 className="p-0">{userName}</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
               </div>
               <div className="com-padding newpage_section">
                 <div className="row">

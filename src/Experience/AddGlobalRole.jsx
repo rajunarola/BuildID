@@ -3,6 +3,7 @@ import { Form, Input, notification } from 'antd';
 import queryString from 'query-string';
 import { saveGlobalRole } from '../Services/Experience';
 import moment from 'moment';
+import Support from '../Support/Support';
 
 export default class AddGlobalRole extends Component {
 
@@ -27,7 +28,6 @@ export default class AddGlobalRole extends Component {
                         message: 'Success',
                         description: 'New Role Data Added!'
                     });
-                    debugger;
                     const parsed = queryString.parse(this.props.location.search);
                     if (parsed.redirect) {
                         this.props.history.push(`${parsed.redirect}`);
@@ -57,7 +57,9 @@ export default class AddGlobalRole extends Component {
                                 <div className="col-12 col-md-6 offset-md-3">
                                     <div className="form-border crd-wrp">
                                         <div className="proj-timeline">
-                                            <h4 className="k-card-title mb-0 text-uppercase"> Add Global Role</h4>
+                                            <h4 className="k-card-title mb-0 text-uppercase mon_p"> Add Global Role
+                                            <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
+                                            </h4>
                                             <div className="manufacture-content p-4">
                                                 <Form onFinish={onFinish} ref={this.formRef}>
                                                     <label>Role Name</label>

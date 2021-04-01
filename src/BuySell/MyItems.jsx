@@ -3,6 +3,7 @@ import Loader from '../Loader/Loader';
 import { getUserItems, getUserItemStatuses } from '../Services/BuySell';
 import { notification } from 'antd';
 import moment from 'moment';
+import Support from '../Support/Support';
 
 export default class MyItems extends Component {
 
@@ -49,14 +50,16 @@ export default class MyItems extends Component {
           this.state.loading ? <Loader /> :
             <main className="index-main">
               <section className="index-sec">
-                <div className="edit-sec"><h1>My Items</h1></div>
+                <div className="edit-sec"><h1>My Items</h1>
+                  <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+                </div>
                 <div className="com-padding newpage_section">
                   <div className="crd-wrap">
                     <div className="crd-header" id="ticketOne">
-                    <h4>List of My Items</h4>
+                      <h4>List of My Items</h4>
                       <div className="stor_buttons">
                         <button type="button" className="btn btn-blue" onClick={() => this.props.history.push(`/add-item`)}>
-                        <i className="fas fa-plus-circle"></i>  Add Item</button>
+                          <i className="fas fa-plus-circle"></i>  Add Item</button>
                       </div>
                     </div>
                     {emptyStoreItemResult && <p className="text-center">{emptyStoreItemResult}</p>}

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { notification } from 'antd';
 import { getStoreItems, getUserShoppingCart, saveUserPurchase } from '../../Services/Store';
 import Loader from '../../Loader/Loader';
+import Support from '../../Support/Support';
+
 export default class ShoppingCart extends Component {
 
   state = {
@@ -128,7 +130,9 @@ export default class ShoppingCart extends Component {
       <>
         <div className="index-main">
           <section className="index-sec">
-            <div className="edit-sec"><h1>Shopping Cart</h1></div>
+            <div className="edit-sec"><h1>Shopping Cart</h1>
+              <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+            </div>
             {/* <button className="btn btn-blue">{cartItems}<i className="fa fa-shopping-cart"></i></button> */}
             <div className="com-padding newpage_section">
               <div className="crd-wrap">

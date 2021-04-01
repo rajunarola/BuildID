@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Input, notification } from 'antd';
 import { saveManufacturers } from '../Services/Project';
 import queryString from 'query-string';
+import Support from '../Support/Support';
 
 export default class AddManufacturer extends Component {
 
@@ -51,7 +52,9 @@ export default class AddManufacturer extends Component {
                 <div className="col-12 col-md-6 offset-md-3">
                   <div className="form-border crd-wrp">
                     <div className="proj-timeline">
-                      <h4 className="k-card-title mb-0 text-uppercase"> Add New Manufacturer</h4>
+                      <h4 className="k-card-title mb-0 text-uppercase mon_p"> Add New Manufacturer
+                      <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+                      </h4>
                       <div className="manufacture-content p-4">
                         <Form onFinish={onFinish} ref={this.formRef}>
                           <label>Manufacturer Name</label>

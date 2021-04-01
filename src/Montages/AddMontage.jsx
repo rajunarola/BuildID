@@ -4,6 +4,7 @@ import { getUserProjectPicture } from '../Services/Project';
 import Loader from '../Loader/Loader';
 import { getMusicFiles, saveMontage, saveMontageFile } from '../Services/Montage';
 import moment from 'moment';
+import Support from '../Support/Support';
 
 export default class AddMontage extends Component {
 
@@ -158,7 +159,9 @@ export default class AddMontage extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Add Montage</h1></div>
+              <div className="edit-sec"><h1>Add Montage</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header">

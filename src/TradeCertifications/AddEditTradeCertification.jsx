@@ -3,6 +3,7 @@ import { Input, Form, notification, Select, Checkbox, Button } from 'antd'
 import { saveUserTradeCertification, getUserTradeCertification } from '../Services/TradeCertifications';
 import Loader from '../Loader/Loader';
 import { get } from 'lodash';
+import Support from '../Support/Support';
 
 export default class AddEditTradeCertification extends Component {
     formRef = React.createRef();
@@ -68,7 +69,7 @@ export default class AddEditTradeCertification extends Component {
                         this.setState({ loading: false });
                         notification.success({
                             message: 'Success',
-                            description: this.props.match.params.id > 0 ? 'Trade Certifications Updated successfully!' :  'Trade Certifications has been successfully added!'
+                            description: this.props.match.params.id > 0 ? 'Trade Certifications Updated successfully!' : 'Trade Certifications has been successfully added!'
                         })
                     } else {
                         this.setState({ loading: false });
@@ -99,7 +100,9 @@ export default class AddEditTradeCertification extends Component {
                                 <div className="col-12 col-md-6 offset-md-3">
                                     <div className="form-border crd-wrp">
                                         <div className="proj-timeline">
-                                            <h4 className="k-card-title mb-0 text-uppercase"> {this.props.match.params.id ? 'Edit' : 'Add'} Trade Certifications</h4>
+                                            <h4 className="k-card-title mb-0 text-uppercase mon_p"> {this.props.match.params.id ? 'Edit' : 'Add'} Trade Certifications
+                                            <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+                                            </h4>
                                             <div className="manufacture-content p-4">
                                                 <Form onFinish={addTradeCertifications} ref={this.formRef}>
                                                     <Form.Item label="School" name="School" rules={[{ required: true, message: 'Please enter a School!' }]}>
@@ -113,7 +116,7 @@ export default class AddEditTradeCertification extends Component {
                                                     </Form.Item>
                                                     <button type="submit" className="btn btn-blue w-50">{this.props.match.params.id ? 'Edit' : 'Add'} Trade Certifications</button>
                                                     <button className="btn btn-danger w-50 btnManufacturer" onClick={() => this.props.history.push(`/edit-profile`)}>Cancel</button>
-                                                 </Form>
+                                                </Form>
                                             </div>
                                         </div>
                                     </div>

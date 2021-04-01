@@ -4,6 +4,7 @@ import { getUserWishList, deleteUserWishItem } from '../Services/BuySell';
 import { notification } from 'antd';
 import moment from 'moment';
 import swal from 'sweetalert';
+import Support from '../Support/Support';
 
 export default class WishList extends Component {
 
@@ -94,7 +95,10 @@ export default class WishList extends Component {
           this.state.loading ? <Loader /> :
             <main className="index-main">
               <section className="index-sec">
-                <div className="edit-sec"><h1>WishList</h1></div>
+                <div className="edit-sec">
+                  <h1>WishList</h1>
+                  <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
+                </div>
                 <div className="com-padding newpage_section">
                   <div className="crd-wrap">
                     <div className="crd-header" id="ticketOne">

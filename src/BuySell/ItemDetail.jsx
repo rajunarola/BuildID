@@ -5,6 +5,7 @@ import Loader from '../Loader/Loader';
 import { getStoreItemsForSaleByItemId, saveUserWishItem } from '../Services/BuySell';
 import { notification } from 'antd';
 import swal from 'sweetalert';
+import Support from '../Support/Support';
 
 export default class ItemDetail extends Component {
 
@@ -92,7 +93,9 @@ export default class ItemDetail extends Component {
                     <div className="col-12 col-md-6 offset-md-3">
                       <div className="form-border crd-wrp">
                         <div className="proj-timeline">
-                          <h4 className="k-card-title mb-0 text-uppercase"> Item Details</h4>
+                          <h4 className="k-card-title mb-0 text-uppercase mon_p"> Item Details
+                          <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+                          </h4>
                           <div className="manufacture-content p-4">
                             <div className="pro-img slider-main mb-2 embed-responsive">
                               <Carousel autoPlay>

@@ -9,6 +9,8 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
 import Loader from '../Loader/Loader';
+import Support from '../Support/Support';
+
 export default class EditProfile extends Component {
 
   formRef = React.createRef();
@@ -99,18 +101,18 @@ export default class EditProfile extends Component {
     var theEvent = evt || window.event;
     // Handle paste
     if (theEvent.type === 'paste') {
-        var key = evt.clipboardData.getData('text/plain');
+      var key = evt.clipboardData.getData('text/plain');
     } else {
-        // Handle key press
-        var key = theEvent.keyCode || theEvent.which;
-        key = String.fromCharCode(key);
+      // Handle key press
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode(key);
     }
     var regex = /[0-9]/;
     if (!regex.test(key)) {
-        theEvent.returnValue = false;
-        if (theEvent.preventDefault) theEvent.preventDefault();
+      theEvent.returnValue = false;
+      if (theEvent.preventDefault) theEvent.preventDefault();
     }
-}
+  }
 
 
   deleteExperience = (id) => {
@@ -206,135 +208,135 @@ export default class EditProfile extends Component {
     this.setState({ FrontPictureUrl: event.target.files, file: URL.createObjectURL(event.target.files[0]) })
   }
 
-  handleChange(e){
-    let year=moment(e._d).format('YYYY')
-    this.setState({yearOfBirth: year});
+  handleChange(e) {
+    let year = moment(e._d).format('YYYY')
+    this.setState({ yearOfBirth: year });
   }
 
   render() {
 
     const updateUserProfile = (values) => {
 
-     // this.setState({ loading: true }, () => {
-        if (values.sights) {
-          var numbers = [...this.state.Phones, ...values.sights];
-        }
-        values.YearOfBirth = values.YearOfBirth ? moment(values.YearOfBirth._d).format('YYYY') : this.state.yearOfBirth;
-         
-        const formData = new FormData()
-        formData.append('Id', 0);
-        formData.append('UserId', parseInt(localStorage.getItem('userID')));
-        formData.append('FirstName', values.FirstName);
-        formData.append('LastName', values.LastName);
-        formData.append('NickName', values.NickName);
-        formData.append('BackupEmail', values.BackupEmailAddress);
-        formData.append('YearOfBirth', values.YearOfBirth);
-        formData.append('Phones', JSON.stringify({ Phones: numbers ? numbers : this.state.Phones }));
-        formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
-        formData.append('PictureUrl', this.state.FrontPictureUrl[0]);
-        formData.append('RideShareInterested', this.state.RideShareInterested);
-        editUserProfile(formData).then(res => {
-          this.setState({ loading: false }, () => {
-            if (res.data.status === true) {
-              Promise.all([getUserDetails(), getAddress()]).then(values => {
-                if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
-                  localStorage.setItem('userID', values[0].data.data.userId);
-                  localStorage.setItem('userImage', values[0].data.data.pictureUrl)
-                  localStorage.setItem('userName', values[0].data.data.firstName + " " + values[0].data.data.lastName);
-                  if (values[0].data.data !== null) {
-                    this.formRef.current.setFieldsValue({
-                      FirstName: values[0].data.data.firstName,
-                      LastName: values[0].data.data.lastName,
-                      NickName: values[0].data.data.nickName,
-                      BackupEmailAddress: values[0].data.data.backupEmail,
-                      EmailAddress: values[0].data.data.userEmail
-                    });
-                  }
-                  if (values[1].data.data !== null) {
-                    this.formRef1.current.setFieldsValue({
-                      Address1: values[1].data.data.address1,
-                      Address2: values[1].data.data.address2,
-                      City: values[1].data.data.city,
-                      Province: values[1].data.data.province,
-                      Country: values[1].data.data.country,
-                      postalCode: values[1].data.data.postalCode,
-                    });
-                  }
+      // this.setState({ loading: true }, () => {
+      if (values.sights) {
+        var numbers = [...this.state.Phones, ...values.sights];
+      }
+      values.YearOfBirth = values.YearOfBirth ? moment(values.YearOfBirth._d).format('YYYY') : this.state.yearOfBirth;
+
+      const formData = new FormData()
+      formData.append('Id', 0);
+      formData.append('UserId', parseInt(localStorage.getItem('userID')));
+      formData.append('FirstName', values.FirstName);
+      formData.append('LastName', values.LastName);
+      formData.append('NickName', values.NickName);
+      formData.append('BackupEmail', values.BackupEmailAddress);
+      formData.append('YearOfBirth', values.YearOfBirth);
+      formData.append('Phones', JSON.stringify({ Phones: numbers ? numbers : this.state.Phones }));
+      formData.append('ModifiedBy', parseInt(localStorage.getItem('userID')));
+      formData.append('PictureUrl', this.state.FrontPictureUrl[0]);
+      formData.append('RideShareInterested', this.state.RideShareInterested);
+      editUserProfile(formData).then(res => {
+        this.setState({ loading: false }, () => {
+          if (res.data.status === true) {
+            Promise.all([getUserDetails(), getAddress()]).then(values => {
+              if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
+                localStorage.setItem('userID', values[0].data.data.userId);
+                localStorage.setItem('userImage', values[0].data.data.pictureUrl)
+                localStorage.setItem('userName', values[0].data.data.firstName + " " + values[0].data.data.lastName);
+                if (values[0].data.data !== null) {
+                  this.formRef.current.setFieldsValue({
+                    FirstName: values[0].data.data.firstName,
+                    LastName: values[0].data.data.lastName,
+                    NickName: values[0].data.data.nickName,
+                    BackupEmailAddress: values[0].data.data.backupEmail,
+                    EmailAddress: values[0].data.data.userEmail
+                  });
                 }
-              });
-              notification.success({
-                message: 'Success',
-                description: 'User data successfully updated!'
-              });
-            }
-          });
-        }).catch(err => {
-          this.setState({ loading: false }, () => {
-            notification.error({
-              message: 'Error',
-              description: 'There was an error while updating user data!'
+                if (values[1].data.data !== null) {
+                  this.formRef1.current.setFieldsValue({
+                    Address1: values[1].data.data.address1,
+                    Address2: values[1].data.data.address2,
+                    City: values[1].data.data.city,
+                    Province: values[1].data.data.province,
+                    Country: values[1].data.data.country,
+                    postalCode: values[1].data.data.postalCode,
+                  });
+                }
+              }
             });
+            notification.success({
+              message: 'Success',
+              description: 'User data successfully updated!'
+            });
+          }
+        });
+      }).catch(err => {
+        this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while updating user data!'
           });
         });
-     // });
+      });
+      // });
     }
 
     const updateAddress = (values) => {
-   //   this.setState({ loading: true }, () => {
-        const data = {
-          UserId: parseInt(localStorage.getItem('userID')),
-          Address1: values.Address1,
-          Address2: values.Address2,
-          Country: values.Country,
-          Province: values.Province,
-          City: values.City,
-          PostalCode: values.postalCode,
-          CreatedBy: parseInt(localStorage.getItem('userID')),
-          ModifiedBy: parseInt(localStorage.getItem('userID')),
-          DateCreated: moment(new Date()).format(),
-          DateModified: moment(new Date()).format()
-        }
-        saveUserAddress(data).then(res => {
-          if (res.data.status === true) {
-            this.setState({ loading: false }, () => {
-              Promise.all([getUserDetails(), getAddress()]).then(values => {
-                if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
-                  if (this.formRef) {
-                    this.formRef.current.setFieldsValue({
-                      FirstName: values[0].data.data.firstName,
-                      LastName: values[0].data.data.lastName,
-                      NickName: values[0].data.data.nickName,
-                      BackupEmailAddress: values[0].data.data.backupEmail,
-                      EmailAddress: values[0].data.data.userEmail
-                    });
-                  }
-                  if (this.formRef1) {
-                    this.formRef1.current.setFieldsValue({
-                      Address1: values[1].data.data.address1,
-                      Address2: values[1].data.data.address2,
-                      City: values[1].data.data.city,
-                      Province: values[1].data.data.province,
-                      Country: values[1].data.data.country,
-                      postalCode: values[1].data.data.postalCode,
-                    });
-                  }
-                }
-              });
-              notification.success({
-                message: 'Success',
-                description: 'User address successfully updated!'
-              });
-            });
-          }
-        }).catch(err => {
+      //   this.setState({ loading: true }, () => {
+      const data = {
+        UserId: parseInt(localStorage.getItem('userID')),
+        Address1: values.Address1,
+        Address2: values.Address2,
+        Country: values.Country,
+        Province: values.Province,
+        City: values.City,
+        PostalCode: values.postalCode,
+        CreatedBy: parseInt(localStorage.getItem('userID')),
+        ModifiedBy: parseInt(localStorage.getItem('userID')),
+        DateCreated: moment(new Date()).format(),
+        DateModified: moment(new Date()).format()
+      }
+      saveUserAddress(data).then(res => {
+        if (res.data.status === true) {
           this.setState({ loading: false }, () => {
-            notification.error({
-              message: 'Error',
-              description: 'There was an error while updating address!'
+            Promise.all([getUserDetails(), getAddress()]).then(values => {
+              if (values[0] && values[1] && values[0].status === 200 && values[1].status === 200) {
+                if (this.formRef) {
+                  this.formRef.current.setFieldsValue({
+                    FirstName: values[0].data.data.firstName,
+                    LastName: values[0].data.data.lastName,
+                    NickName: values[0].data.data.nickName,
+                    BackupEmailAddress: values[0].data.data.backupEmail,
+                    EmailAddress: values[0].data.data.userEmail
+                  });
+                }
+                if (this.formRef1) {
+                  this.formRef1.current.setFieldsValue({
+                    Address1: values[1].data.data.address1,
+                    Address2: values[1].data.data.address2,
+                    City: values[1].data.data.city,
+                    Province: values[1].data.data.province,
+                    Country: values[1].data.data.country,
+                    postalCode: values[1].data.data.postalCode,
+                  });
+                }
+              }
+            });
+            notification.success({
+              message: 'Success',
+              description: 'User address successfully updated!'
             });
           });
+        }
+      }).catch(err => {
+        this.setState({ loading: false }, () => {
+          notification.error({
+            message: 'Error',
+            description: 'There was an error while updating address!'
+          });
         });
-     // });
+      });
+      // });
     }
 
     return (
@@ -342,7 +344,10 @@ export default class EditProfile extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"> <h1> Edit Profile </h1></div>
+              <div className="edit-sec">
+                <h1> Edit Profile </h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding">
                 <div className="row">
                   <div className="col-lg-12">
@@ -356,7 +361,7 @@ export default class EditProfile extends Component {
                               </button>
                               <input type="file" id="file" name="img" accept="image/*" className="img-upload manu_upload"
                                 onChange={(e) => this.fileChangedHandler(e)} style={{ 'display': 'none' }} />
-                              <img src={this.state.file} alt="" style={{ 'width': '700px', 'height': '430px' }} />
+                              <img src={this.state.file} alt="" className="editprofileimages" />
                             </div>
                             <div className="col-12 col-lg-6">
                               <div className="row">
@@ -387,7 +392,7 @@ export default class EditProfile extends Component {
                                 </div>
                                 <div className="col-12 col-md-6">
                                   <Form.Item label="Year of Birth" name="YearOfBirth">
-                                    <DatePicker picker="year" format="YYYY" onClick={(e) => {this.validate(e)}} defaultValue={moment(this.state.yearOfBirth, 'YYYY')} onChange={(e)=>{this.handleChange(e)}}
+                                    <DatePicker picker="year" format="YYYY" onClick={(e) => { this.validate(e) }} defaultValue={moment(this.state.yearOfBirth, 'YYYY')} onChange={(e) => { this.handleChange(e) }}
                                       className="w-100 inputstyle" disabledDate={d => !d || d.isAfter(this.state.currentDate) || d.isSameOrBefore(this.state.previousDate)} />
                                   </Form.Item>
                                 </div>

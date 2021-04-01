@@ -56,7 +56,7 @@ class SideNav extends React.Component {
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
                                     <div className="custom_nav">
                                         <div className="d-flex">
-                                            <i className="fas fa-dollar-sign"></i>
+                                            <img src={require('../assets/images/hard-hat-solid-icon.png')} style={{ 'height': '20px', 'width': '20px' }} className="loader-img" alt="" />
                                             <span>Rewards</span>
                                         </div>
                                         <i className="fas fa-chevron-down"></i>
@@ -78,7 +78,7 @@ class SideNav extends React.Component {
                         </Accordion>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/buy-sell" className="nav-link">
-                                <i className="fas fa-exchange-alt"></i>
+                                <i class="fa fa-handshake-o" aria-hidden="true"></i>
                                 <span>Buy Sell</span>
                             </Link>
                         </li>

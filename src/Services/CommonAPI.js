@@ -65,3 +65,7 @@ export function saveNewPassword(data) {
 export function getGoogleAPIKey() {
     return axios.get(process.env.REACT_APP_API_URL + `api/misc/GetGoogleSearchCode`);
 }
+
+export function saveUserSupport(data) {
+    return axios.post(process.env.REACT_APP_API_URL + `api/users/SaveUserSupport`, data);
+}

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { notification } from 'antd';
 import swal from 'sweetalert';
 import Loader from '../Loader/Loader';
+import Support from '../Support/Support';
 
 export default class SideNavMontage extends React.Component {
 
@@ -96,7 +97,9 @@ export default class SideNavMontage extends React.Component {
                 {this.state.loading ? <Loader /> :
                     <main className="index-main">
                         <section className="index-sec">
-                            <div className="edit-sec"><h1>Montages</h1></div>
+                            <div className="edit-sec"><h1>Montages</h1>
+                                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+                            </div>
                             <div className="com-padding newpage_section">
                                 <div className="row">
                                     <div className="col-md-12">

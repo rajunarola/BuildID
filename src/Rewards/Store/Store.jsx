@@ -4,6 +4,8 @@ import Loader from '../../Loader/Loader';
 import { getUserRewardAmount, getStoreItems, searchStoreItems, saveUserPurchase, getNrItemsShoppingCart } from '../../Services/Store'
 import { notification } from 'antd';
 import { Modal, Image, Col } from 'react-bootstrap';
+import Support from '../../Support/Support';
+
 export default class Store extends React.Component {
 
   state = {
@@ -154,7 +156,9 @@ export default class Store extends React.Component {
         {this.state.loading ? <Loader /> :
           <div className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Store</h1></div>
+              <div className="edit-sec"><h1>Store</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header" id="ticketOne">

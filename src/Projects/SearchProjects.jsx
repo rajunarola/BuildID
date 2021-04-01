@@ -5,6 +5,8 @@ import { getGoogleAPIKey, searchProjectsBy } from '../Services/Project';
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import Loader from '../Loader/Loader';
 import { Link } from 'react-router-dom';
+import Support from '../Support/Support';
+
 export default class SearchProjects extends Component {
 
   constructor(props) {
@@ -128,6 +130,7 @@ export default class SearchProjects extends Component {
             <section className="index-sec">
               <div className="edit-sec">
                 <h1>Search Project</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
                 {/* <div className="editprofile">Sa Project</div> */}
               </div>
               <div className="addticketform com-padding newpage_section">

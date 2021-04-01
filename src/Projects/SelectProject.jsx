@@ -4,6 +4,8 @@ import debounce from 'lodash/debounce';
 import moment from 'moment';
 import { postSaveUserWorkHistory } from '../Services/Project';
 import { withRouter } from 'react-router-dom';
+import Support from '../Support/Support';
+
 class SelectProject extends Component {
 
   constructor(props) {
@@ -131,6 +133,7 @@ class SelectProject extends Component {
           <section className="index-sec">
             <div className="edit-sec">
               <h1>Add Project Details</h1>
+              <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
             </div>
             <div className="com-padding newpage_section">
               <div className="crd-wrap">

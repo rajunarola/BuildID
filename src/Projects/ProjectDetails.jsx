@@ -13,6 +13,7 @@ import {
 import debounce from 'lodash/debounce';
 import { Select, Form, Spin, notification } from 'antd';
 import Loader from '../Loader/Loader';
+import Support from '../Support/Support';
 
 export default class ProjectDetails extends Component {
 
@@ -238,7 +239,8 @@ export default class ProjectDetails extends Component {
           <main className="index-main">
             <section className="index-sec">
               <div className="edit-sec">
-                <div className="editprofile"> Project Details</div>
+                <h1> Project Details</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
               </div>
               <div className="addticketform com-padding">
                 <div className="row">

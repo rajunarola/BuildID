@@ -4,6 +4,8 @@ import { Form, Input, notification, Spin, Select } from 'antd';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { addGlobalProject, getGoogleAPIKey, saveProjectPicture } from '../Services/Project';
 import debounce from 'lodash/debounce';
+import Support from '../Support/Support';
+
 export default class AddGlobalProject extends Component {
 
   formRef = React.createRef();
@@ -224,7 +226,9 @@ export default class AddGlobalProject extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"> <h1> Add Global Project </h1></div>
+              <div className="edit-sec"> <h1> Add Global Project </h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="newpage_section com-padding">
                 <div className="crd-wrap">
                   <div className="crd-header">

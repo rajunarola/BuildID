@@ -3,6 +3,7 @@ import Loader from '../../Loader/Loader';
 import { getNewQuestionForTheUser, saveUserQuestion } from '../../Services/CommonAPI';
 import { Form, Input, Select, Spin, notification } from 'antd';
 import debounce from 'lodash/debounce';
+import Support from '../../Support/Support';
 
 export default class Quiz extends Component {
 
@@ -253,7 +254,9 @@ export default class Quiz extends Component {
         {this.state.loading ? <Loader /> :
           <main className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Quiz</h1></div>
+              <div className="edit-sec"><h1>Quiz</h1>
+              <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
+              </div>
               <div className="com-padding newpage_section">
                 <div className="row">
                   <div className="col-md-12">
@@ -286,16 +289,16 @@ export default class Quiz extends Component {
                                   <Form className="custom_inputs" onFinish={() => this.multipleCheck()} ref={this.formRef}>
                                     <div className="multiple_checkbox row">
                                       <div className="col-md-6 p-0">
-                                        {this.state.option1 !== "" && <label> <input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option1', this.state.option1, e.target.checked)} />{this.state.option1} </label>}
+                                        {this.state.option1 !== "" && <label> <input type="checkbox" className='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option1', this.state.option1, e.target.checked)} />{this.state.option1} </label>}
                                       </div>
                                       <div className="col-md-6 p-0">
-                                        {this.state.option2 !== "" && <label><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option2', this.state.option2, e.target.checked)} />{this.state.option2} </label>}
+                                        {this.state.option2 !== "" && <label><input type="checkbox" className='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option2', this.state.option2, e.target.checked)} />{this.state.option2} </label>}
                                       </div>
                                       <div className="col-md-6 p-0">
-                                        {this.state.option3 !== "" && <label><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option3', this.state.option3, e.target.checked)} />{this.state.option3} </label>}
+                                        {this.state.option3 !== "" && <label><input type="checkbox" className='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option3', this.state.option3, e.target.checked)} />{this.state.option3} </label>}
                                       </div>
                                       <div className="col-md-6 p-0">
-                                        {this.state.option4 !== "" && <label><input type="checkbox" class='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option4', this.state.option4, e.target.checked)} />{this.state.option4} </label>}
+                                        {this.state.option4 !== "" && <label><input type="checkbox" className='myCheckBox' name="c1" onChange={(e) => this.getCheckBoxValue('option4', this.state.option4, e.target.checked)} />{this.state.option4} </label>}
                                       </div>
                                       <div className="col-md-12 p-0">
                                         <p className="color-danger">{this.state.notSure}</p>

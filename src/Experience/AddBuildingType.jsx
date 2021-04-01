@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { saveGlobalBuildingType } from '../Services/Experience';
 import { Form, Input, notification } from 'antd';
 import queryString from 'query-string';
+import Support from '../Support/Support';
 
 export default class AddBuildingType extends Component {
 
@@ -52,7 +53,9 @@ export default class AddBuildingType extends Component {
                                 <div className="col-12 col-md-6 offset-md-3">
                                     <div className="form-border crd-wrp">
                                         <div className="proj-timeline">
-                                            <h4 className="k-card-title mb-0 text-uppercase"> Add Global Building Type</h4>
+                                            <h4 className="k-card-title mb-0 text-uppercase mon_p"> Add Global Building Type
+                                            <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+                                            </h4>
                                             <div className="manufacture-content p-4">
                                                 <Form onFinish={onFinish} ref={this.formRef}>
                                                     <label>Building Type</label>

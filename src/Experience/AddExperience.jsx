@@ -4,6 +4,8 @@ import { saveUserWorkHistory } from '../Services/Experience';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
 import Loader from '../Loader/Loader';
+import Support from '../Support/Support';
+
 export default class AddExperience extends Component {
 
   formRef = React.createRef();
@@ -136,7 +138,9 @@ export default class AddExperience extends Component {
         {this.state.loading ? <Loader /> :
           <div className="index-main">
             <section className="index-sec">
-              <div className="edit-sec"><h1>Add Experience</h1></div>
+              <div className="edit-sec"><h1>Add Experience</h1>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
+              </div>
               <div className="com-padding newpage_section">
                 <div className="crd-wrap">
                   <div className="crd-header" id="ticketOne">

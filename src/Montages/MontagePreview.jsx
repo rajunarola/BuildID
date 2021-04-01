@@ -4,6 +4,8 @@ import Loader from '../Loader/Loader';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { getMontageFiles, getMontageFilesByUserIdAndId } from '../Services/Montage';
+import Support from '../Support/Support';
+
 export default class MontagePreview extends Component {
 
   audio = new Audio();
@@ -78,13 +80,14 @@ export default class MontagePreview extends Component {
                       <div className="proj-timeline">
                         <h4 className="k-card-title mb-0 text-uppercase mon_p"> Montage Preview
                             {this.state.pauseButton ?
-                            <button className="btn btn-dark" onClick={() => this.playPause()}>
+                            <button className="btn btn-dark support_Mon_Pre"  onClick={() => this.playPause()}>
                               <i className="fa fa-pause"></i>
                             </button> :
-                            <button className="btn btn-dark" onClick={() => this.playPause()}>
+                            <button className="btn btn-dark support_Mon_Pre" onClick={() => this.playPause()}>
                               <i className="fa fa-play"></i>
                             </button>
                           }
+                           <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
                         </h4>
                         <div className="manufacture-content p-4">
                           <div id="collapseOne" className="collapse show" aria-labelledby="projectOne" data-parent="#projectaccordion">
