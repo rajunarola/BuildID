@@ -14,7 +14,8 @@ export default class TicketPreview extends Component {
     singleTicketDetail: [],
     modalShow: false,
     loading: false,
-    emptyTickets: ''
+    emptyTickets: '',
+    modalLoading:true,
   }
 
   componentDidMount() {
@@ -46,11 +47,12 @@ export default class TicketPreview extends Component {
   }
 
   onModalPopUp = (id) => {
-    this.setState({ modalShow: true }, () => {
+    this.setState({ modalShow: true,modalLoading:true }, () => {
       getTicketDetails(id).then(res => {
-        this.setState({ singleTicketDetail: res.data.data });
+        this.setState({ singleTicketDetail: res.data.data,modalLoading:false });
       }).catch(err => {
-        notification.error({
+        this.setState({ modalLoading: false });
+          notification.error({
           message: 'Error',
           description: 'There was an error while fetching ticket details!'
         });
@@ -119,6 +121,8 @@ export default class TicketPreview extends Component {
               </div>
             </Col>}
           <Modal.Body>
+          {this.state.modalLoading ? <div className="stage-img"> <Loader /> </div> :
+          <>
             {this.state.singleTicketDetail.issuedBy &&
               <p className="stage-detail">
                 <span className="stage-label">Issued By:</span> <span>{this.state.singleTicketDetail.issuedBy}</span>
@@ -131,6 +135,8 @@ export default class TicketPreview extends Component {
               <p className="stage-detail border-bottom-0">
                 <span className="stage-label">Expiry Date:</span> <span>{moment(this.state.singleTicketDetail.expiry).format('ll')}</span>
               </p>}
+          </>
+          }
           </Modal.Body>
         </Modal>
       </>
