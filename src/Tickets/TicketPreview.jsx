@@ -108,7 +108,7 @@ export default class TicketPreview extends Component {
             </section>
           </main>
         }
-        <Modal show={this.state.modalShow} onHide={() => this.setState({ modalShow: !this.state.modalShow })}>
+        <Modal show={this.state.modalShow} onHide={() => this.setState({ modalShow: !this.state.modalShow,singleTicketDetail:{} })}>
           <Modal.Header className="stagehead text-white" closeButton>
             <Modal.Title>{this.state.singleTicketDetail.ticketType}</Modal.Title>
           </Modal.Header>
