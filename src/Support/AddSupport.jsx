@@ -10,8 +10,6 @@ export default class AddSupport extends Component {
     state = {
         loading: false
     }
-    componentDidMount() {
-    }
 
     render() {
         const { TextArea } = Input;

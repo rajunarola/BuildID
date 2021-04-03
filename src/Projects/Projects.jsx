@@ -127,8 +127,24 @@ export default class Projects extends React.Component {
       MarkerWithLabel
     } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
 
+    const mapStyle = [
+      {
+        "featureType": "all",
+        "elementType": "labels.icon",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      }
+    ];
+
+    const defaultMapOptions = {
+      styles: mapStyle
+    };
+
     const MapWithAMarker = withScriptjs(withGoogleMap(props =>
-      <GoogleMap defaultZoom={8} defaultCenter={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }}>
+      <GoogleMap defaultOptions={defaultMapOptions} defaultZoom={4} defaultCenter={{ lat: parseFloat(this.state.latitude), lng: parseFloat(this.state.longitude) }}>
         {this.state.projectArray.map((data, index) => (
           <MarkerWithLabel
             labelStyle={{
@@ -161,7 +177,7 @@ export default class Projects extends React.Component {
             <section className="index-sec">
               <div className="edit-sec">
                 <h1 className="p-0">{userName}</h1>
-                <Support dataParentToChild={this.props.location.pathname} history={this.props.history}/>
+                <Support dataParentToChild={this.props.location.pathname} history={this.props.history} />
               </div>
               <div className="com-padding newpage_section">
                 <div className="row">

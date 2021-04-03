@@ -78,7 +78,7 @@ class SideNav extends React.Component {
                         </Accordion>
                         <li onClick={() => this.setState({ open: !this.state.open })}>
                             <Link to="/buy-sell" className="nav-link">
-                                <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                <i className="fa fa-handshake-o" aria-hidden="true"></i>
                                 <span>Buy Sell</span>
                             </Link>
                         </li>
